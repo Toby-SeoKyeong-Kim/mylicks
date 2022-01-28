@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Solo Master</title>
+    {{if (eq .Theme "dark")}}
+    <link rel="stylesheet" href="static/css/dark_userslist.css"/>
+    {{else if (eq .Theme "simple")}}
+    <link rel="stylesheet" href="static/css/simple_userslist.css"/>
+    {{else if (eq .Theme "pastel")}}
+    <link rel="stylesheet" href="static/css/pastel_userslist.css"/>
+    {{end}}
+    <script src="https://kit.fontawesome.com/6743146fd8.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/resources/treble_clef.png">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#000000"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@800&family=Open+Sans:wght@800&display=swap" rel="stylesheet">
+    <script src="static/js/main.js"></script>
+  </head>
+  <body>
+    <div class="side_bar" id="side_bar">
+      <div class="side_bar_contents">
+        <div id="closeDiv" class="closeDiv">
+
+        </div>
+        <div class="logoutDiv">
+          <a href="/logout"><p>Logout</p></a>
+        </div>
+        <div class="userImgSidebar">
+          <div id="contemp" class="contemp">
+            <div class="imgAfter">
+              <p>edit</p>
+            </div>
+          </div>
+          <img id="sidebarImg" src="{{.Picture}}" alt="">
+        </div>
+        <p>{{.Given_name}}</p>
+      </div>
+      <ul>
+        <a href="/setting"><div id="profileIcon"></div><li>Profile</li></a>
+        <a href="/mylicks"><div id="licksIcon"></div><li>My Licks</li></a>
+        <a href="/mysheets"><div id="sheetsIcon"></div><li>My Sheets</li></a>
+        <a href="/forum"><div id="downloadIcon"></div><li>Forum</li></a>
+      </ul>
+    </div>
+    <div class="con-wrap">
+      <div class="for_transparency">
+
+      </div>
+      <div class="contents">
+        <header>
+          <div class="headerWrap">
+            <div id="header-logo" class="header-nav">
+
+              {{if (eq .Theme "dark")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{else if (eq .Theme "simple")}}
+              <h2><a href="/"style="color:#1936FE;">MY LICKS</a></h2>
+              {{else if (eq .Theme "pastel")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{end}}
+            </div>
+
+
+            <div id="logout" class="header-nav">
+
+              {{if (eq .Theme "dark")}}
+              <p><a href="/logout" style="color: #757189;">Logout</a></p>
+              {{else if (eq .Theme "simple")}}
+              <p><a href="/logout" style="color: #9C9CA7;">Logout</a></p>
+              {{else if (eq .Theme "pastel")}}
+              <p><a href="/logout" style="color: #B6EBF3;">Logout</a></p>
+              {{end}}
+            </div>
+            <div id="user_info" class="header-nav">
+              <div class="user_img" id="user_img">
+                <img src="{{.Picture}}" alt="No Image">
+              </div>
+              <p>{{.Given_name}}</p>
+              <div class="top-down-menu">
+                <a href="/setting">
+                  <div id="profile-icon2"></div>
+                  <span>Profile</span>
+                </a>
+                <a href="/mylicks">
+                  <div id="licks-icon2"></div>
+                  <span>My Licks</span>
+                </a>
+                <a href="/mysheets">
+                  <div id="sheets-icon2"></div>
+                  <span>My Sheets</span>
+                </a>
+                <a href="/forum">
+                  <div id="download-icon2"></div>
+                  <span>Forum</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+        <div class="subheaderNav">
+          <div class="headerNavWrap">
+            <ul>
+              <a href="/sharelicks"><li id="licknav">Licks</li></a>
+              <a href="/sharesheets"><li id="sheetnav">Sheets</li></a>
+              <a href="/forum"><li id="discussnav">Discussion</li></a>
+              <a href="/users"><li id="popnav">Users</li></a>
+            </ul>
+          </div>
+        </div>
+        <main id="main-container">
+          <div class="posts">
+            <div class="userQuery">
+              <input type="text" value="" id="searchUsers" placeholder="Search users...">
+            </div>
+            <ul class="postul">
+
+            </ul>
+            <div class="indexField">
+              <div class="loadmorebtn">
+                Load more...
+              </div>
+            </div>
+          </div>
+          <div class="gAd">
+
+          </div>
+          <div class="trending">
+            <p class="lable">Trending</p>
+            <ul>
+
+            </ul>
+          </div>
+          <div class="topUsers">
+            <p class="lable">Top Users of the Week</p>
+            <ul>
+
+            </ul>
+          </div>
+        </main>
+      </div>
+    </div>
+    <footer>
+        <div class="copyright">
+          <div class="logo">
+            <p class="footer-text" id="textlogo">My Licks</p>
+          </div>
+          <div class="contactinfos">
+            <p class="footer-text" id="copyright">Copyright (c) 2020 Toby Kim </p>
+          </div>
+        </div>
+      </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript">
+      var calendar = ["Jan","Feb","Mar","Apr","May","Jun","July","Aug","Sep","Oct","Nov","Dec"];
+      var userID = {{.ID}};
+      var sortedUsers;
+      var payload;
+      var num;
+      var arry2 =[];
+      var inval;
+      var skip = 0;
+      var filter = "";
+      var morePosts = true;
+      var new_more = false;
+
+      var moreUsers = true;
+      var mySet = new Set();
+
+      var json_data={
+        "filter": filter.toString(),
+        "skip": skip.toString(),
+        "query": ""
+      };
+      var xhr = new XMLHttpRequest();
+
+
+      xhr.addEventListener('readystatechange', function(){
+        if(xhr.readyState === XMLHttpRequest.DONE){
+          if (xhr.status === 200) {
+            var item = xhr.responseText;
+            payload = JSON.parse(item);
+            sortedUsers = payload.users;
+            num = parseInt(payload.num);
+            if(num<10){
+              morePosts = false;
+            }
+            if(new_more){
+              getHtml();
+            }else{
+              getNewHtml();
+            }
+
+         }
+        }
+      });
+      xhr.open('POST', '/getUserslist', true);
+      xhr.setRequestHeader('Content-Type', 'application/xml');
+      xhr.send(JSON.stringify(json_data));
+
+      function getPosts() {
+         json_data={
+          "filter": filter.toString(),
+          "skip": skip.toString(),
+          "query": ""
+        };
+        xhr.open('POST', '/getUserslist', true);
+        xhr.setRequestHeader('Content-Type', 'application/xml');
+        xhr.send(JSON.stringify(json_data));
+      }
+
+      function getHtml() {
+        arry2 = [];
+
+        sortedUsers.forEach(function(user, index){
+          var str = "<li value='"+user.Email+"' class='users'><div class='usersWrapper'><img src='"+user.Picture+"' alt='No Image'><div class='usersGivenName'>"+user.Given_name+"</div></div></li>"
+          arry2.push(str)
+        });
+        $(".postul").append(arry2);
+        $(".users").unbind("click touchend");
+        $(".users").bind("click touchend", function (e) {
+          var str = $(this).attr("value")
+
+            var uri = '/vpfe?q=' + str;
+            window.location.href = uri;
+
+        });
+      }
+      function getNewHtml() {
+        arry2 = [];
+        if(sortedUsers){
+          sortedUsers.forEach(function(user, index){
+            var str = "<li value='"+user.Email+"' class='users'><div class='usersWrapper'><img src='"+user.Picture+"' alt='No Image'><div class='usersGivenName'>"+user.Given_name+"</div></div></li>"
+            arry2.push(str)
+          });
+        }else{
+          arry2.push("<h2>No users found<h2>")
+        }
+
+        $(".postul").html(arry2);
+        if(sortedUsers == 10){
+          $(".loadmorebtn").css("display", "block");
+        }
+        $(".users").unbind("click touchend");
+        $(".users").bind("click touchend", function (e) {
+          var str = $(this).attr("value")
+
+            var uri = '/vpfe?q=' + str;
+            window.location.href = uri;
+
+        });
+      }
+      $("#searchUsers").bind("change", function (e) {
+        skip = 0;
+        filter = $(this).val();
+        new_more = false;
+        getPosts();
+      })
+
+      $(".loadmorebtn").click(function(e){
+        if(morePosts){
+             skip += 10;
+             filter =  $("#searchUsers").val();
+             new_more = true;
+             getPosts();
+        }else{
+          alert("there are no more users... Please invite your friends to this website.");
+          $(".loadmorebtn").css("display", "none");
+        }
+      });
+        var user_img = document.getElementById("user_img");
+        user_img.addEventListener('touchend', function () {
+          if(window.innerWidth/window.innerHeight < .71428){
+            $('#side_bar').css('right', '0');
+            $('.for_transparency').css('z-index', '9998');
+            $('.for_transparency').css('background-color', 'rgba(20,20,20,.5)');
+          }
+        });
+        user_img.addEventListener('click', function () {
+          if(window.innerWidth/window.innerHeight < .71428){
+            $('#side_bar').css('right', '0');
+            $('.for_transparency').css('z-index', '9998');
+            $('.for_transparency').css('background-color', 'rgba(20,20,20,.5)');
+          }
+        });
+        var sidebarImg = document.getElementById('sidebarImg');
+        sidebarImg.addEventListener('click', function () {
+          window.location.href = '/setting';
+        });
+        var contemp = document.getElementById('contemp');
+        contemp.addEventListener('click', function () {
+          window.location.href = '/setting';
+        });
+        var closeDiv = document.getElementById('closeDiv');
+        closeDiv.addEventListener('click', function () {
+          $('#side_bar').css('right', '-100%');
+          $('.for_transparency').css('z-index', '-99');
+          $('.for_transparency').css('background-color', 'rgba(20,20,20,0)');
+        });
+        closeDiv.addEventListener('touchend', function () {
+          $('#side_bar').css('right', '-100%');
+          $('.for_transparency').css('z-index', '-99');
+          $('.for_transparency').css('background-color', 'rgba(20,20,20,0)');
+        });
+        window.addEventListener('resize', function () {
+          if(window.innerWidth/window.innerHeight < .71428){
+
+            $('#side_bar').css('right', '-100%');
+            $('.for_transparency').css('z-index', '-99');
+            $('.for_transparency').css('background-color', 'rgba(20,20,20,0)');
+          }
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Solo Master</title>
+    {{if (eq .Theme "dark")}}
+    <link rel="stylesheet" href="static/css/mylicks.css"/>
+    {{else if (eq .Theme "simple")}}
+    <link rel="stylesheet" href="static/css/simple_mylicks.css"/>
+    {{else if (eq .Theme "pastel")}}
+    <link rel="stylesheet" href="static/css/pastel_mylicks.css"/>
+    {{end}}
+    <script src="https://kit.fontawesome.com/6743146fd8.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.js"></script>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/resources/treble_clef.png">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#000000"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@800&family=Open+Sans:wght@800&display=swap" rel="stylesheet">
+
+  </head>
+  <body>
+    <div class="side_bar" id="side_bar">
+      <div class="side_bar_contents">
+        <div id="closeDiv" class="closeDiv">
+
+        </div>
+        <div class="logoutDiv">
+          <a href="/logout"><p>Logout</p></a>
+        </div>
+        <div class="userImgSidebar">
+          <div id="contemp" class="contemp">
+            <div class="imgAfter">
+              <p>edit</p>
+            </div>
+          </div>
+          <img id="sidebarImg" src="{{.Picture}}" alt="">
+        </div>
+        <p>{{.Given_name}}</p>
+      </div>
+      <ul>
+        <a href="/setting"><div id="profileIcon"></div><li>Profile</li></a>
+        <a href="/mylicks"><div id="licksIcon"></div><li>My Licks</li></a>
+        <a href="/mysheets"><div id="sheetsIcon"></div><li>My Sheets</li></a>
+        <a href="/forum"><div id="downloadIcon"></div><li>Forum</li></a>
+      </ul>
+    </div>
+    <div class="con-wrap">
+      <div class="for_transparency">
+
+      </div>
+      <div class="contents">
+        <header>
+          <div class="headerWrap">
+            <div id="header-logo" class="header-nav">
+
+              {{if (eq .Theme "dark")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{else if (eq .Theme "simple")}}
+              <h2><a href="/"style="color:#1936FE;">MY LICKS</a></h2>
+              {{else if (eq .Theme "pastel")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{end}}
+            </div>
+
+
+            <div id="logout" class="header-nav">
+
+              {{if (eq .Theme "dark")}}
+              <p><a href="/logout" style="color: #757189;">Logout</a></p>
+              {{else if (eq .Theme "simple")}}
+              <p><a href="/logout" style="color: #9C9CA7;">Logout</a></p>
+              {{else if (eq .Theme "pastel")}}
+              <p><a href="/logout" style="color: #B6EBF3;">Logout</a></p>
+              {{end}}
+            </div>
+            <div id="user_info" class="header-nav">
+              <div class="user_img" id="user_img">
+                <img src="{{.Picture}}" alt="No Image">
+              </div>
+              <p>{{.Given_name}}</p>
+              <div class="top-down-menu">
+                <a href="/setting">
+                  <div id="profile-icon2"></div>
+                  <span>Profile</span>
+                </a>
+                <a href="/mylicks">
+                  <div id="licks-icon2"></div>
+                  <span>My Licks</span>
+                </a>
+                <a href="/mysheets">
+                  <div id="sheets-icon2"></div>
+                  <span>My Sheets</span>
+                </a>
+                <a href="/forum">
+                  <div id="download-icon2"></div>
+                  <span>Forum</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+        <main id="main-container">
+          <div class="control-panal">
+            <div class="querydiv">
+              <select class="queryselect" name="querySelector" id="querySelector">
+                <option value="all">All</option>
+                <option value="title">Title</option>
+                <option value="chord">Chord</option>
+                <option value="scale">Scale</option>
+                <option value="tag">Tag</option>
+              </select>
+              <p class="partition">|</p>
+              <input type="search" name="query" id="query" value="" placeholder="Search">
+              <p class="partition">|</p>
+              <div class="rangediv">
+                <input type="range" name="ran1" id="ran1" value="0" min="0" max="100">
+                <input type="range" name="ran2" id="ran2" value="100" min="0" max="100">
+                <div class="visualSlider">
+                  <div class="track"></div>
+                  <div class="range"></div>
+                  <div class="thumb left" id="left"></div>
+                  <div class="thumb right" id="right"></div>
+                </div>
+              </div>
+            </div>
+            <input type="submit" name="new" id="new" value="New" >
+            <!-- <button type="button" name="opener" id="opener">Open</button> -->
+          </div>
+          <div class="listContainer" id="listContainer" >
+            {{if .OwnedLicks}}
+            <!-- {{range .OwnedLicks}}
+              <div class="{{.Scale}} licks" id="{{.ID}}" onclick="heightlight(this.id)">
+
+              </div>
+            {{end}} -->
+
+            {{else}}
+              <p id="noLicks">There are no Licks</p>
+            {{end}}
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript">
+      var ownedLicks = {{.OwnedLicks}};
+      var selectedLicks =[];
+      var userID = {{.ID}};
+      var arry = [];
+      if(ownedLicks){
+        ownedLicks.forEach(function(lick, index){
+        var item = '<div class="licks" id="' + lick.id +'" onclick="hightlight(this.id)"><div class="lickHeader"><div class="lickHeaderTitle"><p class="lickTitle">'+ lick.name +'</p><p class="lickScale"> '+ lick.chochar+'  /  '+ lick.scale +'</p><p class="'+ lick.scale +' scales">&#x25CF;</p></div><div class="lickDelete" onclick="deleteLick()"><p>Delete</p></div></div><div class="lickContents" id="' + lick.id +'-canvas"></div><div class="lickOpen" onclick="openLick()"><p>Open</p></div></div>';
+        arry.push(item);
+
+      });
+        $('#listContainer').html(arry);
+      }
+
+
+      var lickLists = document.getElementsByClassName('licks');
+      var lickContainer = document.getElementsByClassName('listContainer');
+      var xhr = new XMLHttpRequest();
+      var xhr4Delete = new XMLHttpRequest();
+      let myMap = new Map()
+      var elementClicked = false;
+      var elementDeleting = false;
+      var selectedlick;
+      // var btn = document.querySelector('#opener');
+      var nL = document.querySelector('#new');
+
+      for (var i = 0; i < lickLists.length; ++i) {
+        myMap.set(lickLists[i].id, false) ;
+      }
+
+      var lc = document.querySelector('.listContainer');
+      lc.addEventListener('click', function (){
+        if(!elementClicked){
+          for (var i = 0; i < lickLists.length; ++i) {
+            myMap.set(lickLists[i].id, false);
+            c[i].selected = false;
+          }
+          for (let [key, value] of myMap) {
+            if (value === true){
+              {{if (eq .Theme "dark")}}
+                document.getElementById(key).style.border = 'none';
+                document.getElementById(key).style.backgroundColor = '#332E56';
+                document.getElementById(key).children[0].children[1].style.backgroundColor='#332E56';
+                document.getElementById(key).children[0].children[1].style.border='1px solid #ffffff';
+                document.getElementById(key).children[0].children[1].style.color='#ffffff';
+                document.getElementById(key).children[2].style.backgroundColor="#6256B1";
+                document.getElementById(key).children[2].style.borer="none";
+                document.getElementById(key).children[2].style.color="#ffffff";
+              {{else if (eq .Theme "simple")}}
+                document.getElementById(key).style.border = '1px solid #1936FE';
+                document.getElementById(key).style.backgroundColor = '#F8F9FB';
+                document.getElementById(key).children[0].children[1].style.backgroundColor='#F8F9FB';
+                document.getElementById(key).children[0].children[1].style.border='1px solid #1936FE';
+                document.getElementById(key).children[0].children[1].style.color='#1936FE';
+                document.getElementById(key).children[0].children[0].children[1].style.color='#1936FE';
+                document.getElementById(key).children[2].style.backgroundColor="#1936FE";
+                document.getElementById(key).children[2].style.borer="none";
+                document.getElementById(key).children[2].style.color="#ffffff";
+              {{else if (eq .Theme "pastel")}}
+                document.getElementById(key).style.border = '1px solid #74D4E4';
+                document.getElementById(key).style.backgroundColor = '#F8F9FB';
+                document.getElementById(key).children[0].children[1].style.backgroundColor='#74D4E4';
+                document.getElementById(key).children[0].children[1].style.border='1px solid #ffffff';
+                document.getElementById(key).children[0].children[1].style.color='#ffffff';
+                document.getElementById(key).children[0].children[0].children[1].style.color='#74D4E4';
+                document.getElementById(key).children[2].style.backgroundColor="#74D4E4";
+                document.getElementById(key).children[2].style.borer="none";
+                document.getElementById(key).children[2].style.color="#ffffff";
+              {{end}}
+            }else{
+              {{if (eq .Theme "dark")}}
+                document.getElementById(key).style.border = '1px solid #332E56';
+                document.getElementById(key).style.backgroundColor = '#1D1E30';
+                document.getElementById(key).children[0].children[1].style.backgroundColor='#1D1E30';
+                document.getElementById(key).children[0].children[1].style.border='1px solid #6256B1';
+                document.getElementById(key).children[0].children[1].style.color='#6256B1';
+                document.getElementById(key).children[2].style.backgroundColor="#1D1E30";
+                document.getElementById(key).children[2].style.borer="1px solid #6256B1";
+                document.getElementById(key).children[2].style.color="#6256B1";
+              {{else if (eq .Theme "simple")}}
+                document.getElementById(key).style.border = "1px solid #444A47";
+                document.getElementById(key).style.backgroundColor = '#F8F9FB';
+                document.getElementById(key).children[0].children[1].style.backgroundColor='#F8F9FB';
+                document.getElementById(key).children[0].children[1].style.border='1px solid #444A47';
+                document.getElementById(key).children[0].children[1].style.color='#444A47';
+                document.getElementById(key).children[0].children[0].children[1].style.color='#444A47';
+                document.getElementById(key).children[2].style.backgroundColor="#F8F9FB";
+                document.getElementById(key).children[2].style.borer="1px solid #444A47";
+                document.getElementById(key).children[2].style.color="#444A47";
+              {{else if (eq .Theme "pastel")}}
+                document.getElementById(key).style.border = "1px solid #BFBFCB";
+                document.getElementById(key).style.backgroundColor = '#F8F9FB';
+                document.getElementById(key).children[0].children[1].style.backgroundColor='#F8F9FB';
+                document.getElementById(key).children[0].children[1].style.border='1px solid #BFBFCB';
+                document.getElementById(key).children[0].children[1].style.color='#BFBFCB';
+                document.getElementById(key).children[0].children[0].children[1].style.color='#444A47';
+                document.getElementById(key).children[2].style.backgroundColor="#F8F9FB";
+                document.getElementById(key).children[2].style.borer="1px solid #BFBFCB";
+                document.getElementById(key).children[2].style.color="#BFBFCB";
+              {{end}}
+            }
+          }
+          selectedlick = "";
+        }
+        elementClicked = false;
+      })
+      function getIndexOfLicks(id) {
+        var index = ownedLicks.findIndex(function (element) {
+          if (element.id == selectedlick) {
+            return true
+          }else{
+            return false;
+          }
+        })
+        return index;
+      }
+      function deleteLick() {
+        var indexOfLicks = getIndexOfLicks(selectedlick);
+
+        if(indexOfLicks != -1){
+
+          var json_data={
+            "userId": userID,
+            "lickId": selectedlick
+          };
+          xhr4Delete.open('POST', '/deleteLick', true);
+          xhr4Delete.setRequestHeader('Content-Type', 'application/json');
+          xhr4Delete.send(JSON.stringify(json_data));
+
+          elementDeleting = true;
+            ownedLicks.splice(indexOfLicks, 1);
+            myMap.delete(selectedlick);
+              arry = [];
+              ownedLicks.forEach(function(lick, index){
+              var item = '<div class="licks" id="' + lick.id +'" onclick="hightlight(this.id)"><div class="lickHeader"><div class="lickHeaderTitle"><p class="lickTitle">'+ lick.name +'</p><p class="lickScale"> '+ lick.chochar+'  /  '+ lick.scale +'</p><p class="'+ lick.scale +' scales">&#x25CF;</p></div><div class="lickDelete" onclick="deleteLick()"><p>Delete</p></div></div><div class="lickContents" id="' + lick.id +'-canvas"></div><div class="lickOpen" onclick="openLick()"><p>Open</p></div></div>';
+              arry.push(item);
+
+              })
+              $('#listContainer').html(arry);
+        }
+      }
+      function openLick() {
+        if(selectedlick != "" && selectedlick != null){
+          var uri = '/Ldisplay?q=' + selectedlick;
+          window.location.href = uri;
+        }
+      }
+      function hightlight(id) {
+        elementClicked=true;
+        for (var i = 0; i < lickLists.length; ++i) {
+          myMap.set(lickLists[i].id, false);
+          c[i].selected = false;
+        }
+        if(!elementDeleting){
+          myMap.set(id, true);
+          selectedlick = id;
+          var indexOfLicks = getIndexOfLicks(selectedlick);
+          if(indexOfLicks != -1){
+            c[indexOfLicks].selected=true;
+          }
+        }else{
+          selectedlick ="";
+        }
+        for (let [key, value] of myMap) {
+          if (value === true){
+            {{if (eq .Theme "dark")}}
+              document.getElementById(key).style.border = 'none';
+              document.getElementById(key).style.backgroundColor = '#332E56';
+              document.getElementById(key).children[0].children[1].style.backgroundColor='#332E56';
+              document.getElementById(key).children[0].children[1].style.border='1px solid #ffffff';
+              document.getElementById(key).children[0].children[1].style.color='#ffffff';
+              document.getElementById(key).children[2].style.backgroundColor="#6256B1";
+              document.getElementById(key).children[2].style.borer="none";
+              document.getElementById(key).children[2].style.color="#ffffff";
+            {{else if (eq .Theme "simple")}}
+              document.getElementById(key).style.border = '1px solid #1936FE';
+              document.getElementById(key).style.backgroundColor = '#F8F9FB';
+              document.getElementById(key).children[0].children[1].style.backgroundColor='#F8F9FB';
+              document.getElementById(key).children[0].children[1].style.border='1px solid #1936FE';
+              document.getElementById(key).children[0].children[1].style.color='#1936FE';
+              document.getElementById(key).children[0].children[0].children[1].style.color='#1936FE';
+              document.getElementById(key).children[2].style.backgroundColor="#1936FE";
+              document.getElementById(key).children[2].style.borer="none";
+              document.getElementById(key).children[2].style.color="#ffffff";
+            {{else if (eq .Theme "pastel")}}
+              document.getElementById(key).style.border = '1px solid #74D4E4';
+              document.getElementById(key).style.backgroundColor = '#F8F9FB';
+              document.getElementById(key).children[0].children[1].style.backgroundColor='#74D4E4';
+              document.getElementById(key).children[0].children[1].style.border='1px solid #ffffff';
+              document.getElementById(key).children[0].children[1].style.color='#ffffff';
+              document.getElementById(key).children[0].children[0].children[1].style.color='#74D4E4';
+              document.getElementById(key).children[2].style.backgroundColor="#74D4E4";
+              document.getElementById(key).children[2].style.borer="none";
+              document.getElementById(key).children[2].style.color="#ffffff";
+            {{end}}
+          }else{
+            {{if (eq .Theme "dark")}}
+              document.getElementById(key).style.border = '1px solid #332E56';
+              document.getElementById(key).style.backgroundColor = '#1D1E30';
+              document.getElementById(key).children[0].children[1].style.backgroundColor='#1D1E30';
+              document.getElementById(key).children[0].children[1].style.border='1px solid #6256B1';
+              document.getElementById(key).children[0].children[1].style.color='#6256B1';
+              document.getElementById(key).children[2].style.backgroundColor="#1D1E30";
+              document.getElementById(key).children[2].style.borer="1px solid #6256B1";
+              document.getElementById(key).children[2].style.color="#6256B1";
+            {{else if (eq .Theme "simple")}}
+              document.getElementById(key).style.border = "1px solid #444A47";
+              document.getElementById(key).style.backgroundColor = '#F8F9FB';
+              document.getElementById(key).children[0].children[1].style.backgroundColor='#F8F9FB';
+              document.getElementById(key).children[0].children[1].style.border='1px solid #444A47';
+              document.getElementById(key).children[0].children[1].style.color='#444A47';
+              document.getElementById(key).children[0].children[0].children[1].style.color='#444A47';
+              document.getElementById(key).children[2].style.backgroundColor="#F8F9FB";
+              document.getElementById(key).children[2].style.borer="1px solid #444A47";
+              document.getElementById(key).children[2].style.color="#444A47";
+            {{else if (eq .Theme "pastel")}}
+              document.getElementById(key).style.border = "1px solid #BFBFCB";
+              document.getElementById(key).style.backgroundColor = '#F8F9FB';
+              document.getElementById(key).children[0].children[1].style.backgroundColor='#F8F9FB';
+              document.getElementById(key).children[0].children[1].style.border='1px solid #BFBFCB';
+              document.getElementById(key).children[0].children[1].style.color='#BFBFCB';
+              document.getElementById(key).children[0].children[0].children[1].style.color='#444A47';
+              document.getElementById(key).children[2].style.backgroundColor="#F8F9FB";
+              document.getElementById(key).children[2].style.borer="1px solid #BFBFCB";
+              document.getElementById(key).children[2].style.color="#BFBFCB";
+            {{end}}
+          }
+        }
+        elementDeleting = false;
+      }
+
+
+      nL.addEventListener('click', function (){
+
+        xhr.open('POST', '/newlick', true);
+        xhr.setRequestHeader('Content-Type', 'application/xml');
+        xhr.addEventListener('readystatechange', function(){
+          if(xhr.readyState === XMLHttpRequest.DONE){
+            if (xhr.status === 200) {
+              var resp = xhr.responseText
+              var respstr = JSON.parse(resp);
+              switch (respstr) {
+                case "noPro":
+                    window.location.href = '/goPro';
+                  break;
+                  case "err":
+                      window.location.href = '/';
+                    break;
+                default:
+                var uri = '/Ldisplay?q=' + respstr;
+                window.location.href = uri;
+              }
+           }
+          }
+        });
+        xhr.send();
+      });
+
+
+
+    </script>
+
+    <script type="text/javascript">
+
+    var body = document.getElementsByTagName('body');
+      body[0].style.height = window.innerHeight + "px";
+      body[0].style.minHeight = window.innerHeight + "px";
+      body[0].style.minWidth = 300 + "px";
+      var container = document.getElementById('main-container');
+      var Height = container.clientHeight;
+      var Width = container.clientWidth;
+
+      $('.partition').css('line-height', '50px');
+      $('.thumb').css('width', 50 *.60 +'px');
+      $('.thumb').css('height', 50 *.60 +'px');
+      var querydivheight = 50;
+      $('.left').css('transform', 'translate(' +querydivheight *-0.2725 +"px, " +  querydivheight * -0.251 + "px)");
+      $('.right').css('transform', 'translate(' +querydivheight *0.2725 +"px, " +  querydivheight * -0.251 + "px)");
+      $('.left').css('fontSize', querydivheight*.35+'px');
+      $('.right').css('fontSize', querydivheight*.35+'px');
+      left = document.getElementById("ran1");
+      left.style.setProperty("--thumb-size", 50 *.65 +'px');
+      right = document.getElementById("ran2");
+      right.style.setProperty("--thumb-size", 50 *.65 +'px');
+      //$('.licks').css('width', Width/3);
+      var count = 0;
+
+    </script>
+    <script type="text/javascript">
+        if(ownedLicks){
+          var contentsContainer = document.getElementsByClassName('lickContents');
+          var contentsWidth = contentsContainer[0].clientWidth;
+          var contentsHeight = contentsContainer[0].clientHeight;
+          var c =[];
+          for (var i = 0; i < ownedLicks.length; i++) {
+             contentsWidth = contentsContainer[0].clientWidth;
+             contentsHeight = contentsContainer[0].clientHeight;
+             var func = function(sketch){
+               sketch.data=[];
+                sketch.id = ownedLicks[i].id;
+                sketch.data = ownedLicks[i].data;
+                sketch.wrappingX;
+                sketch.wrappingY;
+                sketch.wrappingW;
+                sketch.wrappingH;
+                sketch.step;
+                sketch.selected = false;
+                sketch.min;
+                sketch.max;
+                 sketch.setup = function() {
+                 let canvas = sketch.createCanvas(contentsWidth,contentsHeight);
+                 canvas.parent(sketch.id +"-canvas");
+                 sketch.wrappingX = contentsWidth/10;
+                 sketch.wrappingW = contentsWidth*8/10;
+                 sketch.wrappingY = contentsHeight/10;
+                 sketch.wrappingH = contentsHeight*8/10;
+                 sketch.step = -1+sketch.data.length/12;
+                 [sketch.min, sketch.max] = sketch.getMinMax(sketch.data);
+               }
+               sketch.draw = function() {
+
+                 //for canvas 1
+                 sketch.background(255);
+                 if(sketch.data == ""){
+                   sketch.textAlign(sketch.CENTER,sketch.CENTER);
+                   sketch.textSize(contentsHeight/4);
+                   sketch.textFont("Roboto Bold");
+                   sketch.strokeWeight(contentsHeight/48);
+
+                     {{if (eq .Theme "dark")}}
+                     sketch.stroke(29, 30, 48);
+                     sketch.fill(29, 30, 48);
+                     {{else if (eq .Theme "simple")}}
+                     sketch.stroke(156, 156, 167);
+                     sketch.fill(156, 156, 167);
+                     {{else if (eq .Theme "pastel")}}
+                     sketch.stroke(191, 191, 203);
+                     sketch.fill(191, 191, 203);
+                     {{end}}
+                   if(sketch.selected){
+                     {{if (eq .Theme "dark")}}
+                     sketch.stroke(98, 86, 177);
+                     sketch.fill(98, 86, 177);
+                     {{else if (eq .Theme "simple")}}
+                     sketch.stroke(25, 54, 254);
+                     sketch.fill(25, 54, 254);
+                     {{else if (eq .Theme "pastel")}}
+                     sketch.stroke(116, 212, 228);
+                     sketch.fill(116, 212, 228);
+                     {{end}}
+                   }
+                   sketch.text("E m p t y", contentsWidth/2, contentsHeight/2);
+                 }else{
+
+                   sketch.strokeWeight(contentsHeight/32);
+                   sketch.noFill();
+                   {{if (eq .Theme "dark")}}
+                   sketch.stroke(29, 30, 48);
+                   {{else if (eq .Theme "simple")}}
+                   sketch.stroke(156, 156, 167);
+                   {{else if (eq .Theme "pastel")}}
+                   sketch.stroke(191, 191, 203);
+                   {{end}}
+                 if(sketch.selected){
+                   {{if (eq .Theme "dark")}}
+                   sketch.stroke(98, 86, 177);
+                   {{else if (eq .Theme "simple")}}
+                   sketch.stroke(25, 54, 254);
+                   {{else if (eq .Theme "pastel")}}
+                   sketch.stroke(116, 212, 228);
+                   {{end}}
+                 }
+
+                   if(sketch.min == sketch.max){
+                     sketch.beginShape();
+                     for (var i = 0; i < sketch.data.length/12; i++) {
+                       sketch.vertex(sketch.wrappingX+sketch.wrappingW*i/sketch.step,
+                                     sketch.wrappingY + sketch.wrappingH/2)
+                     }
+                     sketch.endShape();
+                   }else if(sketch.min - sketch.max < 5){
+                     sketch.beginShape();
+                     for (var i = 0; i < sketch.data.length/12; i++) {
+                       sketch.vertex(sketch.wrappingX+sketch.wrappingW*i/sketch.step,
+                                     sketch.map(sketch.data[i*12+10],
+                                       sketch.min, sketch.max,
+                                       sketch.wrappingY + 3*sketch.wrappingH/8, sketch.wrappingY+5*sketch.wrappingH/8));
+                     }
+                     sketch.endShape();
+                   }else{
+                     sketch.beginShape();
+                     for (var i = 0; i < sketch.data.length/12; i++) {
+                       sketch.vertex(sketch.wrappingX+sketch.wrappingW*i/sketch.step,
+                                     sketch.map(sketch.data[i*12+10], sketch.min, sketch.max, sketch.wrappingY + 3*sketch.wrappingH/8, sketch.wrappingY+sketch.wrappingH));
+                     }
+                     sketch.endShape();
+                   }
+
+                   {{if (eq .Theme "dark")}}
+                   sketch.fill(29, 30, 48);
+                   {{else if (eq .Theme "simple")}}
+                   sketch.fill(156, 156, 167);
+                   {{else if (eq .Theme "pastel")}}
+                   sketch.fill(191, 191, 203);
+                   {{end}}
+                 if(sketch.selected){
+                   {{if (eq .Theme "dark")}}
+                   sketch.fill(98, 86, 177);
+                   {{else if (eq .Theme "simple")}}
+                   sketch.fill(25, 54, 254);
+                   {{else if (eq .Theme "pastel")}}
+                   sketch.fill(116, 212, 228);
+                   {{end}}
+                 }
+                   sketch.textSize(contentsHeight/8);
+                   sketch.textFont("Roboto Bold");
+                   sketch.strokeWeight(contentsHeight/32);
+                   sketch.noStroke();
+
+                   sketch.rectMode(sketch.RADIUS);
+
+                   sketch.rect(sketch.wrappingX+sketch.textWidth(sketch.data[9])*.5,
+                   sketch.wrappingY + sketch.wrappingH/8,
+                   sketch.wrappingX*.8,
+                   contentsHeight/8, sketch.wrappingX/7);
+
+                   sketch.rect(sketch.wrappingX+sketch.wrappingW-sketch.textWidth(sketch.data[sketch.data.length-3])*.5,
+                   sketch.wrappingY + sketch.wrappingH/8,
+                   sketch.wrappingX*.8,
+                   contentsHeight/8, sketch.wrappingX/7);
+
+                   sketch.fill(255);
+                   sketch.textAlign(sketch.CENTER,sketch.CENTER);
+                   sketch.text(sketch.data[9],
+                     sketch.wrappingX+sketch.textWidth(sketch.data[9])*.5,
+                     sketch.wrappingY + sketch.wrappingH/8);
+                   sketch.text(sketch.data[sketch.data.length-3],
+                     sketch.wrappingX+sketch.wrappingW-sketch.textWidth(sketch.data[sketch.data.length-3])*.5,
+                     sketch.wrappingY + sketch.wrappingH/8);
+
+                 }
+               }
+               sketch.indowresized= function(){
+                 if(lickLists.length !=0){
+                   contentsWidth = contentsContainer[0].clientWidth;
+                   contentsHeight = contentsContainer[0].clientHeight;
+                   sketch.wrappingX = contentsWidth/10;
+                   sketch.wrappingW = contentsWidth*8/10;
+                   sketch.wrappingY = contentsHeight/10;
+                   sketch.wrappingH = contentsHeight*8/10;
+                   sketch.resizeCanvas(contentsWidth, contentsHeight);
+                 }
+               }
+               sketch.getMinMax = function (data) {
+                 var min, max;
+                 for (var i = 0; i < data.length; i++) {
+                   if(i == 0){
+                     min = data[i*12+10];
+                     max = data[i*12+10];
+                   }
+                   if(min < data[i*12+10]){
+                     min = data[i*12+10];
+                   }
+                   if(max > data[i*12+10]){
+                     max = data[i*12+10]
+                   }
+                 }
+                 return [min, max]
+               }
+             }
+          c[i] = new p5(func);
+          }
+        }
+
+    </script>
+    <script type="text/javascript">
+        var inputLeft = document.getElementById("ran1");
+        var inputRight = document.getElementById("ran2");
+        var selectbox = document.getElementById("querySelector");
+        var searchText = document.getElementById("query");
+
+        var thumbLeft = document.querySelector(".visualSlider > .thumb.left");
+        var thumbRight = document.querySelector(".visualSlider > .thumb.right");
+        var range = document.querySelector(".visualSlider > .range");
+
+        function setLeftValue() {
+        	var _this = inputLeft,
+        		min = parseInt(_this.min),
+        		max = parseInt(_this.max);
+
+        	_this.value = Math.min(parseInt(_this.value), parseInt(inputRight.value) - 10);
+
+        	var percent = ((_this.value - min) / (max - min)) * 100;
+
+        	thumbLeft.style.left = percent + "%";
+        	range.style.left = percent + "%";
+          $('.left').html('<p>'+ parseInt(percent) +'</p>');
+        }
+        setLeftValue();
+
+        function setRightValue() {
+        	var _this = inputRight,
+        		min = parseInt(_this.min),
+        		max = parseInt(_this.max);
+
+        	_this.value = Math.max(parseInt(_this.value), parseInt(inputLeft.value) + 10);
+
+        	var percent = ((_this.value - min) / (max - min)) * 100;
+
+        	thumbRight.style.right = (100 - percent) + "%";
+        	range.style.right = (100 - percent) + "%";
+          $('.right').html('<p>'+ parseInt(percent) +'</p>');
+        }
+        setRightValue();
+
+        inputLeft.addEventListener("input", setLeftValue);
+        inputRight.addEventListener("input", setRightValue);
+        inputLeft.addEventListener("change", sortLicks);
+        inputRight.addEventListener("change", sortLicks);
+        selectbox.addEventListener("input", sortLicks);
+        searchText.addEventListener("input", sortLicks);
+
+
+
+        function sortLicks() {
+              selectedLicks = [];
+              for(var i=0; i < ownedLicks.length; i++){
+                switch (selectbox.value) {
+                  case "all":
+                  if(parseInt(ownedLicks[i].Difficulty)>parseInt(inputLeft.value)&&
+                     parseInt(ownedLicks[i].Difficulty)<parseInt(inputRight.value)){
+                       if(ownedLicks[i].scale.toLowerCase().includes(searchText.value.toLowerCase())||
+                          ownedLicks[i].chochar.includes(searchText.value)||
+                          ownedLicks[i].name.toLowerCase().includes(searchText.value.toLowerCase())){
+                         selectedLicks.push(ownedLicks[i]);
+                       }else{
+                         if(ownedLicks[i].Tag){
+                           for(var ii = 0; ii < ownedLicks[i].Tag.length; ii++){
+                             if(ownedLicks[i].Tag[ii].toLowerCase().includes(searchText.value.toLowerCase())){
+                               selectedLicks.push(ownedLicks[i]);
+                               ii=ownedLicks[i].Tag.length;
+                             }
+                           }
+                         }
+                       }
+                  }
+
+                    break;
+                    case "chord":
+                        if(ownedLicks[i].chochar.includes(searchText.value)){
+                          if(parseInt(ownedLicks[i].Difficulty)>parseInt(inputLeft.value)&&
+                             parseInt(ownedLicks[i].Difficulty)<parseInt(inputRight.value)){
+                            selectedLicks.push(ownedLicks[i]);
+                          }
+                         }
+                      break;
+                      case "title":
+                        if(ownedLicks[i].name.toLowerCase().includes(searchText.value.toLowerCase())){
+                          if(parseInt(ownedLicks[i].Difficulty)>parseInt(inputLeft.value)&&
+                             parseInt(ownedLicks[i].Difficulty)<parseInt(inputRight.value)){
+                            selectedLicks.push(ownedLicks[i]);
+                          }
+                         }
+                        break;
+                        case "scale":
+                            if(ownedLicks[i].scale.toLowerCase().includes(searchText.value.toLowerCase())){
+                              if(parseInt(ownedLicks[i].Difficulty)>parseInt(inputLeft.value)&&
+                                 parseInt(ownedLicks[i].Difficulty)<parseInt(inputRight.value)){
+                                selectedLicks.push(ownedLicks[i]);
+                              }
+                             }
+                          break;
+                          case "tag":
+                          if(parseInt(ownedLicks[i].Difficulty)>parseInt(inputLeft.value)&&
+                             parseInt(ownedLicks[i].Difficulty)<parseInt(inputRight.value)){
+                               if(ownedLicks[i].Tag){
+                                 for(var ii = 0; ii < ownedLicks[i].Tag.length; ii++){
+                                   if(ownedLicks[i].Tag[ii].toLowerCase().includes(searchText.value.toLowerCase())){
+                                     selectedLicks.push(ownedLicks[i]);
+                                     ii=ownedLicks[i].Tag.length;
+                                   }
+                                 }
+                               }
+                          }
+
+                            break;
+                }
+
+
+                }
+              arry = [];
+              selectedLicks.forEach(function(lick, index){
+              var item = '<div class="licks" id="' + lick.id +'" onclick="hightlight(this.id)"><div class="lickHeader"><div class="lickHeaderTitle"><p class="lickTitle">'+ lick.name +'</p><p class="lickScale"> '+ lick.chochar+'  /  '+ lick.scale +'</p><p class="'+ lick.scale +' scales">&#x25CF;</p></div><div class="lickDelete" onclick="deleteLick()"><p>Delete</p></div></div><div class="lickContents" id="' + lick.id +'-canvas"></div><div class="lickOpen" onclick="openLick()"><p>Open</p></div></div>';
+              arry.push(item);
+              });
+              $('#listContainer').html(arry);
+              if(selectedLicks.length==0){
+                $('#listContainer').html('<p id="noLicks">There are no Licks</p>');
+              }
+              c =[];
+
+              for (var i = 0; i < selectedLicks.length; i++) {
+                 contentsWidth = contentsContainer[0].clientWidth;
+                 contentsHeight = contentsContainer[0].clientHeight;
+                 var func = function(sketch){
+                   sketch.data=[];
+                    sketch.id = selectedLicks[i].id;
+                    sketch.data = selectedLicks[i].data;
+                    sketch.wrappingX;
+                    sketch.wrappingY;
+                    sketch.wrappingW;
+                    sketch.wrappingH;
+                    sketch.step;
+                    sketch.selected = false;
+                    sketch.min;
+                    sketch.max;
+                     sketch.setup = function() {
+                     let canvas = sketch.createCanvas(contentsWidth,contentsHeight);
+                     canvas.parent(sketch.id +"-canvas");
+                     sketch.wrappingX = contentsWidth/10;
+                     sketch.wrappingW = contentsWidth*8/10;
+                     sketch.wrappingY = contentsHeight/10;
+                     sketch.wrappingH = contentsHeight*8/10;
+                     sketch.step = -1+sketch.data.length/12;
+                     [sketch.min, sketch.max] = sketch.getMinMax(sketch.data);
+                   }
+                   sketch.draw = function() {
+
+                     //for canvas 1
+                     sketch.background(255);
+                     if(sketch.data == ""){
+                       sketch.textAlign(sketch.CENTER,sketch.CENTER);
+                       sketch.textSize(contentsHeight/4);
+                       sketch.textFont("Roboto Bold");
+                       sketch.strokeWeight(contentsHeight/48);
+
+                         {{if (eq .Theme "dark")}}
+                         sketch.stroke(29, 30, 48);
+                         sketch.fill(29, 30, 48);
+                         {{else if (eq .Theme "simple")}}
+                         sketch.stroke(156, 156, 167);
+                         sketch.fill(156, 156, 167);
+                         {{else if (eq .Theme "pastel")}}
+                         sketch.stroke(191, 191, 203);
+                         sketch.fill(191, 191, 203);
+                         {{end}}
+                       if(sketch.selected){
+                         {{if (eq .Theme "dark")}}
+                         sketch.stroke(98, 86, 177);
+                         sketch.fill(98, 86, 177);
+                         {{else if (eq .Theme "simple")}}
+                         sketch.stroke(25, 54, 254);
+                         sketch.fill(25, 54, 254);
+                         {{else if (eq .Theme "pastel")}}
+                         sketch.stroke(116, 212, 228);
+                         sketch.fill(116, 212, 228);
+                         {{end}}
+                       }
+                       sketch.text("E m p t y", contentsWidth/2, contentsHeight/2);
+                     }else{
+
+                       sketch.strokeWeight(contentsHeight/32);
+                       sketch.noFill();
+                       {{if (eq .Theme "dark")}}
+                       sketch.stroke(29, 30, 48);
+                       {{else if (eq .Theme "simple")}}
+                       sketch.stroke(156, 156, 167);
+                       {{else if (eq .Theme "pastel")}}
+                       sketch.stroke(191, 191, 203);
+                       {{end}}
+                     if(sketch.selected){
+                       {{if (eq .Theme "dark")}}
+                       sketch.stroke(98, 86, 177);
+                       {{else if (eq .Theme "simple")}}
+                       sketch.stroke(25, 54, 254);
+                       {{else if (eq .Theme "pastel")}}
+                       sketch.stroke(116, 212, 228);
+                       {{end}}
+                     }
+
+                       if(sketch.min == sketch.max){
+                         sketch.beginShape();
+                         for (var i = 0; i < sketch.data.length/12; i++) {
+                           sketch.vertex(sketch.wrappingX+sketch.wrappingW*i/sketch.step,
+                                         sketch.wrappingY + sketch.wrappingH/2)
+                         }
+                         sketch.endShape();
+                       }else if(sketch.min - sketch.max < 5){
+                         sketch.beginShape();
+                         for (var i = 0; i < sketch.data.length/12; i++) {
+                           sketch.vertex(sketch.wrappingX+sketch.wrappingW*i/sketch.step,
+                                         sketch.map(sketch.data[i*12+10],
+                                           sketch.min, sketch.max,
+                                           sketch.wrappingY + 3*sketch.wrappingH/8, sketch.wrappingY+5*sketch.wrappingH/8));
+                         }
+                         sketch.endShape();
+                       }else{
+                         sketch.beginShape();
+                         for (var i = 0; i < sketch.data.length/12; i++) {
+                           sketch.vertex(sketch.wrappingX+sketch.wrappingW*i/sketch.step,
+                                         sketch.map(sketch.data[i*12+10], sketch.min, sketch.max, sketch.wrappingY + 3*sketch.wrappingH/8, sketch.wrappingY+sketch.wrappingH));
+                         }
+                         sketch.endShape();
+                       }
+
+                       {{if (eq .Theme "dark")}}
+                       sketch.fill(29, 30, 48);
+                       {{else if (eq .Theme "simple")}}
+                       sketch.fill(156, 156, 167);
+                       {{else if (eq .Theme "pastel")}}
+                       sketch.fill(191, 191, 203);
+                       {{end}}
+                     if(sketch.selected){
+                       {{if (eq .Theme "dark")}}
+                       sketch.fill(98, 86, 177);
+                       {{else if (eq .Theme "simple")}}
+                       sketch.fill(25, 54, 254);
+                       {{else if (eq .Theme "pastel")}}
+                       sketch.fill(116, 212, 228);
+                       {{end}}
+                     }
+                       sketch.textSize(contentsHeight/8);
+                       sketch.textFont("Roboto Bold");
+                       sketch.strokeWeight(contentsHeight/32);
+                       sketch.noStroke();
+
+                       sketch.rectMode(sketch.RADIUS);
+
+                       sketch.rect(sketch.wrappingX+sketch.textWidth(sketch.data[9])*.5,
+                       sketch.wrappingY + sketch.wrappingH/8,
+                       sketch.wrappingX*.8,
+                       contentsHeight/8, sketch.wrappingX/7);
+
+                       sketch.rect(sketch.wrappingX+sketch.wrappingW-sketch.textWidth(sketch.data[sketch.data.length-3])*.5,
+                       sketch.wrappingY + sketch.wrappingH/8,
+                       sketch.wrappingX*.8,
+                       contentsHeight/8, sketch.wrappingX/7);
+
+                       sketch.fill(255);
+                       sketch.textAlign(sketch.CENTER,sketch.CENTER);
+                       sketch.text(sketch.data[9],
+                         sketch.wrappingX+sketch.textWidth(sketch.data[9])*.5,
+                         sketch.wrappingY + sketch.wrappingH/8);
+                       sketch.text(sketch.data[sketch.data.length-3],
+                         sketch.wrappingX+sketch.wrappingW-sketch.textWidth(sketch.data[sketch.data.length-3])*.5,
+                         sketch.wrappingY + sketch.wrappingH/8);
+
+                     }
+                   }
+                   sketch.indowresized= function(){
+                     if(lickLists.length !=0){
+                       contentsWidth = contentsContainer[0].clientWidth;
+                       contentsHeight = contentsContainer[0].clientHeight;
+                       sketch.wrappingX = contentsWidth/10;
+                       sketch.wrappingW = contentsWidth*8/10;
+                       sketch.wrappingY = contentsHeight/10;
+                       sketch.wrappingH = contentsHeight*8/10;
+                       sketch.resizeCanvas(contentsWidth, contentsHeight);
+                     }
+                   }
+                   sketch.getMinMax = function (data) {
+                     var min, max;
+                     for (var i = 0; i < data.length; i++) {
+                       if(i == 0){
+                         min = data[i*12+10];
+                         max = data[i*12+10];
+                       }
+                       if(min < data[i*12+10]){
+                         min = data[i*12+10];
+                       }
+                       if(max > data[i*12+10]){
+                         max = data[i*12+10]
+                       }
+                     }
+                     return [min, max]
+                   }
+                 }
+              c[i] = new p5(func);
+              }
+
+        }
+
+        var user_img = document.getElementById("user_img");
+        user_img.addEventListener('touchend', function () {
+          if(window.innerWidth/window.innerHeight < .71428){
+            $('#side_bar').css('right', '0');
+            $('.for_transparency').css('z-index', '9998');
+            $('.for_transparency').css('background-color', 'rgba(20,20,20,.5)');
+          }
+        });
+        user_img.addEventListener('click', function () {
+          if(window.innerWidth/window.innerHeight < .71428){
+            $('#side_bar').css('right', '0');
+            $('.for_transparency').css('z-index', '9998');
+            $('.for_transparency').css('background-color', 'rgba(20,20,20,.5)');
+          }
+        });
+        var sidebarImg = document.getElementById('sidebarImg');
+        sidebarImg.addEventListener('click', function () {
+          window.location.href = '/setting';
+        });
+        var contemp = document.getElementById('contemp');
+        contemp.addEventListener('click', function () {
+          window.location.href = '/setting';
+        });
+        var closeDiv = document.getElementById('closeDiv');
+        closeDiv.addEventListener('click', function () {
+          $('#side_bar').css('right', '-100%');
+          $('.for_transparency').css('z-index', '-99');
+          $('.for_transparency').css('background-color', 'rgba(20,20,20,0)');
+        });
+        closeDiv.addEventListener('touchend', function () {
+          $('#side_bar').css('right', '-100%');
+          $('.for_transparency').css('z-index', '-99');
+          $('.for_transparency').css('background-color', 'rgba(20,20,20,0)');
+        });
+        window.addEventListener('resize',function () {
+          body[0].style.height = window.innerHeight + "px";
+          body[0].style.minHeight = window.innerHeight + "px";
+          Height = container.clientHeight;
+          Width = container.clientWidth;
+
+           $('.partition').css('line-height', '50px');
+           $('.thumb').css('width', 50 *.60 +'px');
+           $('.thumb').css('height', 50 *.60 +'px');
+           var querydivheight = 50;
+           $('.left').css('transform', 'translate(' +querydivheight *-0.2725 +"px, " +  querydivheight * -0.251 + "px)");
+           $('.right').css('transform', 'translate(' +querydivheight *0.2725 +"px, " +  querydivheight * -0.251 + "px)");
+           $('.left').css('fontSize', querydivheight*.35+'px');
+           $('.right').css('fontSize', querydivheight*.35+'px');
+           left.style.setProperty("--thumb-size", 50 *.65 +'px');
+           right.style.setProperty("--thumb-size", 50 *.65 +'px');
+
+             if(window.innerWidth/window.innerHeight < .71428){
+
+               $('#side_bar').css('right', '-100%');
+               $('.for_transparency').css('z-index', '-99');
+               $('.for_transparency').css('background-color', 'rgba(20,20,20,0)');
+             }
+
+
+        });
+        if(c){
+          let canvasReset = setInterval(function () {
+            for (var i = 0; i < c.length; i++) {
+              c[i].indowresized();
+            }
+          }, 20);
+        }
+
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>My Licks</title>
+
+    {{if (eq .Time "morning")}}
+    <link rel="stylesheet" href="static/css/simple_terms.css"/>
+    {{else if (eq .Time "afternoon")}}
+    <link rel="stylesheet" href="static/css/pastel_terms.css"/>
+    {{else if (eq .Time "evening")}}
+    <link rel="stylesheet" href="static/css/dark_terms.css"/>
+    {{end}}
+    <link rel="icon" href="static/resources/treble_clef.png">
+    <meta name="msapplication-TileImage" content="static/resources/treble_clef.png">
+    <meta name="msapplication-TileColor" content="#fffffff">
+    <link rel="canonical" href="localhost:8080/">
+    <script src="https://kit.fontawesome.com/6743146fd8.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000"/>
+    <script src="static/js/main.js"></script>
+    <link rel="apple-touch-icon" href="static/resources/treble_clef.png">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@800&family=Open+Sans:wght@800&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="con-wrap">
+      <div class="contents">
+        <header>
+          <div class="headerWrap">
+            <div id="header-logo" class="header-nav">
+              {{if (eq .Time "evening")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{else if (eq .Time "morning")}}
+              <h2><a href="/"style="color:#1936FE;">MY LICKS</a></h2>
+              {{else if (eq .Time "afternoon")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{end}}
+            </div>
+          </div>
+        </header>
+        <main class="main">
+          <div class="language">
+            <div class="lanwrap">
+              <span class="kor">kor</span>
+              <p class="partition"></p>
+              <span class="eng">eng</span>
+            </div>
+          </div>
+          <h3 class="mainHeader">이용약관, 개인정보보호 및 쿠키 이용방침</h3>
+          <p class="mainHeader2">2008년 7월 30일에 시행된 <a href="https://www.law.go.kr/행정규칙/디지털콘텐츠이용표준약관/(2008-0,20080730)">디지털콘텐츠 이용 표준약관</a>에 따라 다음과 같이 현 웹사이트 소유자의 정보를 공개합니다</p>
+          <div class="directorInfo">
+            상호: 마이릭스(My Licks), 대표자: 김서경, 전화번호: +82 1076374531, 이메일: skim@mylicks.org, 사업자등록번호: 141-51-00638
+          </div>
+          <div class="websiteContents">
+            <h4>웹사이트 콘텐츠</h4>
+            <p>마이릭스는 이용자들의 음악공부 보조를 목적으로 한 마디 단위의 'lick'을 생성/저장하며
+              'sheet'의 형태로 가지고 있는 'lick'들을 불러와 악보의 형태로 저장하여 사이트내에서 언제든지 열람하며 공유/연습할 수 있는 서비스를 제공합니다.</p>
+            <p>또한 마이릭스 이용자들끼리의 소통의 장소를 제공합니다.</p>
+          </div>
+          <div class="privacy">
+            <h4>개인정보취급방침</h4>
+            <p>마이릭스는 구글 OAuth2.0 인증을 통해 별도의 비밀번호를 저장/취급하지는 않지만 사용자의 이메일, 이름, 사용중인 언어, 프로필 사진 혹은 프로필 사진 링크를을 본사 데이터베이스에 저장합니다.
+              이는 사이트 이용의 편의성을 위함으로 해당 정보는 제3자에게 제공하지 않습니다.</p>
+            <p>회원탈퇴요청 시, 서버내 저장되어있던 개인정보는 회원탈퇴 처리와 함께 즉시 삭제됩니다.</p>
+          </div>
+          <div class="cookies">
+            <h4>쿠키(Cookie) 이용방식</h4>
+            <p>마이릭스는 회원의 로그인 확인을 목적으로 쿠키를 사용합니다. 쿠키는 웹사이트의 아주 작은 텍스트 파일로서 귀하의 컴퓨터 하드디스크에 저장됩니다.
+              이용자는 웹브라우저의 도구 옵션을 통해 쿠키를 허용/거부하거나 삭제 또는 쿠키가 저장될 때마다 확인을 할 수 있습니다. 하지만 쿠키를 허용하지 않을 시 웹사이트 이용에 제한이 있음을 알립니다</p>
+          </div>
+          <div class="copy">
+            <h4>지적재산관련방침</h4>
+            <p>이 웹사이트에 나타나는 모든 종류의 상표, 로고, 상호, 서비스, 콘텐츠, 텍스트, 그래픽, 이미지, 링크 및 정보는 지적재산법에 의해 보호됨으로 소유자의 동의없이 무단 복제, 배포, 공유, 수정 될 수 없습니다.</p>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <footer>
+        <div class="copyright">
+          <div class="logo">
+            <p class="footer-text" id="textlogo">My Licks</p>
+          </div>
+
+          <div class="contactinfos">
+            <p class="footer-text" id="copyright">Copyright (c) 2020 Toby Kim </p>
+            <p class="contactinfos"><a href="terms">이용약관, 개인정보보호 및 쿠키 이용방침</a></p>
+          </div>
+        </div>
+      </footer>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+      <script type="text/javascript">
+
+        $(".kor").click(function () {
+          $(".mainHeader").text("이용약관, 개인정보보호 및 쿠키 이용방침")
+          $(".mainHeader2").html('2008년 7월 30일에 시행된 <a href="https://www.law.go.kr/행정규칙/디지털콘텐츠이용표준약관/(2008-0,20080730)">디지털콘텐츠 이용 표준약관</a>에 따라 다음과 같이 현 웹사이트 소유자의 정보를 공개합니다');
+          $(".directorInfo").text("상호: 마이릭스(My Licks), 대표자: 김서경, 전화번호: +82 1076374531, 이메일: skim@mylicks.org, 사업자등록번호: 141-51-00638");
+          $(".websiteContents").html("<h4>웹사이트 콘텐츠</h4><p>마이릭스는 이용자들의 음악공부 보조를 목적으로 한 마디 단위의 'lick'을 생성/저장하며 'sheet'의 형태로 가지고 있는 'lick'들을 불러와 악보의 형태로 저장하여 사이트내에서 언제든지 열람하며 공유/연습할 수 있는 서비스를 제공합니다.</p><p>또한 마이릭스 이용자들끼리의 소통의 장소를 제공합니다.</p>");
+          $(".privacy").html("<h4>개인정보취급방침</h4><p>마이릭스는 구글 OAuth2.0 인증을 통해 별도의 비밀번호를 저장/취급하지는 않지만 사용자의 이메일, 이름, 사용중인 언어, 프로필 사진 혹은 프로필 사진 링크를을 본사 데이터베이스에 저장합니다. 이는 사이트 이용의 편의성을 위함으로 해당 정보는 제3자에게 제공하지 않습니다.</p><p>회원탈퇴요청 시, 서버내 저장되어있던 개인정보는 회원탈퇴 처리와 함께 즉시 삭제됩니다.</p>");
+          $(".cookies").html("<h4>쿠키(Cookie) 이용방식</h4><p>마이릭스는 회원의 로그인 확인을 목적으로 쿠키를 사용합니다. 쿠키는 웹사이트의 아주 작은 텍스트 파일로서 귀하의 컴퓨터 하드디스크에 저장됩니다. 이용자는 웹브라우저의 도구 옵션을 통해 쿠키를 허용/거부하거나 삭제 또는 쿠키가 저장될 때마다 확인을 할 수 있습니다. 하지만 쿠키를 허용하지 않을 시 웹사이트 이용에 제한이 있음을 알립니다</p>");
+          $(".copy").html("<h4>지적재산관련방침</h4><p>이 웹사이트에 나타나는 모든 종류의 상표, 로고, 상호, 서비스, 콘텐츠, 텍스트, 그래픽, 이미지, 링크 및 정보는 지적재산법에 의해 보호됨으로 소유자의 동의없이 무단 복제, 배포, 공유, 수정 될 수 없습니다.</p>");
+          $(".kor").css("color", "#74d4e4");
+          $(".eng").css("color", "#9c9ca7");
+        })
+        $(".eng").click(function () {
+          $(".mainHeader").text("Legal warning, data protection and policy on cookies")
+          $(".mainHeader2").html('To comply with the contents of South Korea Law <a href="https://www.law.go.kr/행정규칙/디지털콘텐츠이용표준약관/(2008-0,20080730)">Digital Contents Usage Standard Terms and Conditions</a> of 30 July 2008. We provide general information below on the current website owner:');
+          $(".directorInfo").text("Website: 마이릭스(My Licks), The owner of this website: SeoKyeong Kim, PhoneNumber: +82 1076374531, E-mail: skim@mylicks.org, taxCode: 141-51-00638");
+          $(".websiteContents").html("<h4>Website contents</h4><p>My Licks helps users to improve improvisation skill in music by providing services such as storing licks that users learned, making a sheet music with the licks that users have stored and discussion forum where users can share their knowledge</p>");
+          $(".privacy").html("<h4>Privacy policy</h4><p>My Licks uses Google OAuth 2.0 to authorize users' access to our server and collect users' information (such as E-mail, first name, profile picture, and language) and store the information to our server. The only purpose of doing this is for users' experience. We do not provide those information to any 3rd parties</p>");
+          $(".cookies").html("<h4>Cookies policy</h4><p>My Licks uses Cookies to authorize users access to our server. A cookie is a small text file that a website can install on the hard drive of a user’s computer. You can allow, learn about, block or delete the cookies installed on your computer by going to the settings of the browser installed on your computer. However, if users block cookies, then they would not be able to login to My Licks.</p>");
+          $(".copy").html("<h4>Intellectual property</h4><p>All brands, logos, trading names, distinctive signs, services, content, texts, graphics, images, software, links and information of any kind that appears on this website are protected by intellectual and industrial property rights. Therefore, they may not be reproduced, distributed, modified without the express authorisation of their legitimate owner.</p>");
+          $(".eng").css("color", "#74d4e4");
+          $(".kor").css("color", "#9c9ca7");
+        })
+      </script>
+  </body>
+</html>

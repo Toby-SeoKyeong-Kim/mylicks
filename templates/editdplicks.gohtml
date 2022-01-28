@@ -1,0 +1,2528 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>MY LICKS</title>
+    {{if (eq .Theme "dark")}}
+    <link rel="stylesheet" href="static/css/editdplicks.css"/>
+    {{else if (eq .Theme "simple")}}
+    <link rel="stylesheet" href="static/css/simple_editdplicks.css"/>
+    {{else if (eq .Theme "pastel")}}
+    <link rel="stylesheet" href="static/css/pastel_editdplicks.css"/>
+    {{end}}
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.js"></script>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/resources/treble_clef.png">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#000000"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@800&family=Open+Sans:wght@800&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="for_transparency">
+
+    </div>
+    <div class="side_bar" id="side_bar">
+      <div class="side_bar_contents">
+        <div id="closeDiv" class="closeDiv">
+
+        </div>
+        <div class="logoutDiv">
+          <a href="/logout"><p>Logout</p></a>
+        </div>
+        <div class="userImgSidebar">
+          <div id="contemp" class="contemp">
+            <div class="imgAfter">
+              <p>edit</p>
+            </div>
+          </div>
+          <img id="sidebarImg" src="{{.Picture}}" alt="">
+        </div>
+        <p>{{.Given_name}}</p>
+      </div>
+      <ul>
+        <a href="/mylicks"><div id="licksIcon"></div><li>My Licks</li></a>
+        <a href="/mysheets"><div id="sheetsIcon"></div><li>My Sheets</li></a>
+        <a href="/forum"><div id="downloadIcon"></div><li>Forum</li></a>
+        <a href="/setting"><div id="profileIcon"></div><li>Profile</li></a>
+      </ul>
+    </div>
+    <div class="con-wrap">
+      <div id="for_transparency">
+
+      </div>
+      <div id="for_transparency3">
+
+      </div>
+      <div class="contents">
+
+        <header>
+          <div class="for_transparency">
+
+          </div>
+          <div class="headerWrap">
+            <div id="header-logo" class="header-nav">
+
+              {{if (eq .Theme "dark")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{else if (eq .Theme "simple")}}
+              <h2><a href="/"style="color:#1936FE;">MY LICKS</a></h2>
+              {{else if (eq .Theme "pastel")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{end}}
+            </div>
+
+
+            <div id="logout" class="header-nav">
+
+              {{if (eq .Theme "dark")}}
+              <p><a href="/logout" style="color: #757189;">Logout</a></p>
+              {{else if (eq .Theme "simple")}}
+              <p><a href="/logout" style="color: #9C9CA7;">Logout</a></p>
+              {{else if (eq .Theme "pastel")}}
+              <p><a href="/logout" style="color: #B6EBF3;">Logout</a></p>
+              {{end}}
+            </div>
+            <div id="user_info" class="header-nav">
+              <div class="user_img" id="user_img">
+                <img src="{{.Picture}}" alt="No Image">
+              </div>
+              <p>{{.Given_name}}</p>
+              <div class="top-down-menu">
+                <a href="/setting">
+                  <div id="profile-icon2"></div>
+                  <span>Profile</span>
+                </a>
+                <a href="/mylicks">
+                  <div id="licks-icon2"></div>
+                  <span>My Licks</span>
+                </a>
+                <a href="/mysheets">
+                  <div id="sheets-icon2"></div>
+                  <span>My Sheets</span>
+                </a>
+                <a href="/forum">
+                  <div id="download-icon2"></div>
+                  <span>Forum</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+        <main id="mainDiv">
+
+          <div class="lick-container" id="lick-container">
+            <div class="for_transparency">
+
+            </div>
+            <div id="p5canvas4interval">
+
+            </div>
+            <div id="p5canvas">
+
+            </div>
+            <div id="keysettingdiv">
+              <div id="keysettingdivWrapper">
+                <div id="keysetting1" class="keysettingElemnets">
+                  <div id="difDiv">
+                    <p>Difficulty</p>
+                    <input type="range" min="0" max="100" id="difficulty">
+                  </div>
+                  <div id="nameDiv">
+                    <p>Title</p>
+                    <input value="{{.DpLick.Name}}" type="text" spellcheck="false" placeholder="Title" autocomplete="off" maxlength="20" id="editNameInput">
+                  </div>
+                  <div id="chord-select-wrap">
+                    <select id="chord-select" name="">
+                        <option value="M7">M7</option>
+                        <option value="m7">m7</option>
+                        <option value="7">7</option>
+                        <option value="m7b5">m7b5</option>
+                        <option value="7alt">7alt</option>
+                        <option value="aug7">aug7</option>
+                        <option value="dim7">dim7</option>
+                        <option value="mM7">mM7</option>
+                    </select>
+
+                      <button id="editChord" name="button"></button>
+                      <div class="custom-options-chords">
+                        <ul id="custom-option-chords"> </ul>
+                      </div>
+                  </div>
+                  <div id="fsToggleDiv">
+                    <p>Chord Root</p>
+                    <div class="toogleWrap">
+                      <div id="fToggle" class="flatToggle" onclick="domFToggle()">
+                        <span>&#9837;</span>
+                      </div>
+                      <div id="sToggle" class="sharpToggle" onclick="domSToggle()">
+                        <span>&#9839;</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="tagDiv" class="">
+                    <p>Tag</p>
+                    <input type="text" spellcheck="false" placeholder="Add tags..." autocomplete="off" maxlength="20" id="tagInput">
+                    <div id="tag-container">
+                      <ul>
+
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div id="keysetting2" class="keysettingElemnets">
+                  <div class="intervalsWrapper">
+                    <ul>
+                      <li>
+                        <span class="intervals"></span>
+                        <span>I</span>
+                      </li>
+                      <li>
+                        <span class="intervals"></span>
+                        <span>II</span>
+                      </li>
+                      <li>
+                        <span class="intervals"></span>
+                        <span>III</span>
+                      </li>
+                      <li>
+                        <span class="intervals"></span>
+                        <span>IV</span>
+                      </li>
+                      <li>
+                        <span class="intervals"></span>
+                        <span>V</span>
+                      </li>
+                      <li>
+                        <span class="intervals"></span>
+                        <span>VI</span>
+                      </li>
+                      <li>
+                        <span class="intervals"></span>
+                        <span>VII</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div id="keysetting3" class="keysettingElemnets">
+                  <div id="flatbtn" onclick="domFlat()">
+                    <div class="btn-wrapper">
+                      <div class="icon-flat">
+
+                      </div>
+                      <p>&#9837;</p>
+                    </div>
+                  </div>
+                  <div id="sharpbtn" onclick="domSharp()">
+                    <div class="btn-wrapper">
+                      <div class="icon-sharp">
+
+                      </div>
+                      <p>&#9839;</p>
+                    </div>
+                  </div>
+                  <div id="keyCanvasContainer">
+
+                  </div>
+                  <div id="keyApplybtn" onclick="domApply()">
+                    <p>APPLY</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="arrowDiv">
+              <div id="up" class="up" onclick="arrowUp()">
+                <div id="up-img-wrapper" class="arrowimgwrapper">
+
+                </div>
+              </div>
+              <div id="down" class="down" onclick="arrowDown()">
+                <div id="down-img-wrapper" class="arrowimgwrapper">
+
+                </div>
+              </div>
+              <div id="right" class="right" onclick="arrowRight()">
+                <div id="right-img-wrapper" class="arrowimgwrapper">
+
+                </div>
+              </div>
+              <div id="left" class="left" onclick="arrowLeft()">
+                <div id="left-img-wrapper" class="arrowimgwrapper">
+
+                </div>
+              </div>
+            </div>
+            <div id="noteTypeDiv">
+              <div class="flex-div">
+                {{if (eq .Theme "dark")}}
+                <img src="static/resources/icon/패스 56@2x.png" alt="">
+                {{else if (eq .Theme "simple")}}
+                <img src="static/resources/icon4simple/switch up.png" alt="">
+                {{else if (eq .Theme "pastel")}}
+                <img src="static/resources/icon4pastel/패스 38@2x.png" alt="">
+                {{end}}
+                <div id="nT-img-wrapper" class="imgwrapper-type">
+
+                </div>
+                {{if (eq .Theme "dark")}}
+                <img src="static/resources/icon/패스 55@2x.png" alt="">
+                {{else if (eq .Theme "simple")}}
+                <img src="static/resources/icon4simple/switch down.png" alt="">
+                {{else if (eq .Theme "pastel")}}
+                <img src="static/resources/icon4pastel/패스 35@2x.png" alt="">
+                {{end}}
+              </div>
+              <div id="upperType" class="upperType" onclick="switchUp()">
+
+              </div>
+              <div id="lowerType" class="lowerType" onclick="switchDown()">
+
+              </div>
+            </div>
+            <div id="otherButtonsDiv">
+              <div id="tieDiv" class="tieDiv" onclick="domTie()">
+                <div id="tie-img-wrapper" class="imgwrapper">
+
+                </div>
+              </div>
+              <div id="tripletDiv" class="tripletDiv" onclick="domPlet()">
+                <div id="triplet-img-wrapper" class="imgwrapper">
+
+                </div>
+              </div>
+              <div id="restDiv" class="restDiv" onclick="domRest()">
+                <p>Rest</p>
+              </div>
+              <div class="flatSharpDiv">
+                <div id="fs-img-wrapper" class="imgwrapper">
+
+                </div>
+                <div id="hr-flat" class="hrs">
+
+                </div>
+                <div id="hr-nat" class="hrs">
+
+                </div>
+                <div id="hr-sharp" class="hrs">
+
+                </div>
+              </div>
+            </div>
+            <div id="bangbtn" onclick="domBang()">
+              <div class="btn-wrapper">
+                <div class="icon">
+
+                </div>
+                <p>Bang</p>
+              </div>
+            </div>
+            <div id="removebtn" onclick="domRemove()">
+              <div class="btn-wrapper">
+                <span class="icon-remove removeP">
+
+                </span>
+                <p class="removeP">Remove</p>
+              </div>
+            </div>
+
+            <div id="intervalbtn" onclick="intervalToggle()">
+              <div class="btn-wrapper">
+                <p id="p-edit_interval">Interval</p>
+              </div>
+            </div>
+            <div id="pickup" onclick="pickup()">
+              <div class="btn-wrapper">
+                <p>Pick Up</p>
+              </div>
+            </div>
+            <div id="scale-select-wrap">
+              <span id="lick-title">{{.DpLick.Name}}</span>
+              <span id="lick-intervalChord"></span>
+              <span id="lick-key"></span>
+              <select id="scale-select" name="">
+                  <option value="Ionian">Ionian</option>
+                  <option value="Dorian">Dorian</option>
+                  <option value="Phrygian">Phrygian</option>
+                  <option value="Lydian">Lydian</option>
+                  <option value="Mixolydian">Mixolydian</option>
+                  <option value="Aeolian">Aeolian</option>
+                  <option value="Locrian">Locrian</option>
+                  <option value="Alt">Alt</option>
+                  <option value="W/H">W/H</option>
+                  <option value="H/W">H/W</option>
+                  <option value="b9b13">Mixolydian b9b13</option>
+              </select>
+
+                <button id="editScale" name="button"></button>
+                <div class="custom-options">
+                  <ul id="custom-option"> </ul>
+                </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript">
+       var timeout = false;
+       var myElement = document.getElementById("removebtn");
+       var myElement2 = document.getElementById("bangbtn");
+       var myElement3 = document.getElementById("flatbtn");
+       var myElement4 = document.getElementById("sharpbtn");
+       var myElement5 = document.getElementById("intervalbtn");
+        myElement.addEventListener("click", event => {});
+        myElement2.addEventListener("click", event => {});
+        myElement3.addEventListener("click", event => {});
+        myElement4.addEventListener("click", event => {});
+        myElement5.addEventListener("click", event => {});
+
+
+        var customOpt = document.getElementById("custom-option");
+        var customOptLi = customOpt.getElementsByTagName("li");
+        customOpt.addEventListener("touchstart", handleStart,false);
+        customOpt.addEventListener("touchmove", handleMove,false);
+        customOpt.addEventListener("touchend", function(e) {
+            e.preventDefault();
+            //$(this).click();
+          },true);
+
+
+
+        var lickCon = document.getElementById("lick-container");
+        lickCon.addEventListener("touchstart", handleStart,false);
+        lickCon.addEventListener("touchmove", handleMove,false);
+        lickCon.addEventListener("touchend", function(e) {
+            e.preventDefault();
+          },false);
+
+          function handleStart(e) {
+             e.preventDefault();
+          }
+          function handleMove(e) {
+                e.preventDefault();
+            }
+          function handleEnd(e) {
+              e.preventDefault();
+            }
+
+      var langArray = [];
+      var valArray=[];
+      var btnArray=[];
+      var defaultScale;
+      $('#scale-select option').each(function(){
+      var text = this.innerText;
+      var value = $(this).val();
+      var item = '<li value="'+value +'"><span value="'+value +'">'+ text +'</span><div class="'+value+"_icon"+'">&#x25CF;</div></li>';
+      var item4button = '<li value="'+value +'"><span value="'+value +'">'+ value +'</span><img src="static/resources/icon/arrow.png"/></li>';
+      langArray.push(item);
+      valArray.push(value);
+      btnArray.push(item4button);
+      })
+
+      $('#custom-option').html(langArray);
+
+      for (var i = 0; i < valArray.length; i++) {
+        if(valArray[i] == {{.DpLick.Scale}} ){
+          defaultScale = i;
+          switch (valArray[defaultScale]) {
+
+                          {{if (eq .Theme "pastel")}}
+                          case "Ionian":
+                            $('#scale-select-wrap').css("border", "2px solid #FF90D6");
+                            break;
+                            case "Dorian":
+                              $('#scale-select-wrap').css("border", "2px solid #FF7C7C");
+                              break;
+                              case "Phrygian":
+                                $('#scale-select-wrap').css("border", "2px solid #FFA77C");
+                                break;
+                                case "Lydian":
+                                  $('#scale-select-wrap').css("border", "2px solid #FFCF88");
+                                  break;
+                                  case "Mixolydian":
+                                    $('#scale-select-wrap').css("border", "2px solid #FFFF78");
+                                    break;
+                                    case "Aeolian":
+                                      $('#scale-select-wrap').css("border", "2px solid #C5FF82");
+                                      break;
+                                      case "Locrian":
+                                        $('#scale-select-wrap').css("border", "2px solid #84D28C");
+                                        break;
+                          {{else}}
+                          case "Ionian":
+                            $('#scale-select-wrap').css("border", "2px solid #ff00a1");
+                            break;
+                            case "Dorian":
+                              $('#scale-select-wrap').css("border", "2px solid #ce0000");
+                              break;
+                              case "Phrygian":
+                                $('#scale-select-wrap').css("border", "2px solid #ff3c00");
+                                break;
+                                case "Lydian":
+                                  $('#scale-select-wrap').css("border", "2px solid #ff9900");
+                                  break;
+                                  case "Mixolydian":
+                                    $('#scale-select-wrap').css("border", "2px solid #ffff94");
+                                    break;
+                                    case "Aeolian":
+                                      $('#scale-select-wrap').css("border", "2px solid #efff00");
+                                      break;
+                                      case "Locrian":
+                                        $('#scale-select-wrap').css("border", "2px solid #88ff00");
+                                        break;
+                          {{end}}
+          }
+          $('#scale-select-wrap').css("border-right", "none");
+        }
+      }
+      //Set the button value to the first el of the array
+      $('#editScale').html(btnArray[defaultScale]);
+
+      $('#editScale').attr('value', {{.DpLick.Scale}});
+      $('#editScale').attr('class', {{.DpLick.Scale}});
+
+
+      //change button stuff on click
+      $('#custom-option li').click(function(){
+        console.log("hey why click me");
+       var value = $(this).find('span').attr("value");
+       var text = this.innerText;
+       var item = '<li value="'+value +'"><span value="'+value +'">'+ value +'</span><img src="static/resources/icon/arrow.png"/></li>';
+        $('#editScale').html(item);
+        $('#editScale').attr('value', value);
+        $('#editScale').attr('class', value);
+        switch (value) {
+        {{if (eq .Theme "dark")}}
+
+            case "Ionian":
+              $('#scale-select-wrap').css("border", "2px solid #ff00a1");
+              break;
+              case "Dorian":
+                $('#scale-select-wrap').css("border", "2px solid #ce0000");
+                break;
+                case "Phrygian":
+                  $('#scale-select-wrap').css("border", "2px solid #ff3c00");
+                  break;
+                  case "Lydian":
+                    $('#scale-select-wrap').css("border", "2px solid #ff9900");
+                    break;
+                    case "Mixolydian":
+                      $('#scale-select-wrap').css("border", "2px solid #ffff94");
+                      break;
+                      case "Aeolian":
+                        $('#scale-select-wrap').css("border", "2px solid #efff00");
+                        break;
+                        case "Locrian":
+                          $('#scale-select-wrap').css("border", "2px solid #88ff00");
+                          break;
+        {{else if (eq .Theme "simple")}}
+            case "Ionian":
+              $('#scale-select-wrap').css("border", "2px solid #ff00a1");
+              break;
+              case "Dorian":
+                $('#scale-select-wrap').css("border", "2px solid #ce0000");
+                break;
+                case "Phrygian":
+                  $('#scale-select-wrap').css("border", "2px solid #ff3c00");
+                  break;
+                  case "Lydian":
+                    $('#scale-select-wrap').css("border", "2px solid #ff9900");
+                    break;
+                    case "Mixolydian":
+                      $('#scale-select-wrap').css("border", "2px solid #ffff94");
+                      break;
+                      case "Aeolian":
+                        $('#scale-select-wrap').css("border", "2px solid #efff00");
+                        break;
+                        case "Locrian":
+                          $('#scale-select-wrap').css("border", "2px solid #88ff00");
+                          break;
+        {{else if (eq .Theme "pastel")}}
+            case "Ionian":
+              $('#scale-select-wrap').css("border", "2px solid #FF90D6");
+              break;
+              case "Dorian":
+                $('#scale-select-wrap').css("border", "2px solid #FF7C7C");
+                break;
+                case "Phrygian":
+                  $('#scale-select-wrap').css("border", "2px solid #FFA77C");
+                  break;
+                  case "Lydian":
+                    $('#scale-select-wrap').css("border", "2px solid #FFCF88");
+                    break;
+                    case "Mixolydian":
+                      $('#scale-select-wrap').css("border", "2px solid #FFFF78");
+                      break;
+                      case "Aeolian":
+                        $('#scale-select-wrap').css("border", "2px solid #C5FF82");
+                        break;
+                        case "Locrian":
+                          $('#scale-select-wrap').css("border", "2px solid #84D28C");
+                          break;
+        {{end}}
+        default:
+        $('#scale-select-wrap').css("border", "2px solid #88ff00");
+        }
+          $('#scale-select-wrap').css("border-right", "none");
+          if($(".custom-options").css('display', 'block')){
+            $(".custom-options").toggle(300);
+          }
+          $("#editScale li img").css("transform","rotate(180deg)");
+          sizeReset();
+          scaleChange(value);
+          });
+
+      $('#custom-option li').bind('touchend', function(e){
+            console.log("hey why touch me");
+           var value = $(this).find('span').attr("value");
+           var text = this.innerText;
+           var item = '<li value="'+value +'"><span value="'+value +'">'+ value +'</span><img src="static/resources/icon/arrow.png"/></li>';
+          $('#editScale').html(item);
+          $('#editScale').attr('value', value);
+          $('#editScale').attr('class', value);
+          switch (value) {
+          {{if (eq .Theme "dark")}}
+
+              case "Ionian":
+                $('#scale-select-wrap').css("border", "2px solid #ff00a1");
+                break;
+                case "Dorian":
+                  $('#scale-select-wrap').css("border", "2px solid #ce0000");
+                  break;
+                  case "Phrygian":
+                    $('#scale-select-wrap').css("border", "2px solid #ff3c00");
+                    break;
+                    case "Lydian":
+                      $('#scale-select-wrap').css("border", "2px solid #ff9900");
+                      break;
+                      case "Mixolydian":
+                        $('#scale-select-wrap').css("border", "2px solid #ffff94");
+                        break;
+                        case "Aeolian":
+                          $('#scale-select-wrap').css("border", "2px solid #efff00");
+                          break;
+                          case "Locrian":
+                            $('#scale-select-wrap').css("border", "2px solid #88ff00");
+                            break;
+          {{else if (eq .Theme "simple")}}
+              case "Ionian":
+                $('#scale-select-wrap').css("border", "2px solid #ff00a1");
+                break;
+                case "Dorian":
+                  $('#scale-select-wrap').css("border", "2px solid #ce0000");
+                  break;
+                  case "Phrygian":
+                    $('#scale-select-wrap').css("border", "2px solid #ff3c00");
+                    break;
+                    case "Lydian":
+                      $('#scale-select-wrap').css("border", "2px solid #ff9900");
+                      break;
+                      case "Mixolydian":
+                        $('#scale-select-wrap').css("border", "2px solid #ffff94");
+                        break;
+                        case "Aeolian":
+                          $('#scale-select-wrap').css("border", "2px solid #efff00");
+                          break;
+                          case "Locrian":
+                            $('#scale-select-wrap').css("border", "2px solid #88ff00");
+                            break;
+          {{else if (eq .Theme "pastel")}}
+              case "Ionian":
+                $('#scale-select-wrap').css("border", "2px solid #FF90D6");
+                break;
+                case "Dorian":
+                  $('#scale-select-wrap').css("border", "2px solid #FF7C7C");
+                  break;
+                  case "Phrygian":
+                    $('#scale-select-wrap').css("border", "2px solid #FFA77C");
+                    break;
+                    case "Lydian":
+                      $('#scale-select-wrap').css("border", "2px solid #FFCF88");
+                      break;
+                      case "Mixolydian":
+                        $('#scale-select-wrap').css("border", "2px solid #FFFF78");
+                        break;
+                        case "Aeolian":
+                          $('#scale-select-wrap').css("border", "2px solid #C5FF82");
+                          break;
+                          case "Locrian":
+                            $('#scale-select-wrap').css("border", "2px solid #84D28C");
+                            break;
+          {{end}}
+          default:
+          $('#scale-select-wrap').css("border", "2px solid #88ff00");
+          }
+          $('#scale-select-wrap').css("border-right", "none");
+          if($(".custom-options").css('display', 'block')){
+            $(".custom-options").toggle(300);
+          }
+          $("#editScale li img").css("transform","rotate(180deg)");
+          sizeReset();
+          scaleChange(value);
+          e.preventDefault();
+          e.stopPropagation();
+          });
+
+
+
+        var langArrayForChords = [];
+        var valArrayForChords=[];
+        var btnArrayForChords=[];
+        var defaultChord;
+        $('#chord-select option').each(function(){
+        var text = this.innerText;
+        var value = $(this).val();
+        var item = '<li value="'+value +'"><span value="'+value +'">'+ text +'</span><div class="'+value+"_icon"+'">&#x25CF;</div></li>';
+        var item4button = '<li value="'+value +'"><span value="'+value +'">'+ value +'</span><div></div></li>';
+        langArrayForChords.push(item);
+        valArrayForChords.push(value);
+        btnArrayForChords.push(item4button);
+        })
+
+        $('#custom-option-chords').html(langArrayForChords);
+
+        for (var i = 0; i < valArrayForChords.length; i++) {
+          if(valArrayForChords[i] == {{.DpLick.ChoChar}} ){
+            defaultChord = i;
+          }
+        }
+        //Set the button value to the first el of the array
+        $('#editChord').html(btnArrayForChords[defaultChord]);
+        $('#editChord').attr('value', {{.DpLick.ChoChar}});
+        $('#editChord').attr('class', {{.DpLick.ChoChar}});
+
+        //change button stuff on click
+        $('#custom-option-chords li').click(function(){
+         var value = $(this).find('span').attr("value");
+         var text = this.innerText;
+         var item = '<li value="'+value +'"><span value="'+value +'">'+ value +'</span><div></div></li>';
+        $('#editChord').html(item);
+        $('#editChord').attr('value', value);
+        $('#editChord').attr('class', value);
+
+        $(".custom-options-chords").toggle(300);
+        $('#editChord').blur();
+        $("#editChord li div").css("transform","rotate(180deg)");
+        chord_char=value;
+        sizeReset();
+        });
+
+        var touch_ready = false;
+        $('#custom-option-chords li').bind('touchstart',function(e){
+          touch_ready = true;
+        });
+
+        $('#custom-option-chords li').bind('touchend',function(e){
+          if(touch_ready){
+            var value = $(this).find('span').attr("value");
+            var text = this.innerText;
+            var item = '<li value="'+value +'"><span value="'+value +'">'+ value +'</span><div></div></li>';
+           $('#editChord').html(item);
+           $('#editChord').attr('value', value);
+           $('#editChord').attr('class', value);
+
+           $(".custom-options-chords").toggle(300);
+           $('#editChord').blur();
+           $("#editChord li div").css("transform","rotate(180deg)");
+           chord_char=value;
+           sizeReset();
+           e.preventDefault();
+           e.stopPropagation();
+          }
+        });
+
+        var chord_char_dom = document.getElementById("custom-option-chords");
+
+        chord_char_dom.addEventListener("touchstart", function (e) {
+          lastTouch = event.touches[0];
+          e.stopPropagation();
+        });
+        chord_char_dom.addEventListener("touchmove", function (e) {
+          var currentTouch = event.changedTouches[0];
+
+            if (lastTouch) {
+            	$('#custom-option-chords').scrollTop += currentTouch.clientY - lastTouch.clientY;
+            }
+
+            lastTouch = currentTouch;
+
+            touch_ready = false;
+          e.stopPropagation();
+        });
+        chord_char_dom.addEventListener("touchend", function (e) {
+          lastTouch = null;
+          e.stopPropagation();
+        });
+
+          $("#editChord").click(function(){
+            var direction=$(".custom-options-chords").css("display");
+              if (direction=="block") {
+                $("#editChord li div").css("transform","rotate(180deg)");
+                $('#editChord').blur();
+              }else{
+                $("#editChord li div").css("transform","rotate(0deg)");
+                $('#editChord').focus();
+              }
+                  $(".custom-options-chords").toggle(300);
+            });
+
+            $("#editChord").bind('touchend',function(e){
+              var direction=$(".custom-options-chords").css("display");
+                if (direction=="block") {
+                  $("#editChord li div").css("transform","rotate(180deg)");
+                  $('#editChord').blur();
+                }else{
+                  $("#editChord li div").css("transform","rotate(0deg)");
+                  $('#editChord').focus();
+                }
+                    $(".custom-options-chords").toggle(300);
+                    e.preventDefault();
+                    e.stopPropagation();
+              });
+
+          // $('window').resize(function(){
+          //   var bodyHeight = $('body').css('height');
+          //   $('body').css('min-width', bodyHeight*1.647 + "px");
+          // ​});
+          var fading = true;
+          var openhrs, closehrs;
+          $('#lick-container').mouseup(function () {
+            clearTimeout(openhrs);
+            fading = true;
+            $('.hrs').css('top', '0');
+            $('.hrs').css('left', '0');
+            $('.hrs').css('opacity', '0');
+            closehrs = setTimeout(function () {
+              $('.hrs').css('display', 'none');
+           }, 300);
+          });
+
+          $('.flatSharpDiv').on('touchstart', function (e) {
+            clearTimeout(closehrs);
+            $('.hrs').css('top', '0');
+            $('.hrs').css('left', '0');
+            $('.hrs').css('opacity', '0');
+            $('.hrs').css('display', 'block');
+            $('.hrs').css('opacity', '.5');
+              setTimeout(function () {
+                $('#hr-flat').css('top', '-105%');
+                $('#hr-flat').css('left', '-105%');
+                $('#hr-nat').css('top', '-105%');
+                $('#hr-nat').css('left', '0');
+                $('#hr-sharp').css('top', '-105%');
+                $('#hr-sharp').css('left', '105%');
+              },50);
+
+              openhrs = setTimeout(function () {
+                fading = false;
+              }, 200);
+
+            $('#hr-flat').mouseenter(function () {
+              $('#hr-flat').css('opacity', '.9');
+            }).mouseleave(function () {
+              $('#hr-flat').css('opacity', '.5');
+            });
+            $('#hr-nat').mouseenter(function () {
+              $('#hr-nat').css('opacity', '.9');
+            }).mouseleave(function () {
+              $('#hr-nat').css('opacity', '.5');
+            });
+            $('#hr-sharp').mouseenter(function () {
+              $('#hr-sharp').css('opacity', '.9');
+            }).mouseleave(function () {
+              $('#hr-sharp').css('opacity', '.5');
+            });
+          });
+          var checkbox;
+          $('.flatSharpDiv').on('touchmove', function (e) {
+            // get the touch element
+                var touch = e.touches[0];
+                $('#hr-flat').css('opacity', '.5');
+                $('#hr-nat').css('opacity', '.5');
+                $('#hr-sharp').css('opacity', '.5');
+                // get the DOM element
+                 checkbox = document.elementFromPoint(touch.clientX, touch.clientY);
+
+                // make sure an element was found - some areas on the page may have no elements
+                if (checkbox) {
+                  if(checkbox.id == "hr-nat"||checkbox.id == "hr-flat"||checkbox.id == "hr-sharp"){
+                    $('#'+ checkbox.id).css('opacity', '.9');
+                  }
+                }
+          });
+
+          $('.flatSharpDiv').on('touchend', function (e) {
+            clearTimeout(openhrs);
+            fading = true;
+
+            $('.hrs').css('top', '0');
+            $('.hrs').css('left', '0');
+            $('.hrs').css('opacity', '0');
+            closehrs = setTimeout(function () {
+              $('.hrs').css('display', 'none');
+           }, 200);
+           if(checkbox){
+             if(checkbox.id == "hr-nat"||checkbox.id == "hr-flat"||checkbox.id == "hr-sharp"){
+               $('#'+ checkbox.id).mouseup();
+             }
+           }
+           checkbox = null;
+          });
+
+          $('.flatSharpDiv').mousedown(function(){
+            clearTimeout(closehrs);
+            $('.hrs').css('top', '0');
+            $('.hrs').css('left', '0');
+            $('.hrs').css('opacity', '0');
+            $('.hrs').css('display', 'block');
+            $('.hrs').css('opacity', '.5');
+              setTimeout(function () {
+                $('#hr-flat').css('top', '-105%');
+                $('#hr-flat').css('left', '-105%');
+                $('#hr-nat').css('top', '-105%');
+                $('#hr-nat').css('left', '0');
+                $('#hr-sharp').css('top', '-105%');
+                $('#hr-sharp').css('left', '105%');
+              },50);
+
+              openhrs = setTimeout(function () {
+                fading = false;
+              }, 200);
+
+            $('#hr-flat').mouseenter(function () {
+              $('#hr-flat').css('opacity', '.9');
+            }).mouseleave(function () {
+              $('#hr-flat').css('opacity', '.5');
+            });
+            $('#hr-nat').mouseenter(function () {
+              $('#hr-nat').css('opacity', '.9');
+            }).mouseleave(function () {
+              $('#hr-nat').css('opacity', '.5');
+            });
+            $('#hr-sharp').mouseenter(function () {
+              $('#hr-sharp').css('opacity', '.9');
+            }).mouseleave(function () {
+              $('#hr-sharp').css('opacity', '.5');
+            });
+
+            }).mouseup(function () {
+              clearTimeout(openhrs);
+              fading = true;
+
+              $('.hrs').css('top', '0');
+              $('.hrs').css('left', '0');
+              $('.hrs').css('opacity', '0');
+              closehrs = setTimeout(function () {
+                $('.hrs').css('display', 'none');
+             }, 200);
+          });
+
+          $('#hr-flat').mouseup(function () {
+            accidental_val = -1;
+            var flat_or_sharp;
+            switch (accidental_val) {
+              case 0:
+                flat_or_sharp ="";
+              break;
+              case -1:
+                flat_or_sharp="b";
+              break;
+              case 1:
+                flat_or_sharp="#";
+              break;
+            }
+            if(editing){
+              n[currently_editing_num].av = accidental_val;
+              ndata[currently_editing_num*data_per_note+6] = accidental_val.toString();
+              n[currently_editing_num].mv = midiVal_Calc(y_index, octave_control, accidental_val);
+              ndata[currently_editing_num*data_per_note+10] = n[currently_editing_num].mv.toString();
+              n[currently_editing_num].id = prev_id[y_index]+flat_or_sharp;
+              ndata[currently_editing_num*data_per_note+8]=prev_id[y_index]+flat_or_sharp;
+              n[currently_editing_num].interval = interval_from_root.get(prev_id[y_index]+flat_or_sharp);
+              ndata[currently_editing_num*data_per_note+9]=interval_from_root.get(prev_id[y_index]+flat_or_sharp);
+              isAccidentalShow();
+              rearrange();
+            }
+            {{if (eq .Theme "dark")}}
+            $('#fs-img-wrapper').css('background-image', 'url("static/resources/icon/flat.png")');
+            {{else}}
+            $('#fs-img-wrapper').css('background-image', 'url("static/resources/icon4simple/hr_flat.png")');
+            {{end}}
+
+          });
+          $('#hr-flat').on('touchend',function () {
+            accidental_val = -1;
+            var flat_or_sharp;
+            switch (accidental_val) {
+              case 0:
+                flat_or_sharp ="";
+              break;
+              case -1:
+                flat_or_sharp="b";
+              break;
+              case 1:
+                flat_or_sharp="#";
+              break;
+            }
+            if(editing){
+              n[currently_editing_num].av = accidental_val;
+              ndata[currently_editing_num*data_per_note+6] = accidental_val.toString();
+              n[currently_editing_num].mv = midiVal_Calc(y_index, octave_control, accidental_val);
+              ndata[currently_editing_num*data_per_note+10] = n[currently_editing_num].mv.toString();
+              n[currently_editing_num].id = prev_id[y_index]+flat_or_sharp;
+              ndata[currently_editing_num*data_per_note+8]=prev_id[y_index]+flat_or_sharp;
+              n[currently_editing_num].interval = interval_from_root.get(prev_id[y_index]+flat_or_sharp);
+              ndata[currently_editing_num*data_per_note+9]=interval_from_root.get(prev_id[y_index]+flat_or_sharp);
+              isAccidentalShow();
+              rearrange();
+            }
+            {{if (eq .Theme "dark")}}
+            $('#fs-img-wrapper').css('background-image', 'url("static/resources/icon/flat.png")');
+            {{else}}
+            $('#fs-img-wrapper').css('background-image', 'url("static/resources/icon4simple/hr_flat.png")');
+            {{end}}
+          });
+          $('#hr-sharp').mouseup(function () {
+            accidental_val = 1;
+            var flat_or_sharp;
+            switch (accidental_val) {
+              case 0:
+                flat_or_sharp ="";
+              break;
+              case -1:
+                flat_or_sharp="b";
+              break;
+              case 1:
+                flat_or_sharp="#";
+              break;
+            }
+            if(editing){
+              n[currently_editing_num].av = accidental_val;
+              ndata[currently_editing_num*data_per_note+6] = accidental_val.toString();
+              n[currently_editing_num].mv = midiVal_Calc(y_index, octave_control, accidental_val);
+              ndata[currently_editing_num*data_per_note+10] = n[currently_editing_num].mv.toString();
+              n[currently_editing_num].id = prev_id[y_index]+flat_or_sharp;
+              ndata[currently_editing_num*data_per_note+8]=prev_id[y_index]+flat_or_sharp;
+              n[currently_editing_num].interval = interval_from_root.get(prev_id[y_index]+flat_or_sharp);
+              ndata[currently_editing_num*data_per_note+9]=interval_from_root.get(prev_id[y_index]+flat_or_sharp);
+              isAccidentalShow();
+              rearrange();
+            }
+            {{if (eq .Theme "dark")}}
+            $('#fs-img-wrapper').css('background-image', 'url("static/resources/icon/sharp.png")');
+            {{else}}
+            $('#fs-img-wrapper').css('background-image', 'url("static/resources/icon4simple/hr_sharp.png")');
+            {{end}}
+          });
+          $('#hr-sharp').on('touchend',function () {
+            accidental_val = 1;
+            var flat_or_sharp;
+            switch (accidental_val) {
+              case 0:
+                flat_or_sharp ="";
+              break;
+              case -1:
+                flat_or_sharp="b";
+              break;
+              case 1:
+                flat_or_sharp="#";
+              break;
+            }
+            if(editing){
+              n[currently_editing_num].av = accidental_val;
+              ndata[currently_editing_num*data_per_note+6] = accidental_val.toString();
+              n[currently_editing_num].mv = midiVal_Calc(y_index, octave_control, accidental_val);
+              ndata[currently_editing_num*data_per_note+10] = n[currently_editing_num].mv.toString();
+              n[currently_editing_num].id = prev_id[y_index]+flat_or_sharp;
+              ndata[currently_editing_num*data_per_note+8]=prev_id[y_index]+flat_or_sharp;
+              n[currently_editing_num].interval = interval_from_root.get(prev_id[y_index]+flat_or_sharp);
+              ndata[currently_editing_num*data_per_note+9]=interval_from_root.get(prev_id[y_index]+flat_or_sharp);
+              isAccidentalShow();
+              rearrange();
+            }
+            {{if (eq .Theme "dark")}}
+            $('#fs-img-wrapper').css('background-image', 'url("static/resources/icon/sharp.png")');
+            {{else}}
+            $('#fs-img-wrapper').css('background-image', 'url("static/resources/icon4simple/hr_sharp.png")');
+            {{end}}
+          });
+          $('#hr-nat').mouseup(function () {
+            accidental_val = 0;
+            var flat_or_sharp;
+            switch (accidental_val) {
+              case 0:
+                flat_or_sharp ="";
+              break;
+              case -1:
+                flat_or_sharp="b";
+              break;
+              case 1:
+                flat_or_sharp="#";
+              break;
+            }
+            if(editing){
+              n[currently_editing_num].av = accidental_val;
+              ndata[currently_editing_num*data_per_note+6] = accidental_val.toString();
+              n[currently_editing_num].mv = midiVal_Calc(y_index, octave_control, accidental_val);
+              ndata[currently_editing_num*data_per_note+10] = n[currently_editing_num].mv.toString();
+              n[currently_editing_num].id = prev_id[y_index]+flat_or_sharp;
+              ndata[currently_editing_num*data_per_note+8]=prev_id[y_index]+flat_or_sharp;
+              n[currently_editing_num].interval = interval_from_root.get(prev_id[y_index]+flat_or_sharp);
+              ndata[currently_editing_num*data_per_note+9]=interval_from_root.get(prev_id[y_index]+flat_or_sharp);
+              isAccidentalShow();
+              rearrange();
+            }
+            {{if (eq .Theme "dark")}}
+            $('#fs-img-wrapper').css('background-image', 'url("static/resources/icon/nat.png")');
+            {{else}}
+            $('#fs-img-wrapper').css('background-image', 'url("static/resources/icon4simple/hr_nat.png")');
+            {{end}}
+          });
+          $('#hr-nat').on('touchend',function () {
+            accidental_val = 0;
+            var flat_or_sharp;
+            switch (accidental_val) {
+              case 0:
+                flat_or_sharp ="";
+              break;
+              case -1:
+                flat_or_sharp="b";
+              break;
+              case 1:
+                flat_or_sharp="#";
+              break;
+            }
+            if(editing){
+              n[currently_editing_num].av = accidental_val;
+              ndata[currently_editing_num*data_per_note+6] = accidental_val.toString();
+              n[currently_editing_num].mv = midiVal_Calc(y_index, octave_control, accidental_val);
+              ndata[currently_editing_num*data_per_note+10] = n[currently_editing_num].mv.toString();
+              n[currently_editing_num].id = prev_id[y_index]+flat_or_sharp;
+              ndata[currently_editing_num*data_per_note+8]=prev_id[y_index]+flat_or_sharp;
+              n[currently_editing_num].interval = interval_from_root.get(prev_id[y_index]+flat_or_sharp);
+              ndata[currently_editing_num*data_per_note+9]=interval_from_root.get(prev_id[y_index]+flat_or_sharp);
+              isAccidentalShow();
+              rearrange();
+            }
+            {{if (eq .Theme "dark")}}
+            $('#fs-img-wrapper').css('background-image', 'url("static/resources/icon/nat.png")');
+            {{else}}
+            $('#fs-img-wrapper').css('background-image', 'url("static/resources/icon4simple/hr_nat.png")');
+            {{end}}
+          });
+          var tags = {{.DpLick.Tag}};
+          if(tags == null){
+            tags = [];
+          }
+          var tagInput = document.getElementById("tagInput");
+          var tagsDomArray =[];
+          tags.forEach( t => {
+            var item = "<li>" + t + "<img value='"+t+"' class='removeTags' src='static/resources/icon/union.png'></li>"
+            tagsDomArray.push(item);
+          });
+          $("#tag-container ul").html(tagsDomArray);
+
+    </script>
+    <script type="text/javascript">
+    var p5Canvas4OtherUse=[];
+    var xhr = new XMLHttpRequest();
+    var body = document.getElementsByTagName('body');
+      body[0].style.height = window.innerHeight + "px";
+      body[0].style.minHeight = window.innerHeight + "px";
+      body[0].style.minWidth = 300 + "px";
+    var p5canvas = document.getElementById('p5canvas');
+    var container = document.getElementById('lick-container');
+    var Height;
+    var Width = container.clientWidth;
+
+
+    var header_logo = $(".contents header").css("height").replace("px","");
+
+    var chord_char_height;
+    let theme = {{.Theme}};
+    let n =[];
+    let ndata =[];
+    {{if .DpLick.Data}}
+       ndata =[...{{.DpLick.Data}}];
+    {{end}}
+    let lick_id = {{.DpLick.ID}};
+    let name = {{.DpLick.Name}};
+    let b =[];
+    let start;
+    let is_going_to_return = false;
+    let firstAreYouReady, tagEditing, difficulty_val_str, scaleSetting, sidebarIsOn, edit_interval, key_Changing, keySetting, reset, rest, accidental_show, tie, triplet, only_view, writing, writing_plet, editing, xpos_moving, err;
+    let firstSpeed, currently_editingX, currently_editingX_val, timesig_start_point, xpos_moving_val, xpos_moving_count, inertia;
+    let difficulty_val, difficulty_val_tobe, key, beat_type, beat_count, midiVal, accidental_val, currently_editing_num, consecutive, octave_consecutive, octave_control, y_index, plet_count;
+    let y_indexs = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11];
+    let scale = {{.DpLick.Scale}};
+    let chord_cen = "C";
+    let chord_char = {{.DpLick.ChoChar}};
+    let xpos, ypos, mheight;
+    let img;
+    let difficulty, flatbtn, sharpbtn, chord_option_li, keysettingdiv, option_li, keyInput, scaleInput, chord_charInput, nameInput, bang_btn, interval_btn, remove_btn;
+    let all_notes_in_key_int;
+    let all_notes_in_key_str;
+    let greek_order = ["I","II","III","IV","V","VI","VII"];
+    let all_notes_in_key_greek = new Map();
+    var selected_indexstr = {{.DpLick.ChoCen}};
+    var selected_index;
+    var is_chocen_sharpstr= {{.DpLick.IsSharp}};
+    var is_chocen_sharp;
+    let if_is_Flat = new Map();
+    let if_is_Sharp = new Map();
+    let interval_from_root = new Map();
+    let interval_int_str = new Map();
+    let prev_id =["C","B","A","G","F","E","D","C","B","A","G","F","E","D","C","B","A"];
+    let data_per_note = 12;
+    var literal_CtoI_array =[
+    ["C", 0],
+    ["Cb", 11],
+    ["C#", 1],
+    ["D", 2],
+    ["Db", 1],
+    ["D#", 3],
+    ["E", 4],
+    ["Eb", 3],
+    ["E#", 5],
+    ["F", 5],
+    ["Fb", 4],
+    ["F#", 6],
+    ["G", 7],
+    ["Gb", 6],
+    ["G#", 8],
+    ["A", 9],
+    ["Ab", 8],
+    ["A#", 10],
+    ["B", 11],
+    ["Bb", 10],
+    ["B#", 0],
+  ]
+    const literal_CtoI = new Map(literal_CtoI_array);
+    const keyInt = [1,6,11,4,9,2,7,0,5,10,3,8,1,6,11];
+
+    const cs_key = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+    const fs_key = [1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,0,1];
+    const b_key  = [1,0,1,1,1,0,1,1,0,1,1,1,0,1,1,0,1];
+    const e_key  = [1,0,0,1,1,0,1,1,0,0,1,1,0,1,1,0,0];
+    const a_key  = [1,0,0,1,1,0,0,1,0,0,1,1,0,0,1,0,0];
+    const d_key  = [1,0,0,0,1,0,0,1,0,0,0,1,0,0,1,0,0];
+    const g_key  = [0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0];
+    const c_key  = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    const f_key  = [0,-1,0,0,0,0,0,0,-1,0,0,0,0,0,0,-1,0];
+    const bb_key = [0,-1,0,0,0,-1,0,0,-1,0,0,0,-1,0,0,-1,0];
+    const eb_key = [0,-1,-1,0,0,-1,0,0,-1,-1,0,0,-1,0,0,-1,-1];
+    const ab_key = [0,-1,-1,0,0,-1,-1,0,-1,-1,0,0,-1,-1,0,-1,-1];
+    const db_key = [0,-1,-1,-1,0,-1,-1,0,-1,-1,-1,0,-1,-1,0,-1,-1];
+    const gb_key = [-1,-1,-1,-1,0,-1,-1,-1,-1,-1,-1,0,-1,-1,-1,-1,-1];
+    const cb_key = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1];
+
+
+    const k_majorInterval = [0,2,4,5,7,9,11];
+
+    //color
+      let bg_color;
+      let btns_color;
+      let btn_elements_color;
+      let btn_elements_arrow;
+      let shape_arrow_color;
+      let keysetting_bg_color;
+      let apply_btn_color;
+      let apply_btn_text_color;
+      let sharp_flat_stroke_color;
+      let sharp_flat_stroke_color_hover;
+      let sharp_flat_stroke_color_hover_click;
+      let sharp_flat_stroke_color_selected;
+      let sharp_flat_stroke_color_selected_bg;
+      let greek_not_selected;
+      let greek_seleted;
+      let al_selected;
+      let interval_text_color;
+      let tie_plet_unactivated_color;
+      let tie_plet_unactivated_hover;
+      let tie_plet_activated_color;
+      let tie_plet_elements_unactivated_color;
+      let tie_plet_elements_activated_color;
+      let ionian_c, dorian_c, phrygian_c, lydian_c, mixolydian_c, aeolian_c, locrian_c, alt_c, default_c
+
+    function preload() {
+      img = loadImage('static/resources/trevb.png');
+    }
+    //xpos ypos = Width/14 , Height/8
+        function setup() {
+          difficulty_val_str={{.DpLick.Difficulty}};
+          difficulty_val = int(difficulty_val_str);
+          difficulty_val_tobe = difficulty_val;
+          {{if (eq .Theme "dark")}}
+            bg_color = color(29, 30, 48);
+            btns_color = color(52, 46, 84);
+            btn_elements_arrow=color(0, 255, 255);
+            shape_arrow_color=color(98, 86, 177);
+            btn_elements_color = color(255,255,255);
+            keysetting_bg_color = color(51, 46, 86);
+            apply_btn_color = color(0,245,245);
+            apply_btn_text_color = color(0);
+            sharp_flat_stroke_color = color(98, 86, 177);
+            sharp_flat_stroke_color_hover = color(108, 96, 187,42);
+            sharp_flat_stroke_color_hover_click = color(88, 76, 167);
+            sharp_flat_stroke_color_selected = color(0,245,245);
+            sharp_flat_stroke_color_selected_bg = color(98, 86, 177);
+            greek_not_selected = color(81, 76, 116);
+            greek_seleted = color(255,255,255);
+            al_selected = color(0, 255, 255);
+            interval_text_color = color(0,245,245);
+            tie_plet_unactivated_color = color(58, 70, 96,130);
+            tie_plet_activated_color = color(52, 46, 84);
+            tie_plet_unactivated_hover = color(62, 56, 94);
+            tie_plet_elements_unactivated_color = color(255);
+            tie_plet_elements_activated_color = color(255);
+            ionian_c = color(255, 0, 162);
+            dorian_c = color(206, 0, 0);
+            phrygian_c = color(255, 60, 0);
+            lydian_c = color(255, 153, 0);
+            mixolydian_c = color(245, 179, 66);
+            aeolian_c = color(239, 255, 0);
+            locrian_c = color(136, 255, 0);
+            alt_c = color(255,255,255);
+            default_c = color(255,255,255);
+          {{else if (eq .Theme "simple")}}
+            bg_color = color(248, 249, 251);
+            btns_color = color(234, 236, 241);
+            btn_elements_arrow=color(68, 74, 71);
+            shape_arrow_color=color(156, 156, 167);
+            btn_elements_color = color(68, 74, 71);
+            keysetting_bg_color = color(248, 249, 251);
+            apply_btn_color = color(0, 111, 255);
+            apply_btn_text_color = color(255);
+            sharp_flat_stroke_color = color(68, 74, 71);
+            sharp_flat_stroke_color_hover = color(78, 84, 81,42);
+            sharp_flat_stroke_color_hover_click = color(58, 64, 61);
+            sharp_flat_stroke_color_selected = color(0,111,255);
+            sharp_flat_stroke_color_selected_bg = color(0,111,255,42);
+            greek_not_selected = color(156, 156, 167);
+            greek_seleted = color(68, 74, 71);
+            al_selected = color(0,111,255);
+            interval_text_color = color(68, 74, 71);
+            tie_plet_unactivated_color = color(58, 70, 96,130);
+            tie_plet_unactivated_hover = color(0,111,255,42);
+            tie_plet_activated_color = color(0,111,255);
+            tie_plet_elements_unactivated_color = color(255);
+            tie_plet_elements_activated_color = color(255);
+            ionian_c = color(255, 0, 162);
+            dorian_c = color(206, 0, 0);
+            phrygian_c = color(255, 60, 0);
+            lydian_c = color(255, 153, 0);
+            mixolydian_c = color(245, 179, 66);
+            aeolian_c = color(239, 255, 0);
+            locrian_c = color(136, 255, 0);
+            alt_c = color(255,255,255);
+            default_c = color(255,255,255);
+            {{else if (eq .Theme "pastel")}}
+              bg_color = color(248, 249, 251);
+              btns_color = color(191, 191, 203);
+              btn_elements_arrow=color(68, 74, 71);
+              shape_arrow_color=color(156, 156, 167);
+              btn_elements_color = color(68, 74, 71);
+              keysetting_bg_color = color(234, 234, 238);
+              apply_btn_color = color(73, 183, 216);
+              apply_btn_text_color = color(255);
+              sharp_flat_stroke_color = color(68, 74, 71);
+              sharp_flat_stroke_color_hover = color(152, 152, 152,42);
+              sharp_flat_stroke_color_hover_click = color(132, 132, 132);
+              sharp_flat_stroke_color_selected = color(73, 182, 216);
+              sharp_flat_stroke_color_selected_bg = color(73, 182, 216,42);
+              greek_not_selected = color(156, 156, 164);
+              greek_seleted = color(68, 74, 71);
+              al_selected = color(73, 182, 216);
+              interval_text_color = color(68, 74, 71);
+              tie_plet_unactivated_color = color(191, 191, 203);
+              tie_plet_unactivated_hover = color(255, 172, 144,42);
+              tie_plet_activated_color = color(255, 172, 144);
+              tie_plet_elements_unactivated_color = color(68, 74, 71);
+              tie_plet_elements_activated_color = color(255);
+              ionian_c = color(255, 144, 214);
+              dorian_c = color(255, 124, 124);
+              phrygian_c = color(255, 167, 124);
+              lydian_c = color(255, 207, 136);
+              mixolydian_c = color(255, 255, 148);
+              aeolian_c = color(197, 255, 130);
+              locrian_c = color(132, 210, 140);
+              alt_c = color(94, 219, 219);
+              default_c = color(255,255,255);
+          {{end}}
+
+          bang_btn = select('#bangbtn');
+          interval_btn = select('#intervalbtn');
+          remove_btn = select('#removebtn');
+          keysettingdiv = select("#keysettingdiv");
+          flatbtn = select("#flatbtn");
+          sharpbtn = select("#sharpbtn");
+          xpos = Width*0.066;
+          ypos = 0;
+          var canvas;
+          if(window.innerWidth/window.innerHeight > 1.9){
+            mheight = container.clientHeight * .55* .8;
+            mwidth = mheight*4;
+            Width = mheight * 4;
+            // resizeCanvas(container.clientWidth, mheight);
+            canvas = createCanvas(container.clientWidth, mheight);
+          }else{
+            mheight = Width/4.5;
+            mwidth = mheight*4;
+            // resizeCanvas(Width, mheight);
+            canvas = createCanvas(Width, mheight);
+          }
+          Height = mheight;
+
+          canvas.parent('#p5canvas');
+          //default
+            //booleans
+              rest = 'false';
+              accidental_show = false;
+              tie = "false";
+              triplet = false;
+              only_view = false;
+              writing = true;
+              writing_plet = false;
+              editing = false;
+              xpos_moving = false;
+              xinertia = false;
+              err = false;
+              mousePreocupado = false;
+              start = true;
+              reset = false;
+              keySetting = false;
+              key_Changing = false;
+              edit_interval = true;
+              resizing = false;
+              sidebarIsOn = false;
+              scaleSetting=false;
+              tagEditing=false;
+              firstAreYouReady = true;
+            //booleans end
+            //int
+              beat_type = 4;
+                //0 whole note
+                //1 dotted second note
+                //2 second note
+                //3 dotted quarter note
+                //4 quarter note
+                //5 dotted eighth note
+                //6 eighth note
+                //7 dotted sixteenth note
+                //8 sixteenth note
+                //12 second note plet
+                //14 quarter note plet
+                //16 eighth note plet
+                //18 sixteenth note plet
+              plet_count = 0;
+              beat_count = 0;
+              midiVal = 60; //determined later anyway ******************
+              accidental_val = 0;
+              currently_editing_num = 0;
+              consecutive = 0;
+              octave_consecutive = 0;
+              octave_control = 0;
+              y_index = 7;
+
+            //int end
+            //floats
+            keysig_start_point = xpos + Width/11;
+            timesig_start_point = keysig_start_point + Width/100;
+            currently_editingX = timesig_start_point + Width/100;
+              currently_editingX_val = 0;
+              inertia = 0;
+              xpos_moving_val=0;
+              firstSpeed =0;
+            //floats end
+            //map start
+            if_is_Sharp.set("Cb", "C");
+            if_is_Sharp.set("C", "C#");
+            if_is_Sharp.set("C#", "D");
+            if_is_Sharp.set("Db", "D");
+            if_is_Sharp.set("D", "D#");
+            if_is_Sharp.set("D#", "E");
+            if_is_Sharp.set("Eb", "E");
+            if_is_Sharp.set("E", "F");
+            if_is_Sharp.set("E#", "F#");
+            if_is_Sharp.set("Fb", "F");
+            if_is_Sharp.set("F", "F#");
+            if_is_Sharp.set("F#", "G");
+            if_is_Sharp.set("Gb", "G");
+            if_is_Sharp.set("G", "G#");
+            if_is_Sharp.set("G#", "A");
+            if_is_Sharp.set("Ab", "A");
+            if_is_Sharp.set("A", "A#");
+            if_is_Sharp.set("A#", "B");
+            if_is_Sharp.set("Bb", "C");
+            if_is_Sharp.set("B", "C");
+            if_is_Sharp.set("B#", "C#");
+
+            if_is_Flat.set("C#", "C");
+            if_is_Flat.set("C", "B");
+            if_is_Flat.set("Cb", "Bb");
+            if_is_Flat.set("B#", "B");
+            if_is_Flat.set("B", "Bb");
+            if_is_Flat.set("Bb", "A");
+            if_is_Flat.set("A#", "A");
+            if_is_Flat.set("A", "Ab");
+            if_is_Flat.set("Ab", "G");
+            if_is_Flat.set("G#", "G");
+            if_is_Flat.set("G", "Gb");
+            if_is_Flat.set("Gb", "F");
+            if_is_Flat.set("F#", "F");
+            if_is_Flat.set("F", "E");
+            if_is_Flat.set("Fb", "Eb");
+            if_is_Flat.set("E#", "E");
+            if_is_Flat.set("E", "Eb");
+            if_is_Flat.set("Eb", "D");
+            if_is_Flat.set("D#", "D");
+            if_is_Flat.set("D", "Db");
+            if_is_Flat.set("Db", "C");
+            //map end
+          //default end
+
+          is_chocen_sharp = int(is_chocen_sharpstr);
+          var keystr = {{.DpLick.Key}};
+          key = int(keystr);
+          selected_index=int(selected_indexstr);
+          k_all_note_in_Key(key);
+          switch (is_chocen_sharp) {
+            case 0:
+            chord_cen = all_notes_in_key_str[selected_index];
+              break;
+              case 1:
+              chord_cen = if_is_Sharp.get(all_notes_in_key_str[selected_index]);
+                break;
+                case -1:
+                chord_cen = if_is_Flat.get(all_notes_in_key_str[selected_index]);
+                  break;
+          }
+
+          k_interval_change(chord_cen);
+          k_interval_change_int_str(chord_cen);
+
+          for (var i = 0; i < 7; i++) {
+            intervals[i].innerText = all_notes_in_key_str[i];
+            intervalLi[i].setAttribute("value",i);
+          }
+
+          {{if (eq .Theme "dark")}}
+          intervalLi[selected_index].children[0].style.color = "#00ffff";
+          intervalLi[selected_index].children[1].style.color = "#ffffff";
+          {{else if (eq .Theme "simple")}}
+          intervalLi[selected_index].children[0].style.color = "#006fff";
+          intervalLi[selected_index].children[1].style.color = "#444A47";
+          {{else if (eq .Theme "pastel")}}
+          intervalLi[selected_index].children[0].style.color = "#74D4E4";
+          intervalLi[selected_index].children[1].style.color = "#444A47";
+          {{end}}
+
+          pixelDensity(1);
+
+
+          difficulty = select("#difficulty");
+          difficulty.style('display', 'none');
+          difficulty.value(difficulty_val);
+          difficultyDom = document.getElementById("difficulty");
+          var dv = (difficultyDom.value-difficultyDom.min)/(difficultyDom.max-difficultyDom.min)*100;
+          {{if (eq .Theme "dark")}}
+          difficultyDom.style.background = 'linear-gradient(to right, rgba(0,255,255,1) 0%, rgba(0,255,175,1) ' + dv + '%, #6256b1 ' + dv + '%, #6256b1 100%)'
+          {{else if (eq .Theme "simple")}}
+          difficultyDom.style.background = 'linear-gradient(to right, #1936FE 0%, #1936FE ' + dv + '%, #444A47 ' + dv + '%, #444A47 100%)'
+          {{else if (eq .Theme "pastel")}}
+          difficultyDom.style.background = 'linear-gradient(to right, #74D4E4 0%, #74D4E4 ' + dv + '%, #444A47 ' + dv + '%, #444A47 100%)'
+          {{end}}
+
+          difficultyDom.oninput = function() {
+            var value = (this.value-this.min)/(this.max-this.min)*100
+            {{if (eq .Theme "dark")}}
+            this.style.background = 'linear-gradient(to right, rgba(0,255,255,1) 0%, rgba(0,255,175,1) ' + value + '%, #6256b1 ' + value + '%, #6256b1 100%)'
+            {{else if (eq .Theme "simple")}}
+            this.style.background = 'linear-gradient(to right, #1936FE 0%, #1936FE ' + value + '%, #444A47 ' + value + '%, #444A47 100%)'
+            {{else if (eq .Theme "pastel")}}
+            this.style.background = 'linear-gradient(to right, #74D4E4 0%, #74D4E4 ' + value + '%, #444A47 ' + value + '%, #444A47 100%)'
+            {{end}}
+            difficulty_val_tobe = int(value);
+          };
+          difficultyDom.style.setProperty("--thumb-size", $('#difficulty').css('Height').replace('px', '')*1.5 +`px`);
+
+
+          chord_charInput = select("#chord-select-wrap");
+
+
+          chord_charInput.parent("#keysetting1");
+
+          scaleInput = select("#scale-select-wrap");
+
+          keysettingdiv.style("display", "none");
+
+          scaleInput.style("text-align", "center");
+
+          $('#custom-option').css('margin-top', $('#editChord').css("height"));
+
+          nameInput = select("#editNameInput");
+
+          nameInput.style("display","none");
+
+
+
+
+
+
+
+          flatbtn.style("display", "none");
+
+          sharpbtn.style("display", "none");
+
+
+          k_all_note_in_Key(key);
+
+
+          rearrange();
+          var addition_f_s;
+          switch (is_chocen_sharp) {
+            case 0:
+            addition_f_s = "";
+              break;
+              case 1:
+              addition_f_s = "#";
+                break;
+                case -1:
+                addition_f_s = "b";
+                  break;
+          }
+          $('#lick-intervalChord').html(addition_f_s + all_notes_in_key_greek.get(all_notes_in_key_str[selected_index])+chord_char);
+          $('#lick-key').html(k_keycen(key) + " Key");
+
+          sizeReset()
+        }
+        function draw() {
+          if(!firstAreYouReady){
+            p5Canvas4OtherUse[0].xval = xpos_moving_val;
+          }
+          background(bg_color);
+          if(currently_editingX > Width* .8){
+            if(xpos_moving){
+              xpos_moving_val += mouseX - pmouseX;
+              if(xpos_moving_val > 0){
+                xpos_moving_val = 0;
+              }else if(xpos_moving_val< -1*currently_editingX*.7){
+                xpos_moving_val = -1*currently_editingX*.7
+              }
+            }else{
+              if(xinertia){
+                xpos_moving_val += inertia;
+                inertia = firstSpeed / xpos_moving_count;
+                xpos_moving_count = xpos_moving_count*1.04;
+                if(xpos_moving_val > 0){
+                  xpos_moving_val = 0;
+                }else if(xpos_moving_val< -1*currently_editingX*.7){
+                  xpos_moving_val = -1*currently_editingX*.7
+                }
+                if(abs(inertia)<0.1){
+                  xinertia = false;
+                  inertia=0;
+                  firstSpeed=0;
+                }
+              }else{
+                xinertia = false;
+                inertia=0;
+                xpos_moving_count =0;
+              }
+            }
+          }else{
+            xinertia = false;
+            inertia=0;
+            xpos_moving_count =0;
+            xpos_moving_val=0;
+          }
+          bigD(Width);
+
+
+          for (let [i,ns] of n.entries()){
+            ns.Draw();
+            ns.selected=false;
+            if(i==currently_editing_num){
+              ns.selected=true;
+            }
+            if(ns.pc ==3){
+              n[i].completePlet = true;
+              n[i-1].completePlet = true;
+              n[i-2].completePlet = true;
+            }
+            if(ns.tie =="true"){
+              drawTie(i);
+            }
+          }
+
+          drawGrouping();
+          fill(bg_color);
+          stroke(bg_color)
+          strokeWeight(Width/350);
+          rect(0,ypos,Width*0.066,mheight);
+          drawOctaveTranspose();
+
+        }
+
+        function drawGrouping() {
+          for (let i = 0; i < n.length-1; i++){
+            if(n[i].two_connected){
+              drawtwoconnected(i);
+              i+= 1;
+            }else if(n[i].four_connected){
+              drawFourConnected(i);
+              i+= 3;
+            }else if(n[i].three_compound_connected[0]){
+              drawThreeConnected_0(i);
+              i+= 2;
+            }else if(n[i].three_compound_connected[1]){
+              drawThreeConnected_1(i);
+              i+= 2;
+            }else if(n[i].three_compound_connected[2]){
+              drawThreeConnected_2(i);
+              i+= 2;
+            }else if(n[i].two_compound_connected[0]){//58
+              drawTwoComConnected_0(i);
+              i+= 1;
+            }else if(n[i].two_compound_connected[1]){//85
+              drawTwoComConnected_1(i);
+              i+= 1;
+            }else if(n[i].four_compound_connected[0]){//3336
+              drawFourComConnected_0(i);
+              i+= 3;
+            }else if(n[i].four_compound_connected[1]){//6333
+              drawFourComConnected_1(i);
+              i+= 3;
+            }else if(n[i].five_compound_connected[0]){//33388
+              drawFiveComConnected_0(i);
+              i+= 4;
+            }else if(n[i].five_compound_connected[1]){//88333
+              drawFiveComConnected_1(i);
+              i+= 4;
+            }else if(n[i].completePlet){
+              drawTriplet(i);
+              i+=2;
+            }
+          }
+        }
+
+
+        function beat_count_cal(bt){
+          switch(bt){
+            case 0:
+              return 64;
+            break;
+            case 1:
+              return 48;
+            break;
+            case 2:
+              return 32;
+            break;
+            case 3:
+              return 24;
+            break;
+            case 4:
+              return 16;
+            break;
+            case 5:
+              return 12;
+            break;
+            case 6:
+              return 8;
+            break;
+            case 7:
+              return 6;
+            break;
+            case 8:
+              return 4;
+            break;
+            case 12:
+              return 64;
+            break;
+            case 14:
+              return 32;
+            break;
+            case 16:
+              return 16;
+            break;
+            case 18:
+              return 8;
+            break;
+          }
+
+        }
+      function mouseIsOnDisplay() {
+        if(mouseX>0&&mouseX<Width&&mouseY>ypos&&mouseY<ypos+mheight){
+           return true;
+           }else{
+           return false;
+           }
+        }
+      function return_beat_count(bt){
+          switch(bt){
+            case 0:
+              bc=64;
+            break;
+            case 1:
+              bc=48;
+            break;
+            case 2:
+              bc=32;
+            break;
+            case 3:
+              bc=24;
+            break;
+            case 4:
+              bc=16;
+            break;
+            case 5:
+              bc=12;
+            break;
+            case 6:
+              bc=8;
+            break;
+            case 7:
+              bc=6;
+            break;
+            case 8:
+              bc=4;
+            break;
+          }
+          return bc
+      }
+
+
+      function scaleOpen(){
+        console.log("scaleOpen");
+        var direction=$(".custom-options").css("display");
+        if($("#keysettingdiv").css("display")=="none"){
+          if (direction=="block") {
+            console.log("close");
+            $("#editScale li img").css("transform","rotate(180deg)");
+            $('.for_transparency').css("background-color", "rgba(20,20,20,0)");
+            $('.for_transparency').css("z-index", "-99");
+            bang_btn.style("filter", "brightness(1)");
+            remove_btn.style("filter", "brightness(1)");
+            interval_btn.style("filter", "brightness(1)");
+            $('#arrowDiv').css('filter', "brightness(1)");
+            $('#noteTypeDiv').css('filter', "brightness(1)");
+            $('#otherButtonsDiv').css('filter', "brightness(1)");
+            scaleSetting = false;
+          }else{
+            console.log("open");
+            $("#editScale li img").css("transform","rotate(0deg)");
+            $('.for_transparency').css("background-color", "rgba(20,20,20,.3)");
+            $('.for_transparency').css("z-index", "99");
+            bang_btn.style("filter", "brightness(.5)");
+            remove_btn.style("filter", "brightness(.5)");
+            interval_btn.style("filter", "brightness(.5)");
+            $('#arrowDiv').css('filter', "brightness(.5)");
+            $('#noteTypeDiv').css('filter', "brightness(.5)");
+            $('#otherButtonsDiv').css('filter', "brightness(.5)");
+            scaleSetting = true;
+          }
+          console.log("toggle");
+              $(".custom-options").toggle(300);
+        }
+        }
+        function chordOpen(){
+
+        }
+        window.addEventListener('resize',function () {
+          body[0].style.height = window.innerHeight + "px";
+          body[0].style.minHeight = window.innerHeight + "px";
+
+          Width = container.clientWidth;
+          pixelDensity(1);
+          header_logo = $(".contents header").css("height").replace("px","");
+
+         xpos = Width*0.066;
+         ypos = 0;
+
+         if(window.innerWidth/window.innerHeight > 1.9){
+           mheight = container.clientHeight * .55* .8;
+           mwidth = mheight*4;
+           Width = mheight * 4;
+           resizeCanvas(container.clientWidth, mheight);
+         }else{
+           mheight = Width/4.5;
+           mwidth = mheight*4;
+           resizeCanvas(Width, mheight);
+         }
+         Height = mheight;
+         keysig_start_point = xpos + Width/15;
+         timesig_start_point = keysig_start_point + Width/100;
+         currently_editingX = timesig_start_point + Width/100;
+          $('#p5canvas').css('height', mheight + 'px');
+
+         difficultyDom.style.setProperty("--thumb-size", $('#difficulty').css('Height').replace('px', '')*1.5 +`px`);
+
+         $('#custom-option-chords').css('margin-top', $('#editChord').css('height'));
+
+         $('#custom-option').css('margin-top', $('#scale-select-wrap').css('height'));
+
+
+
+         if(window.innerWidth/window.innerHeight < .71428){
+
+           $('#side_bar').css('right', '-100%');
+           $('#for_transparency3').css('z-index', '-99');
+           $('#for_transparency3').css('background-color', 'rgba(20,20,20,0)');
+         }
+
+         resizing = true;
+         rearrange();
+         if(p5Canvas4OtherUse[1]){
+           p5Canvas4OtherUse[1].indowResized();
+         }
+        });
+        // function windowResized() {
+        //
+        // }
+        function sizeReset() {
+          $('#custom-option').css('margin-top', $('#scale-select-wrap').css('height'));
+
+
+          chord_char_height = Height/10;
+          $('#custom-option-chords').css({
+             'margin-top' : $('#editChord').css('height')
+            });
+
+          if(window.innerWidth/window.innerHeight < 1.111){
+
+          }
+          if(window.innerWidth/window.innerHeight < .625){
+          }
+        }
+        function mouseIsOnTagOpen() {
+          return false;
+        }
+        function mouseIsOnTagSave() {
+          return false;
+        }
+
+
+    </script>
+    <script src="static/js/main.js"></script>
+    <script src="static/js/note.js"></script>
+    <script src="static/js/buttons.js"></script>
+    <script src="static/js/display.js"></script>
+    <script src="static/js/mousePressed.js"></script>
+    <script src="static/js/keyCon.js"></script>
+    <script type="text/javascript">
+        function areYouReady() {
+          let p5can_for_interval = document.getElementById('p5canvas4interval');
+          var func = function(sketch){
+             sketch.xData = [];
+             sketch.tData = [];
+             sketch.Width  = p5can_for_interval.clientWidth;
+             sketch.Height = p5can_for_interval.clientHeight;
+             sketch.n = n;
+             sketch.xval = xpos_moving_val;
+             sketch.bg;
+             sketch.ft;
+
+
+              sketch.setup = function() {
+                for (var i = 0; i < sketch.n.length; i++) {
+                  sketch.xData.push(sketch.n[i].x);
+                  sketch.tData.push(sketch.n[i].interval);
+                }
+
+                {{if (eq .Theme "dark")}}
+                sketch.bg = sketch.color(29, 30, 48);
+                sketch.ft = sketch.color(0,255,255);
+                {{else if (eq .Theme "simple")}}
+                sketch.bg = sketch.color(248, 249, 251);
+                sketch.ft = sketch.color(0,111,255);
+                {{else if (eq .Theme "pastel")}}
+                sketch.bg = sketch.color(248, 249, 251);
+                sketch.ft = sketch.color(116, 212, 228);
+                {{end}}
+
+              let canvas_sketch = sketch.createCanvas(sketch.Width,sketch.Height);
+              canvas_sketch.parent("#p5canvas4interval");
+            }
+            sketch.draw = function() {
+              sketch.xData =[];
+              sketch.tData = [];
+              for (var i = 0; i < sketch.n.length; i++) {
+
+                sketch.xData.push(sketch.n[i].x);
+                sketch.tData.push(sketch.n[i].interval);
+              }
+              //for canvas 1
+              sketch.background(sketch.bg);
+              sketch.textSize(sketch.Width/32);
+              sketch.strokeWeight(sketch.Height/360);
+              sketch.stroke(sketch.ft);
+              sketch.fill(sketch.ft);
+              sketch.textAlign(CENTER,CENTER);
+              for (var i = 0; i < sketch.tData.length; i++) {
+                sketch.text(sketch.tData[i],
+                  sketch.xData[i]+sketch.xval,
+                  sketch.Height/2);
+              }
+              sketch.fill(sketch.bg);
+              sketch.noStroke();
+              sketch.rect(0,0,sketch.Width*0.066,sketch.Height);
+            }
+            sketch.indowResized= function(){
+              sketch.Width  = p5can_for_interval.clientWidth;
+              sketch.Height = p5can_for_interval.clientHeight;
+              sketch.resizeCanvas(sketch.Width,sketch.Height);
+            }
+          }
+          p5Canvas4OtherUse[0] =new p5(func);
+        }
+
+        function areYouReady2() {
+          let p5can_for_keyCanvas = document.getElementById('keyCanvasContainer');
+          var func = function(sketch){
+            $("#keyCanvasContainer").html("");
+             sketch.Width  = p5can_for_keyCanvas.clientWidth;
+             sketch.Height = p5can_for_keyCanvas.clientHeight;
+             //sketch.img = img;
+             sketch.k = key;
+             sketch.addition_f_s;
+             switch (is_chocen_sharp) {
+               case 0:
+               sketch.addition_f_s = "";
+                 break;
+                 case 1:
+                 sketch.addition_f_s = "#";
+                   break;
+                   case -1:
+                   sketch.addition_f_s = "b";
+                     break;
+             }
+             sketch.num = abs(sketch.k-7);
+             sketch.greekChord = " - " + sketch.addition_f_s + all_notes_in_key_greek.get(all_notes_in_key_str[selected_index])+chord_char;
+             sketch.chord = chord_cen + chord_char;
+             sketch.keystr = k_keycen(key) + " " + "Key";
+             sketch.oof = [7, 5.5, 7.5, 6, 8, 6.5, 8.5];
+             sketch.oos = [5, 6.5, 4.5, 6, 4, 5.5, 3.5];
+             sketch.keysig = sketch.Width/6+ sketch.Width/22;
+             sketch.timesig = sketch.keysig + sketch.num*(sketch.Width/100)+sketch.Width/40;
+              sketch.setup = function() {
+              let canvas_sketch2 = sketch.createCanvas(sketch.Width,sketch.Height);
+              canvas_sketch2.parent("#keyCanvasContainer");
+            }
+            sketch.draw = function() {
+              sketch.num = abs(sketch.k-7);
+              sketch.timesig = sketch.keysig + sketch.num*(sketch.Width/100)+sketch.Width/40;
+              sketch.background(255);
+              sketch.stroke(20);
+              sketch.strokeWeight(sketch.Height/240);
+              for (var i = 5; i < 10; i++) {
+                sketch.line(0,
+                  i*(sketch.Height/12),
+                  sketch.Width,
+                  i*(sketch.Height/12));
+              }
+              sketch.tint(0,255);
+              sketch.image(img, 0, int(3.8*(sketch.Height/12)),
+              int(sketch.Width/6), int(3*(sketch.Height/6)));
+              sketch.noFill();
+              for(var i = 0; i < sketch.num; i++){
+                if(sketch.k<7){
+                  sketch.DrawSharp(sketch.keysig + sketch.Width/28*i,
+                    sketch.oos[i]*(sketch.Height/12) - sketch.Height/20,
+                    sketch.Width/12,
+                    sketch.Height/9);
+                }else if(sketch.k>7){
+                  sketch.DrawFlat(sketch.keysig + sketch.Width/28*i,
+                    sketch.oof[i]*(sketch.Height/12) - sketch.Height/15,
+                    sketch.Width/12,
+                    sketch.Height/9);
+                }
+              }
+              sketch.textSize(sketch.Height/12);
+              sketch.textAlign(RIGHT,TOP);
+              sketch.fill(180);
+              sketch.noStroke();
+              sketch.text(sketch.keystr,
+                sketch.Width,
+                sketch.Height*2/12);
+              sketch.textAlign(CENTER,CENTER);
+              sketch.fill(0);
+              sketch.textSize(sketch.Height/12);
+              sketch.text(sketch.chord,
+                sketch.Height/6,
+                sketch.Height/12);
+                sketch.textAlign(LEFT,CENTER);
+                sketch.fill(180);
+                sketch.text(sketch.greekChord,
+                  sketch.Height/6 + textWidth(sketch.chord),
+                  sketch.Height/12);
+            }
+            sketch.indowResized= function(){
+              sketch.Width  = p5can_for_keyCanvas.clientWidth;
+              sketch.Height = p5can_for_keyCanvas.clientHeight;
+              sketch.resizeCanvas(sketch.Width,sketch.Height);
+              sketch.pixelDensity(1);
+            }
+            sketch.DrawFlat = function(x, y, w, h){
+              sketch.strokeCap(ROUND);
+              sketch.strokeWeight(sketch.Height/150);
+              sketch.beginShape();
+              sketch.vertex(x+(4*w/10), y+(h/10));
+              sketch.vertex(x+(4*w/10), y+(8*h/10));
+               sketch.bezierVertex(x+(7*w/10), y+(8*h/10),
+                            x+(7*w/10), y+(2*h/10),
+                            x+(4*w/10), y+(6*h/10));
+              sketch.endShape();
+            }
+            sketch.DrawSharp = function(x, y, w, h){
+              sketch.strokeWeight(sketch.Height/200);
+              sketch.line(x+(6*w/10), y+(h/10),x+(6*w/10), y+(8*h/10));
+              sketch.line(x+(4*w/10), y+(2*h/10),x+(4*w/10), y+(9*h/10));
+              sketch.strokeWeight(sketch.Height/100);
+              sketch.line(x+(2*w/10), y+(4*h/10),x+(8*w/10), y+(2*h/10));
+              sketch.line(x+(2*w/10), y+(8*h/10),x+(8*w/10), y+(6*h/10));
+            }
+          }
+          p5Canvas4OtherUse[1] =new p5(func);
+        }
+
+        var scaleDomDiv = document.getElementById("editScale");
+        var keysettingDomDiv = document.getElementById("scale-select-wrap");
+        var bangDomDiv = document.getElementById("bangbtn");
+        var removeDomDiv = document.getElementById("removebtn");
+        var intervalDomDiv = document.getElementById("intervalbtn");
+
+        var upDomdiv = document.getElementById("up");
+        var downDomdiv = document.getElementById("down");
+        var rightDomdiv = document.getElementById("right");
+        var leftDomdiv = document.getElementById("left");
+        var upperDomDiv = document.getElementById("upperType");
+        var lowerDomDiv = document.getElementById("lowerType");
+
+        var tieDomDiv = document.getElementById("tieDiv");
+        var tripletDomDiv = document.getElementById("tripletDiv");
+        var restDomDiv = document.getElementById("restDiv");
+
+          var flatDomDiv = document.getElementById("hr-flat");
+          var natDomDiv = document.getElementById("hr-nat");
+          var sharpDomdiv = document.getElementById("hr-sharp");
+
+        var fToogle = document.getElementById("fToggle");
+        var sToggle = document.getElementById("sToggle");
+
+        fToogle.addEventListener("touchend", function (e) {
+          domFToggle();
+          e.stopPropagation();
+          e.preventDefault();
+        })
+        sToggle.addEventListener("touchend", function (e) {
+          domSToggle();
+          e.stopPropagation();
+          e.preventDefault();
+        })
+          tieDomDiv.addEventListener("touchend", function (e) {
+            domTie();
+            e.stopPropagation();
+            e.preventDefault();
+          })
+          tripletDomDiv.addEventListener("touchend", function (e) {
+            domPlet();
+            e.stopPropagation();
+            e.preventDefault();
+          })
+          restDomDiv.addEventListener("touchend", function (e) {
+            domRest();
+            e.stopPropagation();
+            e.preventDefault();
+          })
+          upperDomDiv.addEventListener("touchend", function (e) {
+            switchUp();
+            e.stopPropagation();
+            e.preventDefault();
+          })
+          lowerDomDiv.addEventListener("touchend", function (e) {
+            switchDown();
+            e.stopPropagation();
+            e.preventDefault();
+          })
+
+          upDomdiv.addEventListener("touchend", function (e) {
+            arrowUp();
+            e.stopPropagation();
+            e.preventDefault();
+          })
+          downDomdiv.addEventListener("touchend", function (e) {
+            arrowDown();
+            e.stopPropagation();
+            e.preventDefault();
+          })
+          rightDomdiv.addEventListener("touchend", function (e) {
+            arrowRight();
+            e.stopPropagation();
+            e.preventDefault();
+          })
+          leftDomdiv.addEventListener("touchend", function (e) {
+            arrowLeft();
+            e.stopPropagation();
+            e.preventDefault();
+          })
+          bangDomDiv.addEventListener("touchend", function (e) {
+            domBang();
+            e.stopPropagation();
+            e.preventDefault();
+          })
+          removeDomDiv.addEventListener("touchend", function (e) {
+            domRemove();
+            e.stopPropagation();
+            e.preventDefault();
+          })
+          intervalDomDiv.addEventListener("touchend", function (e) {
+            intervalToggle();
+            e.stopPropagation();
+            e.preventDefault();
+          })
+        scaleDomDiv.addEventListener("click", function (e) {
+          scaleOpen();
+          e.stopPropagation();
+          e.preventDefault();
+        })
+        scaleDomDiv.addEventListener("touchend", function (e) {
+          scaleOpen();
+          e.stopPropagation();
+          e.preventDefault();
+        })
+        keysettingDomDiv.addEventListener("click", function (e) {
+          if($(".custom-options").css("display")=="none"){
+            $('.for_transparency').css("background-color", "rgba(20,20,20,.3)");
+            $('.for_transparency').css("z-index", "99");
+            bang_btn.style("filter", "brightness(.5)");
+            remove_btn.style("display", "none");
+            sharpbtn.style("display", "table");
+            flatbtn.style("display", "table");
+            interval_btn.style("filter", "brightness(.5)");
+            keysettingdiv.style("display", "flex");
+            difficulty.style('display', 'flex');
+            difficultyDom.style.setProperty("--thumb-size", $('#difficulty').css('Height').replace('px', '')*1.5 +`px`);
+            keySetting = true;
+            nameInput.style("display","flex");
+            chord_charInput.style("display","flex");
+            $('#custom-option-chords').css('margin-top', $('#editChord').css("height"));
+            k_all_note_in_Key(key);
+            areYouReady2();
+            p5Canvas4OtherUse[1].pixelDensity(1);
+          }
+
+          e.stopPropagation();
+          e.preventDefault();
+        });
+        keysettingDomDiv.addEventListener("touchend", function (e) {
+          if($(".custom-options").css("display")=="none"){
+            $('.for_transparency').css("background-color", "rgba(20,20,20,.3)");
+            $('.for_transparency').css("z-index", "99");
+            bang_btn.style("filter", "brightness(.5)");
+            remove_btn.style("display", "none");
+            sharpbtn.style("display", "table");
+            flatbtn.style("display", "table");
+            interval_btn.style("filter", "brightness(.5)");
+            keysettingdiv.style("display", "flex");
+            difficulty.style('display', 'flex');
+            difficultyDom.style.setProperty("--thumb-size", $('#difficulty').css('Height').replace('px', '')*1.5 +`px`);
+            keySetting = true;
+            nameInput.style("display","flex");
+            chord_charInput.style("display","flex");
+            $('#custom-option-chords').css('margin-top', $('#editChord').css("height"));
+            k_all_note_in_Key(key);
+            areYouReady2();
+            p5Canvas4OtherUse[1].pixelDensity(1);
+          }
+          e.stopPropagation();
+          e.preventDefault();
+        });
+
+        tagInput.addEventListener("keyup", function (e) {
+            if (e.keyCode === 13) {
+              tagsDomArray =[];
+             e.preventDefault();
+             if(tags == null){
+               tags.push(tagInput.value);
+             }else if(tags.indexOf(tagInput.value) == -1){
+              tags.push(tagInput.value);
+             }
+             tagInput.value = "";
+             tags.forEach( t => {
+               var item = "<li>" + t + "<img value='"+t+"' class='removeTags' src='static/resources/icon/union.png'></li>"
+               tagsDomArray.push(item);
+             });
+             $("#tag-container ul").html(tagsDomArray);
+             for (var i = 0; i < removeTags.length; i++) {
+             removeTags[i].addEventListener('click', removetagfunc, false);
+             }
+            }
+        });
+        tagInput.addEventListener("touchend", function (e) {
+          tagInput.focus();
+          e.stopPropagation();
+          e.preventDefault();
+        });
+        var tagCont = document.getElementById("tag-container");
+        var lastTouch = null;
+        tagCont.addEventListener("touchstart", function (e) {
+          lastTouch = event.touches[0];
+          e.stopPropagation();
+        });
+        tagCont.addEventListener("touchmove", function (e) {
+          var currentTouch = event.changedTouches[0];
+
+            if (lastTouch) {
+            	$('#tag-container ul').scrollTop += currentTouch.clientY - lastTouch.clientY;
+            }
+
+            lastTouch = currentTouch;
+          e.stopPropagation();
+        });
+        tagCont.addEventListener("touchend", function (e) {
+          lastTouch = null;
+          e.stopPropagation();
+        });
+        var removeTags = document.getElementsByClassName("removeTags");
+        var removetagfunc = function (e){
+            var tagname = this.getAttribute('value');
+            tags =tags.filter(function(v, i ,a){
+            return v != tagname;
+          });
+          tagsDomArray =[];
+          tags.forEach( t => {
+            var item = "<li>" + t + "<img value='"+t+"' class='removeTags' src='static/resources/icon/union.png'></li>"
+            tagsDomArray.push(item);
+          });
+          $("#tag-container ul").html(tagsDomArray);
+          for (var i = 0; i < removeTags.length; i++) {
+          removeTags[i].addEventListener('click', removetagfunc, false);
+          }
+          tagInput.focus();
+          e.stopPropagation();
+
+        }
+        for (var i = 0; i < removeTags.length; i++) {
+        removeTags[i].addEventListener('click', removetagfunc, false);
+        }
+        for (var i = 0; i < removeTags.length; i++) {
+        removeTags[i].addEventListener('touchend', removetagfunc, false);
+        }
+        var keySettingPanalDom = document.getElementById('keysettingdivWrapper');
+        keySettingPanalDom.addEventListener('touchend', function (e) {
+          lastTouch = null;
+          tagInput.blur();
+          editNameInput.blur();
+        });
+        var intervals = document.getElementsByClassName("intervals");
+        var intervalLi = $(".intervalsWrapper li");
+
+        intervalLi.bind('touchend', function(e){
+          intervalLi.find("span").css("color", "#BFBFCB");
+          {{if (eq .Theme "dark")}}
+          $(this).find("span").css("color", "#ffffff");
+          $(this).find("span.intervals").css("color", "#00ffff");
+          {{else if (eq .Theme "simple")}}
+          $(this).find("span").css("color", "#444a47");
+          $(this).find("span.intervals").css("color", "#006fff");
+          {{else if (eq .Theme "pastel")}}
+          $(this).find("span").css("color", "#ffffff");
+          $(this).find("span.intervals").css("color", "#00ffff");
+          {{end}}
+
+          var value = $(this).attr("value");
+          selected_index = parseInt(value);
+          if(is_chocen_sharp==1){
+            chord_cen = if_is_Sharp.get(all_notes_in_key_str[selected_index]);
+          }else if(is_chocen_sharp==-1){
+            chord_cen = if_is_Flat.get(all_notes_in_key_str[selected_index]);
+          }else{
+            chord_cen = all_notes_in_key_str[selected_index];
+          }
+          var addition_f_s;
+          switch (is_chocen_sharp) {
+            case 0:
+            addition_f_s = "";
+              break;
+              case 1:
+              addition_f_s = "#";
+                break;
+                case -1:
+                addition_f_s = "b";
+                  break;
+          }
+          p5Canvas4OtherUse[1].greekChord = " - " + addition_f_s + all_notes_in_key_greek.get(all_notes_in_key_str[selected_index])+chord_char;
+          p5Canvas4OtherUse[1].chord = chord_cen + chord_char;
+          p5Canvas4OtherUse[1].keystr = k_keycen(key) + " " + "Key";
+        });
+        intervalLi.click(function(e){
+          intervalLi.find("span").css("color", "#BFBFCB");
+          {{if (eq .Theme "dark")}}
+          $(this).find("span").css("color", "#ffffff");
+          $(this).find("span.intervals").css("color", "#00ffff");
+          {{else if (eq .Theme "simple")}}
+          $(this).find("span").css("color", "#444a47");
+          $(this).find("span.intervals").css("color", "#006fff");
+          {{else if (eq .Theme "pastel")}}
+          $(this).find("span").css("color", "#ffffff");
+          $(this).find("span.intervals").css("color", "#00ffff");
+          {{end}}
+          var value = $(this).attr("value");
+          selected_index = parseInt(value);
+          if(is_chocen_sharp==1){
+            chord_cen = if_is_Sharp.get(all_notes_in_key_str[selected_index]);
+          }else if(is_chocen_sharp==-1){
+            chord_cen = if_is_Flat.get(all_notes_in_key_str[selected_index]);
+          }else{
+            chord_cen = all_notes_in_key_str[selected_index];
+          }
+          var addition_f_s;
+          switch (is_chocen_sharp) {
+            case 0:
+            addition_f_s = "";
+              break;
+              case 1:
+              addition_f_s = "#";
+                break;
+                case -1:
+                addition_f_s = "b";
+                  break;
+          }
+          p5Canvas4OtherUse[1].greekChord = " - " + addition_f_s + all_notes_in_key_greek.get(all_notes_in_key_str[selected_index])+chord_char;
+          p5Canvas4OtherUse[1].chord = chord_cen + chord_char;
+          p5Canvas4OtherUse[1].keystr = k_keycen(key) + " " + "Key";
+        });
+
+        var editNameInput = document.getElementById("editNameInput");
+        editNameInput.addEventListener("touchend", function (e) {
+          editNameInput.focus();
+          e.stopPropagation();
+          e.preventDefault();
+        });
+
+        var domAddFlat = document.getElementById("flatbtn");
+        var domAddSharp = document.getElementById("sharpbtn");
+        var domApplybtn = document.getElementById("keyApplybtn");
+        domAddFlat.addEventListener("touchend", function (e) {
+          domFlat();
+          e.stopPropagation();
+          e.preventDefault();
+        });
+        domAddSharp.addEventListener("touchend", function (e) {
+          domSharp();
+          e.stopPropagation();
+          e.preventDefault();
+        });
+        domApplybtn.addEventListener("touchend", function (e) {
+          domApply();
+          e.stopPropagation();
+          e.preventDefault();
+        });
+        difficultyDom = document.getElementById("difficulty");
+        difficultyDom.addEventListener("touchstart", function (e) {
+          lastTouch = event.touches[0];
+          e.stopPropagation();
+        });
+
+      difficultyDom.addEventListener('touchmove', function(e){
+      var currentTouch = event.changedTouches[0];
+
+      this.value = this.value +currentTouch.clientX - lastTouch.clientX;
+      var value = (this.value-this.min)/(this.max-this.min)*100;
+      {{if (eq .Theme "dark")}}
+      this.style.background = 'linear-gradient(to right, rgba(0,255,255,1) 0%, rgba(0,255,175,1) ' + value + '%, #6256b1 ' + value + '%, #6256b1 100%)'
+      {{else if (eq .Theme "simple")}}
+      this.style.background = 'linear-gradient(to right, #1936FE 0%, #1936FE ' + value + '%, #444A47 ' + value + '%, #444A47 100%)'
+      {{else if (eq .Theme "pastel")}}
+      this.style.background = 'linear-gradient(to right, #74d4e4 0%, #74d4e4 ' + value + '%, #444A47 ' + value + '%, #444A47 100%)'
+      {{end}}
+
+                  difficulty_val_tobe = int(value);
+
+                  lastTouch = currentTouch;
+          e.stopPropagation();
+      });
+      var user_img = document.getElementById("user_img");
+      user_img.addEventListener('touchend', function () {
+        if(window.innerWidth/window.innerHeight < .71428){
+          $('#side_bar').css('right', '0');
+          $('.for_transparency').css('z-index', '9998');
+          $('.for_transparency').css('background-color', 'rgba(20,20,20,.5)');
+        }
+      });
+      user_img.addEventListener('click', function () {
+        if(window.innerWidth/window.innerHeight < .71428){
+          $('#side_bar').css('right', '0');
+          $('.for_transparency').css('z-index', '9998');
+          $('.for_transparency').css('background-color', 'rgba(20,20,20,.5)');
+        }
+      });
+      var sidebarImg = document.getElementById('sidebarImg');
+      sidebarImg.addEventListener('click', function () {
+        window.location.href = '/setting';
+      });
+      var contemp = document.getElementById('contemp');
+      contemp.addEventListener('click', function () {
+        window.location.href = '/setting';
+      });
+      var closeDiv = document.getElementById('closeDiv');
+      closeDiv.addEventListener('click', function () {
+        $('#side_bar').css('right', '-100%');
+        $('.for_transparency').css('z-index', '-99');
+        $('.for_transparency').css('background-color', 'rgba(20,20,20,0)');
+      });
+      closeDiv.addEventListener('touchend', function () {
+        $('#side_bar').css('right', '-100%');
+        $('.for_transparency').css('z-index', '-99');
+        $('.for_transparency').css('background-color', 'rgba(20,20,20,0)');
+      });
+      var pickupbtn = document.getElementById("pickup");
+      pickupbtn.addEventListener('touchend', function () {
+        pickup();
+      });
+      function pickup(){
+        var index = getParameterByName('i');
+        var gohere = getParameterByName('go');
+        var q = getParameterByName('q');
+        if(index != null){
+          var json_data={
+              "id": gohere,
+              "instruction": "load",
+              "index": int(index),
+              "lickid": q
+            };
+            xhr.onreadystatechange = function() {
+              if (xhr.readyState == 4 && xhr.status == 200) {
+                var uri = '/Sdisplay?q=' + gohere;
+                window.location.href = uri;
+                  }
+            }
+            xhr.open('POST', '/updatesheet', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify(json_data));
+        }else{
+
+          var uri = '/Sdisplay?q=' + gohere;
+          window.location.href = uri;
+        }
+      }
+
+      function getParameterByName(name, url = window.location.href) {
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+      }
+    </script>
+  </body>
+</html>

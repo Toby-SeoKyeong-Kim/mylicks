@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Solo Master</title>
+    {{if (eq .Theme "dark")}}
+    <link rel="stylesheet" href="static/css/dark_forum.css"/>
+    {{else if (eq .Theme "simple")}}
+    <link rel="stylesheet" href="static/css/simple_forum.css"/>
+    {{else if (eq .Theme "pastel")}}
+    <link rel="stylesheet" href="static/css/pastel_forum.css"/>
+    {{end}}
+    <script src="https://kit.fontawesome.com/6743146fd8.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/resources/treble_clef.png">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#000000"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@800&family=Open+Sans:wght@800&display=swap" rel="stylesheet">
+    <script src="static/js/main.js"></script>
+  </head>
+  <body>
+    <div class="side_bar" id="side_bar">
+      <div class="side_bar_contents">
+        <div id="closeDiv" class="closeDiv">
+
+        </div>
+        <div class="logoutDiv">
+          <a href="/logout"><p>Logout</p></a>
+        </div>
+        <div class="userImgSidebar">
+          <div id="contemp" class="contemp">
+            <div class="imgAfter">
+              <p>edit</p>
+            </div>
+          </div>
+          <img id="sidebarImg" src="{{.Picture}}" alt="">
+        </div>
+        <p>{{.Given_name}}</p>
+      </div>
+      <ul>
+        <a href="/setting"><div id="profileIcon"></div><li>Profile</li></a>
+        <a href="/mylicks"><div id="licksIcon"></div><li>My Licks</li></a>
+        <a href="/mysheets"><div id="sheetsIcon"></div><li>My Sheets</li></a>
+        <a href="/forum"><div id="downloadIcon"></div><li>Forum</li></a>
+      </ul>
+    </div>
+    <div class="con-wrap">
+      <div class="for_transparency">
+
+      </div>
+      <div class="contents">
+        <header>
+          <div class="headerWrap">
+            <div id="header-logo" class="header-nav">
+
+              {{if (eq .Theme "dark")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{else if (eq .Theme "simple")}}
+              <h2><a href="/"style="color:#1936FE;">MY LICKS</a></h2>
+              {{else if (eq .Theme "pastel")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{end}}
+            </div>
+
+
+            <div id="logout" class="header-nav">
+
+              {{if (eq .Theme "dark")}}
+              <p><a href="/logout" style="color: #757189;">Logout</a></p>
+              {{else if (eq .Theme "simple")}}
+              <p><a href="/logout" style="color: #9C9CA7;">Logout</a></p>
+              {{else if (eq .Theme "pastel")}}
+              <p><a href="/logout" style="color: #B6EBF3;">Logout</a></p>
+              {{end}}
+            </div>
+            <div id="user_info" class="header-nav">
+              <div class="user_img" id="user_img">
+                <img src="{{.Picture}}" alt="No Image">
+              </div>
+              <p>{{.Given_name}}</p>
+              <div class="top-down-menu">
+                <a href="/setting">
+                  <div id="profile-icon2"></div>
+                  <span>Profile</span>
+                </a>
+                <a href="/mylicks">
+                  <div id="licks-icon2"></div>
+                  <span>My Licks</span>
+                </a>
+                <a href="/mysheets">
+                  <div id="sheets-icon2"></div>
+                  <span>My Sheets</span>
+                </a>
+                <a href="/forum">
+                  <div id="download-icon2"></div>
+                  <span>Forum</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+        <div class="subheaderNav">
+          <div class="headerNavWrap">
+            <ul>
+              <a href="/sharelicks"><li id="licknav">Licks</li></a>
+              <a href="/sharesheets"><li id="sheetnav">Sheets</li></a>
+              <a href="/forum"><li id="discussnav">Discussion</li></a>
+              <a href="/users"><li id="popnav">Users</li></a>
+            </ul>
+          </div>
+        </div>
+        <main id="main-container">
+          <div class="posts">
+
+            <ul class="postul">
+
+            </ul>
+
+          </div>
+          <div class="gAd">
+            <img class="cat" src="" alt="">
+          </div>
+          <div class="trending">
+            <p class="lable">Trending</p>
+            <ul>
+
+            </ul>
+          </div>
+          <div class="topUsers">
+            <p class="lable">Top Users of the Week</p>
+            <ul>
+
+            </ul>
+          </div>
+        </main>
+      </div>
+    </div>
+    <footer>
+        <div class="copyright">
+          <div class="logo">
+            <p class="footer-text" id="textlogo">My Licks</p>
+          </div>
+          <div class="contactinfos">
+            <p class="footer-text" id="copyright">Copyright (c) 2020 Toby Kim </p>
+          </div>
+        </div>
+      </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript">
+      var calendar = ["Jan","Feb","Mar","Apr","May","Jun","July","Aug","Sep","Oct","Nov","Dec"];
+      var userID = {{.ID}};
+      var sortedPosts;
+      var vu, vd;
+      var payload;
+      var num;
+      var arry2 =[];
+      var topuarry =[];
+      var trenarry = [];
+      var inval;
+      var skip = 0;
+      var postHeaders = document.getElementsByClassName("postHeader");
+      var postContents1 = document.getElementsByClassName("postContents1");
+      var postContents = document.getElementsByClassName("postContents");
+      var postContents3 = document.getElementsByClassName("postContents3");
+      var inputs = document.getElementsByClassName("input");
+      var commentSumit = document.getElementsByClassName("commentSumit");
+      var authorImage = document.getElementsByClassName("authorImage2");
+      var voteup = document.getElementsByClassName("voteup");
+      var votedown = document.getElementsByClassName("votedown");
+      var morePosts = true;
+      var mySet = new Set();
+      var topu ={{.Topu}}
+      var tren ={{.Tren}}
+      var p = {{.Post}}
+      var json_data={
+        "filter": "0",
+        "skip": skip.toString(),
+        "query": p.id
+      };
+      var xhr = new XMLHttpRequest();
+      var xhr_addcom = new XMLHttpRequest();
+      var xhr_getcom = new XMLHttpRequest();
+      var xhr_delcom = new XMLHttpRequest();
+      var xhr_savecom = new XMLHttpRequest();
+      var xhr_visit = new XMLHttpRequest();
+      var xhr_vote = new XMLHttpRequest();
+      var rand = Math.random();
+
+      if(rand > .66){
+        $(".cat").attr("src", "static/resources/guitarcat.png");
+      }else if(rand > .33){
+        $(".cat").attr("src", "static/resources/trumcat.png");
+      }else{
+        $(".cat").attr("src", "static/resources/drumcat.png");
+      }
+      topu.forEach(function (user, index) {
+        var s = "<li class='topus' value='"+user.id+"'><img src='"+user.Picture+"' alt='No Image'><span>"+user.Given_name+"<span></li>"
+        topuarry.push(s);
+      });
+      $(".topUsers ul").html(topuarry)
+
+      tren.forEach(function (post, index) {
+        var s = "<li class='topus' value='"+post.id+"'><img src='"+post.AuthorImage+"' alt='No Image'><span>"+post.title+"<span></li>"
+        trenarry.push(s);
+      });
+      $(".trending ul").html(trenarry)
+
+      $(".topUsers li").click(function () {
+        var profileID = $(this).attr("value");
+        var uri = '/visitprofile?q=' + profileID;
+        window.location.href = uri;
+      });
+
+      $(".trending li").click(function () {
+        var postid = $(this).attr("value");
+        var uri = '/Fdisplay?q=' + postid;
+        window.location.href = uri;
+      });
+
+      xhr.addEventListener('readystatechange', function(){
+        if(xhr.readyState === XMLHttpRequest.DONE){
+          if (xhr.status === 200) {
+            var item = xhr.responseText;
+            payload = JSON.parse(item);
+            sortedPosts = payload.posts;
+            vu = payload.vu;
+            vd = payload.vd;
+            num = parseInt(payload.num);
+            if(num<7){
+              morePosts = false;
+
+            }
+            getHtml();
+         }
+        }
+      });
+      xhr.open('POST', '/getPosts', true);
+      xhr.setRequestHeader('Content-Type', 'application/xml');
+      xhr.send(JSON.stringify(json_data));
+
+      function getPosts() {
+         json_data={
+          "filter": "0",
+          "skip": skip.toString(),
+          "query": ""
+        };
+        xhr.open('POST', '/getPosts', true);
+        xhr.setRequestHeader('Content-Type', 'application/xml');
+        xhr.send(JSON.stringify(json_data));
+      }
+      function getHtml() {
+        arry2 = [];
+
+        if(sortedPosts){
+          sortedPosts.forEach(function(post, index){
+            post.clicked = false;
+            if(Date.now() - Date.parse(post.date) < 60000){
+              var timestr = 1 + " minute ago"
+            }else if(Date.now() - Date.parse(post.date) < 3600000){
+              var time = parseInt((Date.now() - Date.parse(post.date))/60000);
+              var timestr = time + " minutes ago"
+            }else if(Date.now() - Date.parse(post.date) < 86400000){
+              var time = parseInt((Date.now() - Date.parse(post.date))/3600000);
+              var timestr = time + " hours ago"
+            }else{
+              var time = new Date(Date.parse(post.date));
+              var timestr = calendar[time.getMonth()]+" "+time.getDate()+", "+ time.getFullYear();
+            }
+
+            if(post.Comments){
+              var comlength = post.Comments.length;
+            }else{
+              var comlength = "0"
+            }
+            var str1 ="<li><div class='authorImage'><img class='authorImage2' src='"+post.AuthorImage +"' alt='' value='"+post.AuthorID +"'><div class='votewrap'><div class='voteup"+vu[index]+"' value='"+post.id+"'></div><div class='votedown"+vd[index]+"'></div></div></div><div class='posttexts'><div class='postHeader' value='"+(index+skip)+"'><h3 value='"+post.id+"'>"+post.title+"</h3></div><div class='postContents'><div class='answers-icon'><div class='answer1'></div><div class='answer2'></div><div class='answer3'></div></div><p class='antxt'>"+comlength+" Comments </p><div class='votes-icon'><div class='vote1'></div></div><p class='votxt'>"+post.Votes+" Votes </p><div class='viewcounts-icon'><div class='viewcount1'></div><div class='viewcount2'></div></div><p class='vwtxt'>"+post.Viewcounts+" Views </p></div><div class='postContents1'><p>"+post.Contents;
+            var str2 ="</p></div><div class='postContents2'><div class='tags'></div><div class='dates'>"+timestr+"</div></div></div><div class='postContents3'><div class='comments'><ul></ul></div><div class='commentInput'><span class='input' role='textbox' contenteditable></span><div class='commentSumit' mid='"+post.id+"' value='"+(index+skip)+"'><div class='commentSumit1'></div><div class='commentSumit2'></div><div class='commentSumit3'></div></div></div></div></li>";
+          arry2.push(str1 + str2)
+
+
+        });
+          $(".postul").append(arry2);
+        }
+
+        for (var i = skip; i < postHeaders.length; i++) {
+            postHeaders[i].addEventListener('click', function(){
+              inval = this.getAttribute("value");
+              if(!mySet.has(inval)){
+                var vid = $(this).find("h3").attr("value");
+                var anum = $(this).parent().find(".postContents").find("p.vwtxt").text().split(" ");
+                $(this).parent().find(".postContents").find("p.vwtxt").text((parseInt(anum[0])+1) +" "+ anum[1]);
+
+                xhr_visit.open('POST', '/visitpost', true);
+                xhr_visit.setRequestHeader('Content-Type', 'application/xml');
+                xhr_visit.send(JSON.stringify(vid));
+              }
+              mySet.add(inval);
+              if(getComputedStyle(postContents1[this.getAttribute("value")]).height != "0px"){
+                postContents1[inval].style.height = 0;
+                postContents1[inval].style.padding = 0;
+                postContents3[inval].style.height = 0;
+                postContents3[inval].style.padding = 0;
+                postContents[inval].children[0].style.background = "#9C9CA7";
+                postContents[inval].children[1].style.color = "#9C9CA7";
+                postContents[inval].children[2].style.background = "#9C9CA7";
+                postContents[inval].children[3].style.color = "#9C9CA7";
+                postContents[inval].children[4].style.background = "#9C9CA7";
+                postContents[inval].children[5].style.color = "#9C9CA7";
+                $(this).parent().parent().find(".votewrap").css("height", "0");
+              }else{
+                postContents1[inval].style.height = getComputedStyle(postContents1[inval].children[0]).height;
+                postContents3[inval].style.height = "auto";
+                postContents1[inval].style.padding = "10px 0 20px";
+                postContents3[inval].style.paddingTop = "10px";
+                postContents[inval].children[0].style.background = "#FF6A73";
+                postContents[inval].children[1].style.color = "#FF6A73";
+                postContents[inval].children[2].style.background = "#78D693";
+                postContents[inval].children[3].style.color = "#78D693";
+                postContents[inval].children[4].style.background = "#5A92FF";
+                postContents[inval].children[5].style.color = "#5A92FF";
+                $(this).parent().parent().find(".votewrap").css("height", "auto");
+                var pid = postContents3[inval].children[1].children[1].getAttribute("mid");
+
+                xhr_getcom.open('POST', '/getComments', true);
+                xhr_getcom.setRequestHeader('Content-Type', 'application/xml');
+                xhr_getcom.send(JSON.stringify(pid));
+              }
+          }, false);
+            authorImage[i].addEventListener('click', function(){
+              var profileID = this.getAttribute("value");
+              var uri = '/visitprofile?q=' + profileID;
+              window.location.href = uri;
+            }, false);
+
+            voteup[i].addEventListener('click', function(){
+              var pid = this.getAttribute("value");
+              var vnum = $(this).parent().parent().parent().find("p.votxt").text().split(" ");
+              var fvnum = parseInt(vnum[0]);
+              if($(this).hasClass("votedu")){
+                $(this).removeClass("votedu");
+                fvnum -= 1;
+              }else{
+                if($(this).parent().find(".votedown").hasClass("votedd")){
+                  $(this).addClass("votedu");
+                  $(this).parent().find(".votedown").removeClass("votedd")
+                  fvnum += 2;
+                }else{
+                  $(this).addClass("votedu");
+                  $(this).parent().find(".votedown").removeClass("votedd")
+                  fvnum += 1;
+                }
+              }
+              $(this).parent().parent().parent().find("p.votxt").text(fvnum +" "+ vnum[1])
+              var json_data5 = {
+                "vote": "up",
+                "pid": pid
+              }
+              xhr_vote.open('POST', '/votePost', true);
+              xhr_vote.setRequestHeader('Content-Type', 'application/xml');
+              xhr_vote.send(JSON.stringify(json_data5));
+            });
+            votedown[i].addEventListener('click', function(){
+              var pid = $(this).parent().find(".voteup").attr("value")
+              var vnum = $(this).parent().parent().parent().find("p.votxt").text().split(" ");
+              var fvnum = parseInt(vnum[0]);
+              if($(this).hasClass("votedd")){
+                $(this).removeClass("votedd");
+                fvnum += 1;
+              }else{
+                if($(this).parent().find(".voteup").hasClass("votedu")){
+                  $(this).addClass("votedd");
+                  $(this).parent().find(".voteup").removeClass("votedu")
+                  fvnum -= 2;
+                }else{
+                  $(this).addClass("votedd");
+                  $(this).parent().find(".voteup").removeClass("votedu")
+                  fvnum -= 1;
+                }
+              }
+              $(this).parent().parent().parent().find("p.votxt").text(fvnum +" "+ vnum[1])
+              var json_data5 = {
+                "vote": "down",
+                "pid": pid
+              }
+              xhr_vote.open('POST', '/votePost', true);
+              xhr_vote.setRequestHeader('Content-Type', 'application/xml');
+              xhr_vote.send(JSON.stringify(json_data5));
+            });
+        }
+
+        for (var i = skip; i < commentSumit.length; i++) {
+          commentSumit[i].addEventListener('click', function(){
+            inval = this.getAttribute("value");
+            var id = this.getAttribute("mid");
+            if(inputs[inval].innerText != ""){
+              var final_text = inputs[inval].innerText.split("\n").filter(function(value,index,arr){ return value != "";}).join("\n");
+              var json_data2 = {
+                "postid": id.toString(),
+                "contents": final_text.toString()
+              };
+
+              xhr_addcom.open('POST', '/postComments', true);
+              xhr_addcom.setRequestHeader('Content-Type', 'application/xml');
+              xhr_addcom.send(JSON.stringify(json_data2));
+              inputs[inval].innerText ="";
+            }
+          });
+        }
+      }
+
+
+      xhr_getcom.addEventListener('readystatechange', function(){
+        if(xhr_getcom.readyState === XMLHttpRequest.DONE){
+          if (xhr_getcom.status === 200) {
+            var items = xhr_getcom.responseText;
+            var comments = JSON.parse(items);
+            var comarry = [];
+            if(comments){
+              postContents[inval].children[1].innerText = comments.length + " Answers";
+              comments.forEach(function(comment, index){
+                if(Date.now() - Date.parse(comment.date) < 60000){
+                  var timestr = 1 + " minute ago"
+                }else if(Date.now() - Date.parse(comment.date) < 3600000){
+                  var time = parseInt((Date.now() - Date.parse(comment.date))/60000);
+                  var timestr = time + " minutes ago"
+                }else if(Date.now() - Date.parse(comment.date) < 86400000){
+                  var time = parseInt((Date.now() - Date.parse(comment.date))/3600000);
+                  var timestr = time + " hours ago"
+                }else{
+                  var time = new Date(Date.parse(comment.date));
+                  var timestr = calendar[time.getMonth()]+" "+time.getDate()+", "+ time.getFullYear();
+                }
+                var strarry  = comment.Contents.split("\n").filter(function(value,index,arr){ return value != "";});
+                var comstr= ""
+                strarry.forEach(function (str, index2) {
+                  comstr += "<div>" + str + "</div>";
+                })
+                if(userID == comment.AuthorID){
+                  comarry.push("<li><img src='"+comment.AuthorImage+"' alt='No Image' value='"+comment.AuthorID+"'><div class='commentsWrapper'><div class='comHeadWrapper'><h4>"+comment.Author+"</h4><div class='comHeadOption'><div class='comHeadOptionWrapper'><div class='editcom'>edit</div><div class='deletecom' value='"+comment.id+"' inval='"+inval+"'>delete</div></div><div class='dots'></div><div class='dots'></div><div class='dots'></div></div></div><span>"+comstr+"</span><div class='saveWrapper'><div class='savebtn' inval='"+inval+"' value='"+comment.id+"'>save</div><div class='cancelbtn' value='"+inval+"'>cancel</div></div><p>"+timestr+"</p></div></li>");
+                }else{
+                  comarry.push("<li><img src='"+comment.AuthorImage+"' alt='No Image' value='"+comment.AuthorID+"'><div class='commentsWrapper'><div class='comHeadWrapper'><h4>"+comment.Author+"</h4></div><span>"+comstr+"</span><p>"+timestr+"</p></div></li>");
+                }
+
+              });
+              $(".comments ul:eq("+inval+")").html(comarry);
+              $(".comHeadOption").unbind("click");
+              $(".editcom").unbind("click");
+              $(".deletecom").unbind("click");
+              $(".savebtn").unbind("click");
+              $(".cancelbtn").unbind("click");
+              $(".comHeadOption").click(function(e) {
+                $(".comHeadOptionWrapper").css("display", "none");
+                $(this).find(".comHeadOptionWrapper").css("display", "block");
+                e.stopPropagation();
+              });
+              $(".editcom").click(function(e) {
+                $(".comHeadOptionWrapper").css("display", "none");
+                $(this).parent().parent().parent().parent().find("span").attr("contenteditable", "true");
+                $(this).parent().parent().parent().parent().find("span").focus();
+                $(this).parent().parent().parent().parent().find("div.saveWrapper").css("display", "flex");
+                e.stopPropagation();
+              });
+              $(".deletecom").click(function(e) {
+                if (confirm('Do you want to delete your comment?')) {
+                    // Do it!
+
+                    var cid = $(this).attr("value");
+                    xhr_delcom.open('POST', '/delCom', true);
+                    xhr_delcom.setRequestHeader('Content-Type', 'application/xml');
+                    xhr_delcom.send(JSON.stringify(cid));
+                  } else {
+                    // Do nothing!
+                    $(".comHeadOptionWrapper").css("display", "none");
+                  }
+                  e.stopPropagation();
+              });
+              $(".savebtn").click(function (e) {
+                var str = $(this).attr("value");
+                var contsid = $(this).parent().parent().find("span").attr("id", str + "-text");
+                var contents = document.getElementById(str + "-text").innerText;
+                inval = $(this).attr("inval");
+                var json_data3 = {
+                  "id": str,
+                  "contents": contents
+                };
+                xhr_savecom.open('POST', '/saveCom', true);
+                xhr_savecom.setRequestHeader('Content-Type', 'application/xml');
+                xhr_savecom.send(JSON.stringify(json_data3));
+              });
+              $(".cancelbtn").click(function (e) {
+
+                var pid = postContents3[$(this).attr("value")].children[1].children[1].getAttribute("mid");
+                inval = $(this).attr("value")
+                xhr_getcom.open('POST', '/getComments', true);
+                xhr_getcom.setRequestHeader('Content-Type', 'application/xml');
+                xhr_getcom.send(JSON.stringify(pid));
+              });
+              $(".comments li span").click(function (e) {
+                if($(this).attr("contenteditable")=="true"){
+                  e.stopPropagation();
+                }
+              });
+            }else{
+              $(".comments ul:eq("+inval+")").html("");
+            }
+         }
+        }
+      });
+
+      xhr_addcom.addEventListener('readystatechange', function(){
+        if(xhr_addcom.readyState === XMLHttpRequest.DONE){
+          if (xhr_addcom.status === 200) {
+
+            var pid = postContents3[inval].children[1].children[1].getAttribute("mid");
+            xhr_getcom.open('POST', '/getComments', true);
+            xhr_getcom.setRequestHeader('Content-Type', 'application/xml');
+            xhr_getcom.send(JSON.stringify(pid));
+         }
+        }
+      });
+      xhr_delcom.addEventListener('readystatechange', function(){
+        if(xhr_delcom.readyState === XMLHttpRequest.DONE){
+          if (xhr_delcom.status === 200) {
+            var item = xhr_delcom.responseText;
+            var result = JSON.parse(item)
+            console.log(result);
+            var pid = postContents3[inval].children[1].children[1].getAttribute("mid");
+            if(result == "awesome"){
+              xhr_getcom.open('POST', '/getComments', true);
+              xhr_getcom.setRequestHeader('Content-Type', 'application/xml');
+              xhr_getcom.send(JSON.stringify(pid));
+            }else{
+              alert("Unauthorized attempt detected");
+            }
+         }
+        }
+      });
+      xhr_savecom.addEventListener('readystatechange', function(){
+        if(xhr_savecom.readyState === XMLHttpRequest.DONE){
+          if (xhr_savecom.status === 200) {
+            var item = xhr_savecom.responseText;
+            var result = JSON.parse(item)
+            var pid = postContents3[inval].children[1].children[1].getAttribute("mid");
+            if(result == "awesome"){
+              xhr_getcom.open('POST', '/getComments', true);
+              xhr_getcom.setRequestHeader('Content-Type', 'application/xml');
+              xhr_getcom.send(JSON.stringify(pid));
+            }else{
+              alert("Unauthorized attempt detected");
+            }
+         }
+        }
+      });
+      xhr_postpost.addEventListener('readystatechange', function(){
+        if(xhr_postpost.readyState === XMLHttpRequest.DONE){
+          if (xhr_postpost.status === 200) {
+            var item = xhr_postpost.responseText;
+            var result = JSON.parse(item)
+            if(result =="ok"){
+              window.location.reload();
+            }else{
+              alert("there's went wrong please re-try or tell us what happened");
+            }
+         }
+        }
+      });
+
+        $(".loadmorebtn").click(function(e){
+          if(morePosts){
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+               skip += 7;
+               getPosts();
+            }
+          }else{
+            alert("there are no more posts to load. follow more people or go to practice");
+            $(".loadmorebtn").css("display", "none");
+          }
+        });
+        $("body").click(function () {
+          $(".comHeadOptionWrapper").css("display", "none");
+        });
+
+
+        var user_img = document.getElementById("user_img");
+        user_img.addEventListener('touchend', function () {
+          if(window.innerWidth/window.innerHeight < .71428){
+            $('#side_bar').css('right', '0');
+            $('.for_transparency').css('z-index', '9998');
+            $('.for_transparency').css('background-color', 'rgba(20,20,20,.5)');
+          }
+        });
+        user_img.addEventListener('click', function () {
+          if(window.innerWidth/window.innerHeight < .71428){
+            $('#side_bar').css('right', '0');
+            $('.for_transparency').css('z-index', '9998');
+            $('.for_transparency').css('background-color', 'rgba(20,20,20,.5)');
+          }
+        });
+        var sidebarImg = document.getElementById('sidebarImg');
+        sidebarImg.addEventListener('click', function () {
+          window.location.href = '/setting';
+        });
+        var contemp = document.getElementById('contemp');
+        contemp.addEventListener('click', function () {
+          window.location.href = '/setting';
+        });
+        var closeDiv = document.getElementById('closeDiv');
+        closeDiv.addEventListener('click', function () {
+          $('#side_bar').css('right', '-100%');
+          $('.for_transparency').css('z-index', '-99');
+          $('.for_transparency').css('background-color', 'rgba(20,20,20,0)');
+        });
+        closeDiv.addEventListener('touchend', function () {
+          $('#side_bar').css('right', '-100%');
+          $('.for_transparency').css('z-index', '-99');
+          $('.for_transparency').css('background-color', 'rgba(20,20,20,0)');
+        });
+        window.addEventListener('resize', function () {
+          if(window.innerWidth/window.innerHeight < .71428){
+
+            $('#side_bar').css('right', '-100%');
+            $('.for_transparency').css('z-index', '-99');
+            $('.for_transparency').css('background-color', 'rgba(20,20,20,0)');
+          }
+        });
+    </script>
+  </body>
+</html>

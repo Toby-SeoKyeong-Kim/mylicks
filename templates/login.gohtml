@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="static/css/login.css"/>
+</head>
+<body>
+  <header>
+      <i class="fas fa-bars" id="btn" onclick="openSlideMenu()"></i>
+      <h2><a href="/"style="color:#111;">Solo Master</a></h2>
+  </header>
+  <form method="post" id="form-create-user">
+    <input type="text" name="username" id="username"placeholder="email">
+      <input type="password" name="password" id="password" placeholder="password">
+      <p class="form-field-err" id="password-err"></p>
+      <input type="submit" value="LogIn">
+  </form>
+  <p><a href="/signup" id="gosignup">Not having account yet?</a></p>
+  <footer>
+    <div class="copyright">
+      <div class="logo">
+
+      </div>
+      <p class="footer-text">Copyright (c) 2020 Toby Kim </p>
+    </div>
+    <div class="contactinfos">
+      <p class="footer-text">seop0504@gmail.com</p>
+      <div class="facebooklogo">
+
+      </div>
+      <div class="instalogo">
+
+      </div>
+      <div class="youtubelogo">
+
+      </div>
+    </div>
+  </footer>
+  <script>
+      var formUser = document.querySelector('#form-create-user');
+      var username = document.querySelector('#username');
+      var p1 = document.querySelector('#password');
+      var pErr = document.querySelector('#password-err');
+
+      formUser.addEventListener('submit', function(e){
+          var ok = loginValidation();
+          if (!ok) {
+              e.preventDefault();
+              return;
+          }
+      });
+
+      function loginValidation() {
+          pErr.textContent = '';
+          if (p1.value === '') {
+              pErr.textContent = 'Enter a password.';
+              return false;
+          }
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', '/validatePs', false);
+          xhr.send(username.value + " " + p1.value);
+          var item = xhr.responseText;
+          if (item == 'true') {
+              pErr.textContent = '';
+              return true;
+          } else {
+              pErr.textContent = "Username and/or password do not match";
+              return false;
+          }
+      };
+  </script>
+</body>
+</html>

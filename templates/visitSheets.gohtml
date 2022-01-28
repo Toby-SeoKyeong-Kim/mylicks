@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Solo Master</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    {{if (eq .User1.Theme "dark")}}
+    <link rel="stylesheet" href="static/css/dark_visitsheets.css"/>
+    {{else if (eq .User1.Theme "simple")}}
+    <link rel="stylesheet" href="static/css/simple_visitsheets.css"/>
+    {{else if (eq .User1.Theme "pastel")}}
+    <link rel="stylesheet" href="static/css/pastel_visitsheets.css"/>
+    {{end}}
+    <script src="https://kit.fontawesome.com/6743146fd8.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.js"></script>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/resources/treble_clef.png">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#000000"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@800&family=Open+Sans:wght@800&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="for_transparency">
+
+    </div>
+    <div class="side_bar" id="side_bar">
+      <div class="side_bar_contents">
+        <div id="closeDiv" class="closeDiv">
+
+        </div>
+        <div class="logoutDiv">
+          <a href="/logout"><p>Logout</p></a>
+        </div>
+        <div class="userImgSidebar">
+          <div id="contemp" class="contemp">
+            <div class="imgAfter">
+              <p>edit</p>
+            </div>
+          </div>
+          <img id="sidebarImg" src="{{.User1.Picture}}" alt="">
+        </div>
+        <p>{{.User1.Given_name}}</p>
+      </div>
+      <ul>
+        <a href="/mylicks"><div id="licksIcon"></div><li>My Licks</li></a>
+        <a href="/mysheets"><div id="sheetsIcon"></div><li>My Sheets</li></a>
+        <a href="/forum"><div id="downloadIcon"></div><li>Forum</li></a>
+        <a href="/setting"><div id="profileIcon"></div><li>Profile</li></a>
+      </ul>
+    </div>
+    <div class="con-wrap">
+
+      <div class="contents">
+        <header>
+          <div class="for_transparency">
+
+          </div>
+          <div class="headerWrap">
+            <div id="header-logo" class="header-nav">
+
+              {{if (eq .User1.Theme "dark")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{else if (eq .User1.Theme "simple")}}
+              <h2><a href="/"style="color:#1936FE;">MY LICKS</a></h2>
+              {{else if (eq .User1.Theme "pastel")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{end}}
+            </div>
+
+
+            <div id="logout" class="header-nav">
+
+              {{if (eq .User1.Theme "dark")}}
+              <p><a href="/logout" style="color: #757189;">Logout</a></p>
+              {{else if (eq .User1.Theme "simple")}}
+              <p><a href="/logout" style="color: #9C9CA7;">Logout</a></p>
+              {{else if (eq .User1.Theme "pastel")}}
+              <p><a href="/logout" style="color: #B6EBF3;">Logout</a></p>
+              {{end}}
+            </div>
+            <div id="user_info" class="header-nav">
+              <div class="user_img" id="user_img">
+                <img src="{{.User1.Picture}}" alt="No Image">
+              </div>
+              <p>{{.User1.Given_name}}</p>
+              <div class="top-down-menu">
+                <a href="/setting">
+                  <div id="profile-icon2"></div>
+                  <span>Profile</span>
+                </a>
+                <a href="/mylicks">
+                  <div id="licks-icon2"></div>
+                  <span>My Licks</span>
+                </a>
+                <a href="/mysheets">
+                  <div id="sheets-icon2"></div>
+                  <span>My Sheets</span>
+                </a>
+                <a href="/forum">
+                  <div id="download-icon2"></div>
+                  <span>Forum</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+        <main>
+          <div class="sheet-container" id="sheet-container">
+            <div class="for_transparency">
+
+            </div>
+
+
+            <input value="{{.DpSheet.Name}}" type="text" id="editNameInput" spellcheck="false" disabled placeholder="Title" autocomplete="off" maxlength="20">
+
+
+            {{if .Downloaded}}
+              <div id="unviewbtn">
+                <div class="btn-wrapper">
+                  <span class="icon-unview">
+
+                  </span>
+                  <p class="disappear">download</p>
+                </div>
+              </div>
+            {{else}}
+              <div id="viewbtn">
+                <div class="btn-wrapper">
+                  <span class="icon-view">
+
+                  </span>
+                  <p class="disappear">download</p>
+                </div>
+              </div>
+            {{end}}
+            <ul id="licklist">
+
+            </ul>
+
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <footer>
+
+      <div class="for_transparency2">
+
+      </div>
+        <div class="copyright">
+          <div class="logo">
+            <p class="footer-text" id="textlogo">My Licks</p>
+          </div>
+
+          <div class="contactinfos">
+            <p class="footer-text" id="copyright">Copyright (c) 2020 Toby Kim </p>
+            <!-- <p class="footer-text" id="email">seop0504@gmail.com</p> -->
+          </div>
+        </div>
+      </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+    var xhr = new XMLHttpRequest();
+    var xhr2 = new XMLHttpRequest();
+    var getxhr = new XMLHttpRequest();
+    var xhr_newlick = new XMLHttpRequest();
+    var xhr_sortstop = new XMLHttpRequest();
+    var xhr_dl = new XMLHttpRequest();
+    var body = document.getElementsByTagName('body');
+      body[0].style.height = window.innerHeight + "px";
+      body[0].style.minHeight = window.innerHeight + "px";
+      body[0].style.minWidth = 300 + "px";
+    var container = document.getElementById('sheet-container');
+    var Height = container.clientHeight;
+    var Width = container.clientWidth;
+    var header_logo = $(".contents header").css("height").replace("px","");
+    var header_logo_font = header_logo *.422;
+    var header_logout_font = header_logo *.281;
+    var header_user_font = header_logo *.338;
+    $("#header-logo").css("font-size", header_logo_font + 'px');
+    $("#logout").css("font-size", header_logout_font+ 'px');
+    $(".user_img").css('width',$("#user_info").css("font-size").replace('px','')*1.5 + 'px');
+    $('#editChord li span').css('font-size', Height/20 + "px");
+    $('#editScale li span').css('font-size', Height*3/96 + "px");
+    var footer_height = $("footer").css("height").replace("px","");
+    var text_logo_fontSize = footer_height *.285;
+    var copyright_fontSize = footer_height *.2;
+    $("#textlogo").css("font-size", text_logo_fontSize + 'px');
+    $("#copyright").css("font-size", copyright_fontSize+ 'px');
+
+    let downloaded = false;
+    let visiting = true;
+    let sheet_id = {{.DpSheet.ID}};
+    let name = {{.DpSheet.Name}};
+    let ldata = [];
+    var lick_datas;
+    let item;
+    var number_of_keysig;
+    var asig = Width/35;
+    let y_indexs = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11];
+    var order_of_flat = [7, 5.5, 7.5, 6, 8, 6.5, 8.5];
+    var order_of_sharp = [5, 6.5, 4.5, 6, 4, 5.5, 3.5];
+    {{if .DpSheet.Data}}
+      ldata = [...{{.DpSheet.Data}}];
+    {{end}}
+    var sortedLicks=[];
+    {{if .SortedLicks}}
+    var sortedLicks = [...{{.SortedLicks}}];
+    {{end}}
+    let l = [];
+    var c=[];
+    let sidebarIsOn = false;
+    let all_notes_in_key_int;
+    let all_notes_in_key_str;
+    let if_is_Flat = new Map();
+    let if_is_Sharp = new Map();
+    let interval_from_root = new Map();
+    let interval_int_str = new Map();
+    let all_notes_in_key_greek = new Map();
+    let greek_order = ["I","II","III","IV","V","VI","VII"];
+    let prev_id =["C","B","A","G","F","E","D","C","B","A","G","F","E","D","C","B","A"];
+    //int
+    let keytobe, key, ypos_moving_count,number_of_licks, difficulty_val, difficulty_val_tobe;
+    //float
+    let ypos_moving_val, inertia,firstSpeed;
+    //boolean
+    let edit_view, keySetting, keyChanging;
+    let difficulty_val_str;
+    var literal_CtoI_array =[
+    ["C", 0],
+    ["Cb", 11],
+    ["C#", 1],
+    ["D", 2],
+    ["Db", 1],
+    ["D#", 3],
+    ["E", 4],
+    ["Eb", 3],
+    ["E#", 5],
+    ["F", 5],
+    ["Fb", 4],
+    ["F#", 6],
+    ["G", 7],
+    ["Gb", 6],
+    ["G#", 8],
+    ["A", 9],
+    ["Ab", 8],
+    ["A#", 10],
+    ["B", 11],
+    ["Bb", 10],
+    ["B#", 0],
+  ]
+    const literal_CtoI = new Map(literal_CtoI_array);
+    const keyInt = [1,6,11,4,9,2,7,0,5,10,3,8,1,6,11];
+
+    const cs_key = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+    const fs_key = [1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,0,1];
+    const b_key  = [1,0,1,1,1,0,1,1,0,1,1,1,0,1,1,0,1];
+    const e_key  = [1,0,0,1,1,0,1,1,0,0,1,1,0,1,1,0,0];
+    const a_key  = [1,0,0,1,1,0,0,1,0,0,1,1,0,0,1,0,0];
+    const d_key  = [1,0,0,0,1,0,0,1,0,0,0,1,0,0,1,0,0];
+    const g_key  = [0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0];
+    const c_key  = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    const f_key  = [0,-1,0,0,0,0,0,0,-1,0,0,0,0,0,0,-1,0];
+    const bb_key = [0,-1,0,0,0,-1,0,0,-1,0,0,0,-1,0,0,-1,0];
+    const eb_key = [0,-1,-1,0,0,-1,0,0,-1,-1,0,0,-1,0,0,-1,-1];
+    const ab_key = [0,-1,-1,0,0,-1,-1,0,-1,-1,0,0,-1,-1,0,-1,-1];
+    const db_key = [0,-1,-1,-1,0,-1,-1,0,-1,-1,-1,0,-1,-1,0,-1,-1];
+    const gb_key = [-1,-1,-1,-1,0,-1,-1,-1,-1,-1,-1,0,-1,-1,-1,-1,-1];
+    const cb_key = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1];
+
+
+    const k_majorInterval = [0,2,4,5,7,9,11];
+
+    //color
+    let center_color, apply_text_color, range_title_color, range_text_color, btn_color_fortrans, music_color_op, bg_color, btn_color, btn_stroke, btn_text_color, music_color, load_new_elm_color, apply_btn_color;
+    let loadbtn, newbtn, keybtn, editbtn, deletebtn, viewbtn, difficulty, difficultyDom;
+    var theme = {{.User1.Theme}};
+    function preload() {
+      if(theme == "dark"){
+        img = loadImage('static/resources/trevb_w.png');
+        imgDark = loadImage('static/resources/trevb.png');
+      }else{
+        img = loadImage('static/resources/trevb.png');
+      }
+
+    }
+
+          if_is_Sharp.set("Cb", "C");
+          if_is_Sharp.set("C", "C#");
+          if_is_Sharp.set("C#", "D");
+          if_is_Sharp.set("Db", "D");
+          if_is_Sharp.set("D", "D#");
+          if_is_Sharp.set("D#", "E");
+          if_is_Sharp.set("Eb", "E");
+          if_is_Sharp.set("E", "F");
+          if_is_Sharp.set("E#", "F#");
+          if_is_Sharp.set("Fb", "F");
+          if_is_Sharp.set("F", "F#");
+          if_is_Sharp.set("F#", "G");
+          if_is_Sharp.set("Gb", "G");
+          if_is_Sharp.set("G", "G#");
+          if_is_Sharp.set("G#", "A");
+          if_is_Sharp.set("Ab", "A");
+          if_is_Sharp.set("A", "A#");
+          if_is_Sharp.set("A#", "B");
+          if_is_Sharp.set("Bb", "C");
+          if_is_Sharp.set("B", "C");
+          if_is_Sharp.set("B#", "C#");
+
+          if_is_Flat.set("C#", "C");
+          if_is_Flat.set("C", "B");
+          if_is_Flat.set("Cb", "Bb");
+          if_is_Flat.set("B#", "B");
+          if_is_Flat.set("B", "Bb");
+          if_is_Flat.set("Bb", "A");
+          if_is_Flat.set("A#", "A");
+          if_is_Flat.set("A", "Ab");
+          if_is_Flat.set("Ab", "G");
+          if_is_Flat.set("G#", "G");
+          if_is_Flat.set("G", "Gb");
+          if_is_Flat.set("Gb", "F");
+          if_is_Flat.set("F#", "F");
+          if_is_Flat.set("F", "E");
+          if_is_Flat.set("Fb", "Eb");
+          if_is_Flat.set("E#", "E");
+          if_is_Flat.set("E", "Eb");
+          if_is_Flat.set("Eb", "D");
+          if_is_Flat.set("D#", "D");
+          if_is_Flat.set("D", "Db");
+          if_is_Flat.set("Db", "C");
+          //boolean
+
+          edit_view = false;
+          keySetting = false;
+          keyChanging = false;
+
+          number_of_licks = 0;
+          key = parseInt({{.DpSheet.Key}});
+          keytobe = key;
+          number_of_keysig = Math.abs(key-7);
+
+      function beat_count_cal(bt){
+          switch(bt){
+            case 0:
+              return 64;
+            break;
+            case 1:
+              return 48;
+            break;
+            case 2:
+              return 32;
+            break;
+            case 3:
+              return 24;
+            break;
+            case 4:
+              return 16;
+            break;
+            case 5:
+              return 12;
+            break;
+            case 6:
+              return 8;
+            break;
+            case 7:
+              return 6;
+            break;
+            case 8:
+              return 4;
+            break;
+            case 12:
+              return 64;
+            break;
+            case 14:
+              return 32;
+            break;
+            case 16:
+              return 16;
+            break;
+            case 18:
+              return 8;
+            break;
+          }
+        }
+      function return_beat_count(bt){
+          switch(bt){
+            case 0:
+              bc=64;
+            break;
+            case 1:
+              bc=48;
+            break;
+            case 2:
+              bc=32;
+            break;
+            case 3:
+              bc=24;
+            break;
+            case 4:
+              bc=16;
+            break;
+            case 5:
+              bc=12;
+            break;
+            case 6:
+              bc=8;
+            break;
+            case 7:
+              bc=6;
+            break;
+            case 8:
+              bc=4;
+            break;
+          }
+          return bc
+      }
+
+        function keyChange(keytobe) {
+          // keyChanging = true;
+          var json_data = [];
+          var json_data2 = [];
+          var prev_key = key;
+          key = keytobe;
+          var difference_in_key = prev_key - key;
+          number_of_keysig = Math.abs(key-7);
+          for (var i = 0; i < c.length; i++) {
+            console.log(c[i].k);
+            if(c[i].k-difference_in_key < 0){
+              c[i].k+=12;
+            }else if(c[i].k-difference_in_key > 14){
+              c[i].k-=12;
+            }
+            console.log(c[i].k);
+            c[i].k-=difference_in_key;
+            c[i].lick.key = c[i].k
+            console.log(c[i].k);
+            c[i].number_of_keysig = number_of_keysig;
+            [c[i].all_notes_in_key_str,c[i].all_notes_in_key_greek] = all_note_in_Key(c[i].lick.key);
+
+            if(c[i].lick.data != null){
+              c[i].rearrange();
+              json_data[i]={
+                "id": c[i].lick.id,
+                "key":c[i].lick.key.toString()
+              };
+            }
+          }
+
+          difficulty_val = difficulty_val_tobe;
+          json_data2 = {
+            "id": sheet_id,
+            "key": key.toString(),
+            "difficulty": difficulty_val.toString()
+          };
+
+          xhr.open('POST', '/updatesheetlickkey', true);
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.send(JSON.stringify(json_data));
+          xhr2.open('POST', '/updatesheetkey', true);
+          xhr2.setRequestHeader('Content-Type', 'application/json');
+          xhr2.send(JSON.stringify(json_data2));
+          // keyChanging = false;
+        }
+
+        function makeSpace(s) {
+            if(s == "true"){
+              return Width/54;
+            }else{
+              return 0;
+            }
+        }
+        function k_keycen(key) {
+          switch (key) {
+            case 0:
+              return "C#";
+            break;
+            case 1:
+              return "F#";
+            break;
+            case 2:
+              return "B";
+            break;
+            case 3:
+              return "E";
+            break;
+            case 4:
+              return "A";
+            break;
+            case 5:
+              return "D";
+            break;
+            case 6:
+              return "G";
+            break;
+            case 7:
+              return "C";
+            break;
+            case 8:
+              return "F";
+            break;
+            case 9:
+              return "Bb"
+            break;
+            case 10:
+              return "Eb";
+            break;
+            case 11:
+              return "Ab";
+            break;
+            case 12:
+              return "Db";
+            break;
+            case 13:
+              return "Gb";
+            break;
+            case 14:
+              return "Cb";
+            break;
+          }
+        }
+
+
+        var arry = [];
+        sortedLicks.forEach(function(lick, index){
+        var licanvas = "<li class='ui-state-default' id='"+lick.id+'-'+index+"'></li>"
+        arry.push(licanvas);
+        });
+        $('#licklist').html(arry);
+
+
+        $('.ui-state-default').css('height', $('.ui-state-default').css('width').replace('px','')/6 + 'px');
+        $('.ui-state-highlight').css('height', $('.ui-state-default').css('width').replace('px','')/6 + 'px');
+
+        if(window.innerWidth / window.innerHeight < .833){
+          $('.ui-state-default').css('height', $('.ui-state-default').css('width').replace('px','')/6 + 'px');
+          $('.ui-state-highlight').css('height', $('.ui-state-default').css('width').replace('px','')/6 + 'px');
+        }
+        if(window.innerWidth / window.innerHeight > 1.22){
+          $('.ui-state-default').css('height', $('.ui-state-default').css('width').replace('px','')/6 + 'px');
+          $('.ui-state-highlight').css('height', $('.ui-state-default').css('width').replace('px','')/6 + 'px');
+        }
+
+        var user_img = document.getElementById("user_img");
+        user_img.addEventListener('touchend', function () {
+          if(window.innerWidth/window.innerHeight < .833){
+            $( "#licklist" ).sortable('disable');
+            $('#side_bar').css('right', '0');
+            $('#for_transparency3').css('z-index', '9998');
+            $('#for_transparency3').css('background-color', 'rgba(20,20,20,.5)');
+          }
+        });
+        user_img.addEventListener('click', function () {
+          if(window.innerWidth/window.innerHeight < .833){
+            $( "#licklist" ).sortable('disable');
+            $('#side_bar').css('right', '0');
+            $('#for_transparency3').css('z-index', '9998');
+            $('#for_transparency3').css('background-color', 'rgba(20,20,20,.5)');
+          }
+        });
+        var sidebarImg = document.getElementById('sidebarImg');
+        sidebarImg.addEventListener('click', function () {
+          window.location.href = '/setting';
+        });
+        var contemp = document.getElementById('contemp');
+        contemp.addEventListener('click', function () {
+          window.location.href = '/setting';
+        });
+        var closeDiv = document.getElementById('closeDiv');
+        closeDiv.addEventListener('click', function () {
+          $( "#licklist" ).sortable('enable');
+          $('#side_bar').css('right', '-100%');
+          $('#for_transparency3').css('z-index', '-99');
+          $('#for_transparency3').css('background-color', 'rgba(20,20,20,0)');
+        });
+        closeDiv.addEventListener('touchend', function () {
+          $( "#licklist" ).sortable('enable');
+          $('#side_bar').css('right', '-100%');
+          $('#for_transparency3').css('z-index', '-99');
+          $('#for_transparency3').css('background-color', 'rgba(20,20,20,0)');
+        });
+        window.addEventListener('resize',function () {
+              body[0].style.height = window.innerHeight + "px";
+              body[0].style.minHeight = window.innerHeight + "px";
+              Height = container.clientHeight;
+              Width = container.clientWidth;
+             header_logo = $(".contents header").css("height").replace("px","");
+             header_logo_font = header_logo *.422;
+             header_logout_font = header_logo *.281;
+             header_user_font = header_logo *.338;
+            $("#header-logo").css("font-size", header_logo_font + 'px');
+            $("#logout").css("font-size", header_logout_font+ 'px');
+            $(".user_img").css('width',$("#user_info").css("font-size").replace('px','')*1.5 + 'px');
+            $('#editChord li span').css('font-size', Height/20 + "px");
+            $('#editScale li span').css('font-size', Height*3/96 + "px");
+             footer_height = $("footer").css("height").replace("px","");
+             text_logo_fontSize = footer_height *.285;
+             copyright_fontSize = footer_height *.2;
+            $("#textlogo").css("font-size", text_logo_fontSize + 'px');
+            $("#copyright").css("font-size", copyright_fontSize+ 'px');
+
+            $('.ui-state-default').css('height', $('.ui-state-default').css('width').replace('px','')/6 + 'px');
+            $('.ui-state-highlight').css('height', $('.ui-state-default').css('width').replace('px','')/6 + 'px');
+
+            if(window.innerWidth / window.innerHeight < .833){
+              $('.ui-state-default').css('height', $('.ui-state-default').css('width').replace('px','')/6 + 'px');
+              $('.ui-state-highlight').css('height', $('.ui-state-default').css('width').replace('px','')/6 + 'px');
+            }
+            if(window.innerWidth / window.innerHeight > 1.22){
+              $('.ui-state-default').css('height', $('.ui-state-default').css('width').replace('px','')/6 + 'px');
+              $('.ui-state-highlight').css('height', $('.ui-state-default').css('width').replace('px','')/6 + 'px');
+            }
+
+
+            for (var i = 0; i < c.length; i++) {
+              c[i].resized();
+              c[i].view = true;
+            }
+
+            if(c4k){
+              c4k.indowResized();
+            }
+        });
+
+
+        $("#viewbtn").bind('click touchend', function () {
+          download();
+        });
+        $("#unviewbtn").bind('click touchend', function () {
+          if (confirm("you've already downloaded this sheet. Do you want to download again?")) {
+              // Do it!
+              download();
+            } else {
+              // Do nothing!
+            }
+        });
+        function download() {
+          if(!downloaded){
+            xhr_dl.open('POST', '/dlss', true);
+            xhr_dl.setRequestHeader('Content-Type', 'application/xml');
+            xhr_dl.send(JSON.stringify(sheet_id));
+          }
+          downloaded = true;
+        }
+        xhr_dl.addEventListener('readystatechange', function(){
+          if(xhr_dl.readyState === XMLHttpRequest.DONE){
+            if (xhr_dl.status === 200) {
+              var response = xhr_dl.responseText
+              var result = JSON.parse(response)
+              if(result == "ok"){
+                {{if (eq .User1.Theme "dark")}}
+                $("#viewbtn").css("background","#3a4660");
+                $("#viewbtn").css("color","#9EA4B0");
+                $(".icon-view").css("background-image","url('static/resources/icon/download-icon2.png')");
+                {{else if (eq .User1.Theme "simple")}}
+                $("#viewbtn").css("background","#9C9CA7");
+                {{else if (eq .User1.Theme "pastel")}}
+                $("#viewbtn").css("background","#9C9CA7");
+                {{end}}
+                alert("Download Complete");
+              }
+            }
+          }
+        });
+
+    </script>
+    <script src="static/js/noteforSheet.js"></script>
+    <script src="static/js/lickCanvas.js"></script>
+    <script src="static/js/main.js"></script>
+    <script src="static/js/mousePressedforSheet.js"></script>
+    <script src="static/js/keyConforSheet.js"></script>
+    <script src="static/js/mylicks.js"></script>
+  </body>
+</html>

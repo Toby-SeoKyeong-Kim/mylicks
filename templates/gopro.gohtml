@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>MY LICKS</title>
+    <link rel="stylesheet" href="static/css/intlTelInput.css">
+    {{if (eq .Theme "dark")}}
+    <link rel="stylesheet" href="static/css/dark_gopro.css"/>
+    {{else if (eq .Theme "simple")}}
+    <link rel="stylesheet" href="static/css/simple_gopro.css"/>
+    {{else if (eq .Theme "pastel")}}
+    <link rel="stylesheet" href="static/css/pastel_gopro.css"/>
+    {{end}}
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.js"></script>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/resources/treble_clef.png">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#000000"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@800&family=Open+Sans:wght@800&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="side_bar" id="side_bar">
+      <div class="side_bar_contents">
+        <div id="closeDiv" class="closeDiv">
+
+        </div>
+        <div class="logoutDiv">
+          <a href="/logout"><p>Logout</p></a>
+        </div>
+        <div class="userImgSidebar">
+          <div id="contemp" class="contemp">
+            <div class="imgAfter">
+              <p>edit</p>
+            </div>
+          </div>
+          <img id="sidebarImg" src="{{.Picture}}" alt="">
+        </div>
+        <p>{{.Given_name}}</p>
+      </div>
+      <ul>
+        <a href="/mylicks"><div id="licksIcon"></div><li>My Licks</li></a>
+        <a href="/mysheets"><div id="sheetsIcon"></div><li>My Sheets</li></a>
+        <a href="/forum"><div id="downloadIcon"></div><li>Forum</li></a>
+        <a href="/setting"><div id="profileIcon"></div><li>Profile</li></a>
+      </ul>
+    </div>
+    <div class="con-wrap">
+      <div class="contents">
+
+        <header>
+          <div class="headerWrap">
+            <div id="header-logo" class="header-nav">
+
+              {{if (eq .Theme "dark")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{else if (eq .Theme "simple")}}
+              <h2><a href="/"style="color:#1936FE;">MY LICKS</a></h2>
+              {{else if (eq .Theme "pastel")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{end}}
+            </div>
+
+
+            <div id="logout" class="header-nav">
+
+              {{if (eq .Theme "dark")}}
+              <p><a href="/logout" style="color: #757189;">Logout</a></p>
+              {{else if (eq .Theme "simple")}}
+              <p><a href="/logout" style="color: #9C9CA7;">Logout</a></p>
+              {{else if (eq .Theme "pastel")}}
+              <p><a href="/logout" style="color: #B6EBF3;">Logout</a></p>
+              {{end}}
+            </div>
+            <div id="user_info" class="header-nav">
+              <div class="user_img" id="user_img">
+                <img src="{{.Picture}}" alt="No Image">
+              </div>
+              <p>{{.Given_name}}</p>
+              <div class="top-down-menu">
+                <a href="/setting">
+                  <div id="profile-icon2"></div>
+                  <span>Profile</span>
+                </a>
+                <a href="/mylicks">
+                  <div id="licks-icon2"></div>
+                  <span>My Licks</span>
+                </a>
+                <a href="/mysheets">
+                  <div id="sheets-icon2"></div>
+                  <span>My Sheets</span>
+                </a>
+                <a href="/forum">
+                  <div id="download-icon2"></div>
+                  <span>Forum</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+        <main>
+            <div class="form-container" id="form-container">
+              <div class="description">
+                <div class="free">
+                  <h2>Free tier</h2>
+                  <div class="pwrapper">
+                    <p>&#x25CF;  store 4 free licks & 4 free sheets</p>
+                    <p>&#x25CF;  Each sheets can have 4 measures</p>
+                  </div>
+                </div>
+                <div class="pro">
+                  <h2><strong>Pro</strong> tier</h2>
+                  <div class="pwrapper">
+                    <p>&#x25CF;  store an <strong>UNLIMITED</strong> number of licks & sheets</p>
+                    <p>&#x25CF;  Each sheets can have up to 64 measures</p>
+                    <p>&#x25CF;  Access to forum</p>
+                    <p>&#x25CF;  Can share licks and sheets with other users</p>
+                    <p>&#x25CF;  3 different color themes</p>
+                  </div>
+                </div>
+              </div>
+              <div class="payappform">
+                <form class="payappinfo" method="post" name="payappinfo">
+                  <div class="currency">
+                    {{if (eq .Locale "ko")}}
+                    <p>통화 선택</p>
+                    {{else}}
+                    <p>Choose currency</p>
+                    {{end}}
+                    <ul>
+                      <li id="krwli">
+                        <input type="radio" name="currency" checked id="krw" value="krw">
+                        <label for="krw">KRW / 원</label>
+                      </li>
+                      <li id="usdli">
+                        <input type="radio" name="currency" id="usd" value="usd">
+                        <label for="usd">USD / 달러</label>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="selectPeriod">
+                    {{if (eq .Locale "ko")}}
+                    <p>상품 선택</p>
+                    {{else}}
+                    <p>Choose item</p>
+                    {{end}}
+                    <ul>
+                      <li id="monthli">
+                        <input type="radio" name="period" id="month" value="1" checked>
+                        {{if (eq .Locale "ko")}}
+                        <label for="month"> 1 달</label>
+                        {{else}}
+                        <label for="month"> 1 Month</label>
+                        {{end}}
+                      </li>
+                      <li id="monthsli">
+                        <input type="radio" name="period" id="months" value="6">
+                        {{if (eq .Locale "ko")}}
+                        <label for="months"> 6 달</label>
+                        {{else}}
+                        <label for="months"> 6 Months</label>
+                        {{end}}
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="textinput">
+                    {{if (eq .Locale "ko")}}
+                    <p>핸드폰 번호</p>
+                    {{else}}
+                    <p>Phone Number</p>
+                    {{end}}
+                    <input type="tel" name="phonenum" id="intphone" value="">
+                    <p id="PNV"></p>
+                  </div>
+                  <div class="invoice">
+                    {{if (eq .Locale "ko")}}
+                    <span>최종 가격 </span>
+                    <span id="price">2,500 원</span>
+                    {{else}}
+                    <span>Total billed today </span>
+                    <span id="price">2,500 KRW</span>
+                    {{end}}
+                  </div>
+                  <div class="req">
+                    {{if (eq .Locale "ko")}}
+                    <p id="gogetLink">결제 링크 받으러 가기</p>
+                    {{else}}
+                    <p id="gogetLink">Pay by Link</p>
+                    {{end}}
+                  </div>
+                </form>
+              </div>
+            </div>
+        </main>
+      </div>
+    </div>
+
+    <footer>
+        <div class="copyright">
+          <div class="logo">
+            <p class="footer-text" id="textlogo">My Licks</p>
+          </div>
+
+          <div class="contactinfos">
+            <p class="footer-text" id="copyright">Copyright (c) 2020 Toby Kim </p>
+            <!-- <p class="footer-text" id="email">seop0504@gmail.com</p> -->
+          </div>
+        </div>
+      </footer>
+      <script src="static/js/intlTelInput.js"></script>
+      <script src="static/js/utils.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+      <script type="text/javascript">
+      var xhr = new XMLHttpRequest();
+      var email = {{.Email}}
+      var input = document.querySelector("#intphone");
+      window.intlTelInput(input, {
+        initialCountry: 'kr',
+        utilsScript: 'static/js/utils.js',
+        autoPlaceholder: 'aggressive'
+      });
+      var iti = window.intlTelInputGlobals.getInstance(input);
+      input.addEventListener("change", function (e) {
+
+        if(iti.isValidNumber()){
+          $("#PNV").text("");
+          this.style.border = "1px solid #000000"
+        }else{
+          $("#PNV").text("not a valid number");
+          this.style.border = "1px solid red"
+        }
+      });
+      input.addEventListener("countrychange", function() {
+
+        if(iti.isValidNumber()){
+          $("#PNV").text("");
+          this.style.border = "1px solid #000000"
+        }else{
+          $("#PNV").text("not a valid number");
+          this.style.border = "1px solid red"
+        }
+      });
+
+      var krwli = document.getElementById("krwli")
+      var usdli = document.getElementById("usdli")
+      var monthli = document.getElementById("monthli")
+      var monthsli = document.getElementById("monthsli")
+      var gogetLink = document.getElementById("gogetLink")
+      gogetLink.addEventListener("click", function (e) {
+        if(iti.isValidNumber()){
+          $("#PNV").text("");
+          input.style.border = "1px solid #000000"
+          var cd = iti.getSelectedCountryData()
+
+          var json_data={
+            "gn": document.payappinfo.period.value,
+            "reqmode": document.payappinfo.currency.value,
+            "vccode": cd.dialCode,
+            "recvphone": document.payappinfo.phonenum.value,
+            "email": email,
+          }
+          console.log(json_data)
+          xhr.open('POST', '/cp', true);
+          xhr.setRequestHeader('Content-Type', 'application/xml');
+          xhr.send(JSON.stringify(json_data));
+        }else{
+          $("#PNV").text("not a valid number");
+          input.style.border = "1px solid red"
+
+
+        }
+
+      });
+      function krwliC() {
+        {{if (eq .Theme "dark")}}
+          $("#krwli").css("background", "rgba(98, 86, 177, 0.3)")
+          $("#krwli label").css("color", "#00ffff")
+          $("#krwli").css("border-color", "#00ffff")
+          $("#usdli").css("background", "none")
+          $("#usdli label").css("color", "#6256B1")
+          $("#usdli").css("border-color", "#6256B1")
+        {{else if (eq .Theme "pastel")}}
+          $("#krwli").css("background", "rgba(116, 212, 228, 0.3)")
+          $("#krwli label").css("color", "#49B6D8")
+          $("#krwli").css("border-color", "#49B6D8")
+          $("#usdli").css("background", "none")
+          $("#usdli label").css("color", "#74D4E4")
+          $("#usdli").css("border-color", "#74D4E4")
+        {{else}}
+          $("#krwli").css("background", "rgba(0,111,255,.3)")
+          $("#krwli label").css("color", "#1936FE")
+          $("#krwli").css("border-color", "#1936FE")
+          $("#usdli").css("background", "none")
+          $("#usdli label").css("color", "#006fff")
+          $("#usdli").css("border-color", "#006fff")
+        {{end}}
+
+        if($("#month").prop("checked")){
+          {{if (eq .Locale "ko")}}
+          $("#price").text("2,500 원");
+          {{else}}
+          $("#price").text("2,500 KRW");
+          {{end}}
+        }else{
+          {{if (eq .Locale "ko")}}
+          $("#price").text("14,000 원");
+          {{else}}
+          $("#price").text("14,000 KRW");
+          {{end}}
+        }
+      }
+      function usdliC() {
+        {{if (eq .Theme "dark")}}
+        $("#usdli").css("background", "rgba(98, 86, 177, 0.3)")
+        $("#usdli label").css("color", "#00ffff")
+        $("#usdli").css("border-color", "#00ffff")
+        $("#krwli").css("background", "none")
+        $("#krwli label").css("color", "#6256B1")
+        $("#krwli").css("border-color", "#6256B1")
+        {{else if (eq .Theme "pastel")}}
+        $("#usdli").css("background", "rgba(116, 212, 228, 0.3)")
+        $("#usdli label").css("color", "#49B6D8")
+        $("#usdli").css("border-color", "#49B6D8")
+        $("#krwli").css("background", "none")
+        $("#krwli label").css("color", "#74D4E4")
+        $("#krwli").css("border-color", "#74D4E4")
+        {{else}}
+        $("#usdli").css("background", "rgba(0,111,255,.3)")
+        $("#usdli label").css("color", "#1936FE")
+        $("#usdli").css("border-color", "#1936FE")
+        $("#krwli").css("background", "none")
+        $("#krwli label").css("color", "#006fff")
+        $("#krwli").css("border-color", "#006fff")
+        {{end}}
+
+        if($("#month").prop("checked")){
+          $("#months").prop("checked", true)
+
+          {{if (eq .Theme "dark")}}
+          $("#monthsli").css("background", "rgba(98, 86, 177, 0.3)")
+          $("#monthsli").css("color", "#00ffff")
+          $("#monthsli").css("border-color", "#00ffff")
+          $("#monthli").css("background", "none")
+          $("#monthli").css("color", "#6256B1")
+          $("#monthli").css("border-color", "#6256B1")
+          {{else if (eq .Theme "pastel")}}
+          $("#monthsli").css("background", "rgba(116, 212, 228, 0.3)")
+          $("#monthsli").css("color", "#49B6D8")
+          $("#monthsli").css("border-color", "#49B6D8")
+          $("#monthli").css("background", "none")
+          $("#monthli").css("color", "#74D4E4")
+          $("#monthli").css("border-color", "#74D4E4")
+          {{else}}
+          $("#monthsli").css("background", "rgba(0,111,255,.3)")
+          $("#monthsli").css("color", "#1936FE")
+          $("#monthsli").css("border-color", "#1936FE")
+          $("#monthli").css("background", "none")
+          $("#monthli").css("color", "#006fff")
+          $("#monthli").css("border-color", "#006fff")
+          {{end}}
+
+          {{if (eq .Locale "ko")}}
+          $("#price").text("$12.99 달러");
+          {{else}}
+          $("#price").text("$12.99 USD");
+          {{end}}
+        }else{
+            {{if (eq .Locale "ko")}}
+            $("#price").text("$12.99 달러");
+            {{else}}
+            $("#price").text("$12.99 USD");
+            {{end}}
+        }
+      }
+      krwli.addEventListener("click", function (e) {
+        $("#krw").prop("checked", true)
+         krwliC();
+      })
+      krwli.addEventListener("touchend", function (e) {
+        $("#krw").prop("checked", true)
+        krwliC();
+      })
+      usdli.addEventListener("click", function (e) {
+        $("#usd").prop("checked", true)
+        usdliC();
+      })
+      usdli.addEventListener("touchend", function (e) {
+        $("#usd").prop("checked", true)
+        usdliC();
+      });
+      monthli.addEventListener("click", function (e) {
+        if($("#usd").prop("checked")){
+          alert("this item is not available for USD");
+          usdliC();
+        }else{
+          $("#month").prop("checked", true)
+          {{if (eq .Theme "dark")}}
+          $("#monthli").css("background", "rgba(98, 86, 177, 0.3)")
+          $("#monthli").css("color", "#00ffff")
+          $("#monthli").css("border-color", "#00ffff")
+          $("#monthsli").css("background", "none")
+          $("#monthsli").css("color", "#6256B1")
+          $("#monthsli").css("border-color", "#6256B1")
+          {{else if (eq .Theme "pastel")}}
+          $("#monthli").css("background", "rgba(116, 212, 228, 0.3)")
+          $("#monthli").css("color", "#49B6D8")
+          $("#monthli").css("border-color", "#49B6D8")
+          $("#monthsli").css("background", "none")
+          $("#monthsli").css("color", "#74D4E4")
+          $("#monthsli").css("border-color", "#74D4E4")
+          {{else}}
+          $("#monthli").css("background", "rgba(0,111,255,.3)")
+          $("#monthli").css("color", "#1936FE")
+          $("#monthli").css("border-color", "#1936FE")
+          $("#monthsli").css("background", "none")
+          $("#monthsli").css("color", "#006fff")
+          $("#monthsli").css("border-color", "#006fff")
+          {{end}}
+          {{if (eq .Locale "ko")}}
+          $("#price").text("2,500 원");
+          {{else}}
+          $("#price").text("2,500 KRW");
+          {{end}}
+        }
+      });
+      monthli.addEventListener("touchend", function (e) {
+        if($("#usd").prop("checked")){
+          alert("this item is not available for USD");
+          usdliC();
+        }else{
+          $("#month").prop("checked", true)
+          {{if (eq .Theme "dark")}}
+          $("#monthli").css("background", "rgba(98, 86, 177, 0.3)")
+          $("#monthli").css("color", "#00ffff")
+          $("#monthli").css("border-color", "#00ffff")
+          $("#monthsli").css("background", "none")
+          $("#monthsli").css("color", "#6256B1")
+          $("#monthsli").css("border-color", "#6256B1")
+          {{else if (eq .Theme "pastel")}}
+          $("#monthli").css("background", "rgba(116, 212, 228, 0.3)")
+          $("#monthli").css("color", "#49B6D8")
+          $("#monthli").css("border-color", "#49B6D8")
+          $("#monthsli").css("background", "none")
+          $("#monthsli").css("color", "#74D4E4")
+          $("#monthsli").css("border-color", "#74D4E4")
+          {{else}}
+          $("#monthli").css("background", "rgba(0,111,255,.3)")
+          $("#monthli").css("color", "#1936FE")
+          $("#monthli").css("border-color", "#1936FE")
+          $("#monthsli").css("background", "none")
+          $("#monthsli").css("color", "#006fff")
+          $("#monthsli").css("border-color", "#006fff")
+          {{end}}
+          {{if (eq .Locale "ko")}}
+          $("#price").text("2,500 원");
+          {{else}}
+          $("#price").text("2,500 KRW");
+          {{end}}
+        }
+      });
+      monthsli.addEventListener("click", function (e) {
+        $("#months").prop("checked", true)
+        {{if (eq .Theme "dark")}}
+        $("#monthsli").css("background", "rgba(98, 86, 177, 0.3)")
+        $("#monthsli").css("color", "#00ffff")
+        $("#monthsli").css("border-color", "#00ffff")
+        $("#monthli").css("background", "none")
+        $("#monthli").css("color", "#6256B1")
+        $("#monthli").css("border-color", "#6256B1")
+        {{else if (eq .Theme "pastel")}}
+        $("#monthsli").css("background", "rgba(116, 212, 228, 0.3)")
+        $("#monthsli").css("color", "#49B6D8")
+        $("#monthsli").css("border-color", "#49B6D8")
+        $("#monthli").css("background", "none")
+        $("#monthli").css("color", "#74D4E4")
+        $("#monthli").css("border-color", "#74D4E4")
+        {{else}}
+        $("#monthsli").css("background", "rgba(0,111,255,.3)")
+        $("#monthsli").css("color", "#1936FE")
+        $("#monthsli").css("border-color", "#1936FE")
+        $("#monthli").css("background", "none")
+        $("#monthli").css("color", "#006fff")
+        $("#monthli").css("border-color", "#006fff")
+        {{end}}
+
+        if($("#usd").prop("checked")){
+          {{if (eq .Locale "ko")}}
+          $("#price").text("$12.99 달러");
+          {{else}}
+          $("#price").text("$12.99 USD");
+          {{end}}
+        }else{
+          {{if (eq .Locale "ko")}}
+          $("#price").text("14,000 원");
+          {{else}}
+          $("#price").text("14,000 KRW");
+          {{end}}
+        }
+      })
+      monthsli.addEventListener("touchend", function (e) {
+        $("#months").prop("checked", true)
+        {{if (eq .Theme "dark")}}
+        $("#monthsli").css("background", "rgba(98, 86, 177, 0.3)")
+        $("#monthsli").css("color", "#00ffff")
+        $("#monthsli").css("border-color", "#00ffff")
+        $("#monthli").css("background", "none")
+        $("#monthli").css("color", "#6256B1")
+        $("#monthli").css("border-color", "#6256B1")
+        {{else if (eq .Theme "pastel")}}
+        $("#monthsli").css("background", "rgba(116, 212, 228, 0.3)")
+        $("#monthsli").css("color", "#49B6D8")
+        $("#monthsli").css("border-color", "#49B6D8")
+        $("#monthli").css("background", "none")
+        $("#monthli").css("color", "#74D4E4")
+        $("#monthli").css("border-color", "#74D4E4")
+        {{else}}
+        $("#monthsli").css("background", "rgba(0,111,255,.3)")
+        $("#monthsli").css("color", "#1936FE")
+        $("#monthsli").css("border-color", "#1936FE")
+        $("#monthli").css("background", "none")
+        $("#monthli").css("color", "#006fff")
+        $("#monthli").css("border-color", "#006fff")
+        {{end}}
+        if($("#usd").prop("checked")){
+          {{if (eq .Locale "ko")}}
+          $("#price").text("$12.99 달러");
+          {{else}}
+          $("#price").text("$12.99 USD");
+          {{end}}
+        }else{
+          {{if (eq .Locale "ko")}}
+          $("#price").text("14,000 원");
+          {{else}}
+          $("#price").text("14,000 KRW");
+          {{end}}
+        }
+      })
+
+        var user_img = document.getElementById("user_img");
+        user_img.addEventListener('touchend', function () {
+          if(window.innerWidth/window.innerHeight < .71428){
+            $('#side_bar').css('right', '0');
+            $('#for_transparency3').css('z-index', '9998');
+            $('#for_transparency3').css('background-color', 'rgba(20,20,20,.5)');
+          }
+        });
+        user_img.addEventListener('click', function () {
+            if(window.innerWidth/window.innerHeight < .71428){
+              $('#side_bar').css('right', '0');
+              $('#for_transparency3').css('z-index', '9998');
+              $('#for_transparency3').css('background-color', 'rgba(20,20,20,.5)');
+            }
+        });
+        var sidebarImg = document.getElementById('sidebarImg');
+        sidebarImg.addEventListener('click', function () {
+          window.location.href = '/setting';
+        });
+        var contemp = document.getElementById('contemp');
+        contemp.addEventListener('click', function () {
+          window.location.href = '/setting';
+        });
+
+        window.addEventListener('resize', function () {
+          if(window.innerWidth/window.innerHeight < .71428){
+            $('#side_bar').css('right', '-100%');
+          }
+        });
+
+        var closeDiv = document.getElementById('closeDiv');
+        closeDiv.addEventListener('click', function () {
+          $('#side_bar').css('right', '-100%');
+        });
+        closeDiv.addEventListener('touchend', function () {
+          $('#side_bar').css('right', '-100%');
+        });
+
+        xhr.addEventListener('readystatechange', function(){
+          if(xhr.readyState === XMLHttpRequest.DONE){
+            if (xhr.status === 200) {
+              var item = xhr.responseText;
+              var payload = JSON.parse(item);
+              if(payload && payload != "err"){
+                var uri = '/sk?q=' + payload;
+                window.location.href = uri;
+              }else{
+                alert("something's wrong");
+              }
+           }
+          }
+        });
+
+      </script>
+  </body>
+</html>

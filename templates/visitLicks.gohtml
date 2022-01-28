@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>MY LICKS</title>
+    {{if (eq .User1.Theme "dark")}}
+    <link rel="stylesheet" href="static/css/dark_visitlicks.css"/>
+    {{else if (eq .User1.Theme "simple")}}
+    <link rel="stylesheet" href="static/css/simple_visitlicks.css"/>
+    {{else if (eq .User1.Theme "pastel")}}
+    <link rel="stylesheet" href="static/css/pastel_visitlicks.css"/>
+    {{end}}
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.js"></script>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/resources/treble_clef.png">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#000000"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@800&family=Open+Sans:wght@800&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="for_transparency">
+
+    </div>
+    <div class="side_bar" id="side_bar">
+      <div class="side_bar_contents">
+        <div id="closeDiv" class="closeDiv">
+
+        </div>
+        <div class="logoutDiv">
+          <a href="/logout"><p>Logout</p></a>
+        </div>
+        <div class="userImgSidebar">
+          <div id="contemp" class="contemp">
+            <div class="imgAfter">
+              <p>edit</p>
+            </div>
+          </div>
+          <img id="sidebarImg" src="{{.User1.Picture}}" alt="">
+        </div>
+        <p>{{.User1.Given_name}}</p>
+      </div>
+      <ul>
+        <a href="/mylicks"><div id="licksIcon"></div><li>My Licks</li></a>
+        <a href="/mysheets"><div id="sheetsIcon"></div><li>My Sheets</li></a>
+        <a href="/forum"><div id="downloadIcon"></div><li>Forum</li></a>
+        <a href="/setting"><div id="profileIcon"></div><li>Profile</li></a>
+      </ul>
+    </div>
+    <div class="con-wrap">
+      <div id="for_transparency">
+
+      </div>
+      <div id="for_transparency3">
+
+      </div>
+      <div class="contents">
+
+        <header>
+          <div class="for_transparency">
+
+          </div>
+          <div class="headerWrap">
+            <div id="header-logo" class="header-nav">
+
+              {{if (eq .User1.Theme "dark")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{else if (eq .User1.Theme "simple")}}
+              <h2><a href="/"style="color:#1936FE;">MY LICKS</a></h2>
+              {{else if (eq .User1.Theme "pastel")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{end}}
+            </div>
+
+
+            <div id="logout" class="header-nav">
+
+              {{if (eq .User1.Theme "dark")}}
+              <p><a href="/logout" style="color: #757189;">Logout</a></p>
+              {{else if (eq .User1.Theme "simple")}}
+              <p><a href="/logout" style="color: #9C9CA7;">Logout</a></p>
+              {{else if (eq .User1.Theme "pastel")}}
+              <p><a href="/logout" style="color: #B6EBF3;">Logout</a></p>
+              {{end}}
+            </div>
+            <div id="user_info" class="header-nav">
+              <div class="user_img" id="user_img">
+                <img src="{{.User1.Picture}}" alt="No Image">
+              </div>
+              <p>{{.User1.Given_name}}</p>
+              <div class="top-down-menu">
+                <a href="/setting">
+                  <div id="profile-icon2"></div>
+                  <span>Profile</span>
+                </a>
+                <a href="/mylicks">
+                  <div id="licks-icon2"></div>
+                  <span>My Licks</span>
+                </a>
+                <a href="/mysheets">
+                  <div id="sheets-icon2"></div>
+                  <span>My Sheets</span>
+                </a>
+                <a href="/forum">
+                  <div id="download-icon2"></div>
+                  <span>Forum</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+        <main id="mainDiv">
+
+          <div class="lick-container" id="lick-container">
+            <div class="for_transparency">
+
+            </div>
+            <div id="p5canvas4interval">
+
+            </div>
+            <div id="p5canvas">
+
+            </div>
+
+            {{if .Downloaded}}
+              <div id="nointervalbtn" >
+                <div class="btn-wrapper">
+                  <p id="p-edit_interval">Download</p>
+                </div>
+              </div>
+            {{else}}
+              <div id="intervalbtn" >
+                <div class="btn-wrapper">
+                  <p id="p-edit_interval">Download</p>
+                </div>
+              </div>
+            {{end}}
+            <div id="scale-select-wrap">
+              <span id="lick-title">{{.DpLick.Name}}</span>
+              <span id="lick-intervalChord"></span>
+              <span id="lick-key"></span>
+              <select id="scale-select" name="">
+                  <option value="Ionian">Ionian</option>
+                  <option value="Dorian">Dorian</option>
+                  <option value="Phrygian">Phrygian</option>
+                  <option value="Lydian">Lydian</option>
+                  <option value="Mixolydian">Mixolydian</option>
+                  <option value="Aeolian">Aeolian</option>
+                  <option value="Locrian">Locrian</option>
+                  <option value="Alt">Alt</option>
+                  <option value="W/H">W/H</option>
+                  <option value="H/W">H/W</option>
+                  <option value="b9b13">Mixolydian b9b13</option>
+              </select>
+
+                <button id="editScale" name="button"></button>
+                <div class="custom-options">
+                  <ul id="custom-option"> </ul>
+                </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript">
+       var timeout = false;
+
+        var lickCon = document.getElementById("lick-container");
+        lickCon.addEventListener("touchstart", handleStart,false);
+        lickCon.addEventListener("touchmove", handleMove,false);
+        lickCon.addEventListener("touchend", function(e) {
+            e.preventDefault();
+          },false);
+
+          function handleStart(e) {
+             e.preventDefault();
+          }
+          function handleMove(e) {
+                e.preventDefault();
+            }
+          function handleEnd(e) {
+              e.preventDefault();
+            }
+
+      var langArray = [];
+      var valArray=[];
+      var btnArray=[];
+      var defaultScale;
+      $('#scale-select option').each(function(){
+      var text = this.innerText;
+      var value = $(this).val();
+      var item = '<li value="'+value +'"><span value="'+value +'">'+ text +'</span><div class="'+value+"_icon"+'">&#x25CF;</div></li>';
+      var item4button = '<li value="'+value +'"><span value="'+value +'">'+ value +'</span><img src="static/resources/icon/arrow.png"/></li>';
+      langArray.push(item);
+      valArray.push(value);
+      btnArray.push(item4button);
+      })
+
+      $('#custom-option').html(langArray);
+
+      for (var i = 0; i < valArray.length; i++) {
+        if(valArray[i] == {{.DpLick.Scale}} ){
+          defaultScale = i;
+          switch (valArray[defaultScale]) {
+
+                          {{if (eq .User1.Theme "pastel")}}
+                          case "Ionian":
+                            $('#scale-select-wrap').css("border", "2px solid #FF90D6");
+                            break;
+                            case "Dorian":
+                              $('#scale-select-wrap').css("border", "2px solid #FF7C7C");
+                              break;
+                              case "Phrygian":
+                                $('#scale-select-wrap').css("border", "2px solid #FFA77C");
+                                break;
+                                case "Lydian":
+                                  $('#scale-select-wrap').css("border", "2px solid #FFCF88");
+                                  break;
+                                  case "Mixolydian":
+                                    $('#scale-select-wrap').css("border", "2px solid #FFFF78");
+                                    break;
+                                    case "Aeolian":
+                                      $('#scale-select-wrap').css("border", "2px solid #C5FF82");
+                                      break;
+                                      case "Locrian":
+                                        $('#scale-select-wrap').css("border", "2px solid #84D28C");
+                                        break;
+                          {{else}}
+                          case "Ionian":
+                            $('#scale-select-wrap').css("border", "2px solid #ff00a1");
+                            break;
+                            case "Dorian":
+                              $('#scale-select-wrap').css("border", "2px solid #ce0000");
+                              break;
+                              case "Phrygian":
+                                $('#scale-select-wrap').css("border", "2px solid #ff3c00");
+                                break;
+                                case "Lydian":
+                                  $('#scale-select-wrap').css("border", "2px solid #ff9900");
+                                  break;
+                                  case "Mixolydian":
+                                    $('#scale-select-wrap').css("border", "2px solid #ffff94");
+                                    break;
+                                    case "Aeolian":
+                                      $('#scale-select-wrap').css("border", "2px solid #efff00");
+                                      break;
+                                      case "Locrian":
+                                        $('#scale-select-wrap').css("border", "2px solid #88ff00");
+                                        break;
+                          {{end}}
+          }
+          $('#scale-select-wrap').css("border-right", "none");
+        }
+      }
+      //Set the button value to the first el of the array
+      $('#editScale').html(btnArray[defaultScale]);
+
+      $('#editScale').attr('value', {{.DpLick.Scale}});
+      $('#editScale').attr('class', {{.DpLick.Scale}});
+
+
+      //change button stuff on click
+      $('#custom-option li').click(function(){
+        console.log("hey why click me");
+       var value = $(this).find('span').attr("value");
+       var text = this.innerText;
+       var item = '<li value="'+value +'"><span value="'+value +'">'+ value +'</span><img src="static/resources/icon/arrow.png"/></li>';
+        $('#editScale').html(item);
+        $('#editScale').attr('value', value);
+        $('#editScale').attr('class', value);
+        switch (value) {
+        {{if (eq .User1.Theme "dark")}}
+
+            case "Ionian":
+              $('#scale-select-wrap').css("border", "2px solid #ff00a1");
+              break;
+              case "Dorian":
+                $('#scale-select-wrap').css("border", "2px solid #ce0000");
+                break;
+                case "Phrygian":
+                  $('#scale-select-wrap').css("border", "2px solid #ff3c00");
+                  break;
+                  case "Lydian":
+                    $('#scale-select-wrap').css("border", "2px solid #ff9900");
+                    break;
+                    case "Mixolydian":
+                      $('#scale-select-wrap').css("border", "2px solid #ffff94");
+                      break;
+                      case "Aeolian":
+                        $('#scale-select-wrap').css("border", "2px solid #efff00");
+                        break;
+                        case "Locrian":
+                          $('#scale-select-wrap').css("border", "2px solid #88ff00");
+                          break;
+        {{else if (eq .User1.Theme "simple")}}
+            case "Ionian":
+              $('#scale-select-wrap').css("border", "2px solid #ff00a1");
+              break;
+              case "Dorian":
+                $('#scale-select-wrap').css("border", "2px solid #ce0000");
+                break;
+                case "Phrygian":
+                  $('#scale-select-wrap').css("border", "2px solid #ff3c00");
+                  break;
+                  case "Lydian":
+                    $('#scale-select-wrap').css("border", "2px solid #ff9900");
+                    break;
+                    case "Mixolydian":
+                      $('#scale-select-wrap').css("border", "2px solid #ffff94");
+                      break;
+                      case "Aeolian":
+                        $('#scale-select-wrap').css("border", "2px solid #efff00");
+                        break;
+                        case "Locrian":
+                          $('#scale-select-wrap').css("border", "2px solid #88ff00");
+                          break;
+        {{else if (eq .User1.Theme "pastel")}}
+            case "Ionian":
+              $('#scale-select-wrap').css("border", "2px solid #FF90D6");
+              break;
+              case "Dorian":
+                $('#scale-select-wrap').css("border", "2px solid #FF7C7C");
+                break;
+                case "Phrygian":
+                  $('#scale-select-wrap').css("border", "2px solid #FFA77C");
+                  break;
+                  case "Lydian":
+                    $('#scale-select-wrap').css("border", "2px solid #FFCF88");
+                    break;
+                    case "Mixolydian":
+                      $('#scale-select-wrap').css("border", "2px solid #FFFF78");
+                      break;
+                      case "Aeolian":
+                        $('#scale-select-wrap').css("border", "2px solid #C5FF82");
+                        break;
+                        case "Locrian":
+                          $('#scale-select-wrap').css("border", "2px solid #84D28C");
+                          break;
+        {{end}}
+        default:
+        $('#scale-select-wrap').css("border", "2px solid #88ff00");
+        }
+          $('#scale-select-wrap').css("border-right", "none");
+          if($(".custom-options").css('display', 'block')){
+            $(".custom-options").toggle(300);
+          }
+          $("#editScale li img").css("transform","rotate(180deg)");
+          scaleChange(value);
+          });
+
+      $('#custom-option li').bind('touchend', function(e){
+            console.log("hey why touch me");
+           var value = $(this).find('span').attr("value");
+           var text = this.innerText;
+           var item = '<li value="'+value +'"><span value="'+value +'">'+ value +'</span><img src="static/resources/icon/arrow.png"/></li>';
+          $('#editScale').html(item);
+          $('#editScale').attr('value', value);
+          $('#editScale').attr('class', value);
+          switch (value) {
+          {{if (eq .User1.Theme "dark")}}
+
+              case "Ionian":
+                $('#scale-select-wrap').css("border", "2px solid #ff00a1");
+                break;
+                case "Dorian":
+                  $('#scale-select-wrap').css("border", "2px solid #ce0000");
+                  break;
+                  case "Phrygian":
+                    $('#scale-select-wrap').css("border", "2px solid #ff3c00");
+                    break;
+                    case "Lydian":
+                      $('#scale-select-wrap').css("border", "2px solid #ff9900");
+                      break;
+                      case "Mixolydian":
+                        $('#scale-select-wrap').css("border", "2px solid #ffff94");
+                        break;
+                        case "Aeolian":
+                          $('#scale-select-wrap').css("border", "2px solid #efff00");
+                          break;
+                          case "Locrian":
+                            $('#scale-select-wrap').css("border", "2px solid #88ff00");
+                            break;
+          {{else if (eq .User1.Theme "simple")}}
+              case "Ionian":
+                $('#scale-select-wrap').css("border", "2px solid #ff00a1");
+                break;
+                case "Dorian":
+                  $('#scale-select-wrap').css("border", "2px solid #ce0000");
+                  break;
+                  case "Phrygian":
+                    $('#scale-select-wrap').css("border", "2px solid #ff3c00");
+                    break;
+                    case "Lydian":
+                      $('#scale-select-wrap').css("border", "2px solid #ff9900");
+                      break;
+                      case "Mixolydian":
+                        $('#scale-select-wrap').css("border", "2px solid #ffff94");
+                        break;
+                        case "Aeolian":
+                          $('#scale-select-wrap').css("border", "2px solid #efff00");
+                          break;
+                          case "Locrian":
+                            $('#scale-select-wrap').css("border", "2px solid #88ff00");
+                            break;
+          {{else if (eq .User1.Theme "pastel")}}
+              case "Ionian":
+                $('#scale-select-wrap').css("border", "2px solid #FF90D6");
+                break;
+                case "Dorian":
+                  $('#scale-select-wrap').css("border", "2px solid #FF7C7C");
+                  break;
+                  case "Phrygian":
+                    $('#scale-select-wrap').css("border", "2px solid #FFA77C");
+                    break;
+                    case "Lydian":
+                      $('#scale-select-wrap').css("border", "2px solid #FFCF88");
+                      break;
+                      case "Mixolydian":
+                        $('#scale-select-wrap').css("border", "2px solid #FFFF78");
+                        break;
+                        case "Aeolian":
+                          $('#scale-select-wrap').css("border", "2px solid #C5FF82");
+                          break;
+                          case "Locrian":
+                            $('#scale-select-wrap').css("border", "2px solid #84D28C");
+                            break;
+          {{end}}
+          default:
+          $('#scale-select-wrap').css("border", "2px solid #88ff00");
+          }
+          $('#scale-select-wrap').css("border-right", "none");
+          if($(".custom-options").css('display', 'block')){
+            $(".custom-options").toggle(300);
+          }
+          $("#editScale li img").css("transform","rotate(180deg)");
+          scaleChange(value);
+          e.preventDefault();
+          e.stopPropagation();
+          });
+
+    </script>
+    <script type="text/javascript">
+    var p5Canvas4OtherUse=[];
+    var xhr = new XMLHttpRequest();
+    var xhr_dl = new XMLHttpRequest();
+    var body = document.getElementsByTagName('body');
+      body[0].style.height = window.innerHeight + "px";
+      body[0].style.minHeight = window.innerHeight + "px";
+      body[0].style.minWidth = 300 + "px";
+    var p5canvas = document.getElementById('p5canvas');
+    var container = document.getElementById('lick-container');
+    var Height;
+    var Width = container.clientWidth;
+
+
+    var header_logo = $(".contents header").css("height").replace("px","");
+
+    var chord_char_height;
+    let theme = {{.User1.Theme}};
+    let n =[];
+    let ndata =[];
+    {{if .DpLick.Data}}
+       ndata =[...{{.DpLick.Data}}];
+    {{end}}
+    let lick_id = {{.DpLick.ID}};
+    let name = {{.DpLick.Name}};
+    let b =[];
+    let start;
+    let is_going_to_return = false;
+    let downloaded = false;
+    let firstAreYouReady, tagEditing, difficulty_val_str, scaleSetting, sidebarIsOn, edit_interval, key_Changing, keySetting, reset, rest, accidental_show, tie, triplet, only_view, writing, writing_plet, editing, xpos_moving, err;
+    let firstSpeed, currently_editingX, currently_editingX_val, timesig_start_point, xpos_moving_val, xpos_moving_count, inertia;
+    let difficulty_val, difficulty_val_tobe, key, beat_type, beat_count, midiVal, accidental_val, currently_editing_num, consecutive, octave_consecutive, octave_control, y_index, plet_count;
+    let y_indexs = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11];
+    let scale = {{.DpLick.Scale}};
+    let chord_cen = "C";
+    let chord_char = {{.DpLick.ChoChar}};
+    let xpos, ypos, mheight;
+    let img;
+    let difficulty, flatbtn, sharpbtn, chord_option_li, keysettingdiv, option_li, keyInput, scaleInput, chord_charInput, nameInput, bang_btn, interval_btn, remove_btn;
+    let all_notes_in_key_int;
+    let all_notes_in_key_str;
+    let greek_order = ["I","II","III","IV","V","VI","VII"];
+    let all_notes_in_key_greek = new Map();
+    var selected_indexstr = {{.DpLick.ChoCen}};
+    var selected_index;
+    var is_chocen_sharpstr= {{.DpLick.IsSharp}};
+    var is_chocen_sharp;
+    let if_is_Flat = new Map();
+    let if_is_Sharp = new Map();
+    let interval_from_root = new Map();
+    let interval_int_str = new Map();
+    let prev_id =["C","B","A","G","F","E","D","C","B","A","G","F","E","D","C","B","A"];
+    let data_per_note = 12;
+    var literal_CtoI_array =[
+    ["C", 0],
+    ["Cb", 11],
+    ["C#", 1],
+    ["D", 2],
+    ["Db", 1],
+    ["D#", 3],
+    ["E", 4],
+    ["Eb", 3],
+    ["E#", 5],
+    ["F", 5],
+    ["Fb", 4],
+    ["F#", 6],
+    ["G", 7],
+    ["Gb", 6],
+    ["G#", 8],
+    ["A", 9],
+    ["Ab", 8],
+    ["A#", 10],
+    ["B", 11],
+    ["Bb", 10],
+    ["B#", 0],
+  ]
+    const literal_CtoI = new Map(literal_CtoI_array);
+    const keyInt = [1,6,11,4,9,2,7,0,5,10,3,8,1,6,11];
+
+    const cs_key = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+    const fs_key = [1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,0,1];
+    const b_key  = [1,0,1,1,1,0,1,1,0,1,1,1,0,1,1,0,1];
+    const e_key  = [1,0,0,1,1,0,1,1,0,0,1,1,0,1,1,0,0];
+    const a_key  = [1,0,0,1,1,0,0,1,0,0,1,1,0,0,1,0,0];
+    const d_key  = [1,0,0,0,1,0,0,1,0,0,0,1,0,0,1,0,0];
+    const g_key  = [0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0];
+    const c_key  = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    const f_key  = [0,-1,0,0,0,0,0,0,-1,0,0,0,0,0,0,-1,0];
+    const bb_key = [0,-1,0,0,0,-1,0,0,-1,0,0,0,-1,0,0,-1,0];
+    const eb_key = [0,-1,-1,0,0,-1,0,0,-1,-1,0,0,-1,0,0,-1,-1];
+    const ab_key = [0,-1,-1,0,0,-1,-1,0,-1,-1,0,0,-1,-1,0,-1,-1];
+    const db_key = [0,-1,-1,-1,0,-1,-1,0,-1,-1,-1,0,-1,-1,0,-1,-1];
+    const gb_key = [-1,-1,-1,-1,0,-1,-1,-1,-1,-1,-1,0,-1,-1,-1,-1,-1];
+    const cb_key = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1];
+
+
+    const k_majorInterval = [0,2,4,5,7,9,11];
+
+    //color
+      let bg_color;
+      let btns_color;
+      let btn_elements_color;
+      let btn_elements_arrow;
+      let shape_arrow_color;
+      let keysetting_bg_color;
+      let apply_btn_color;
+      let apply_btn_text_color;
+      let sharp_flat_stroke_color;
+      let sharp_flat_stroke_color_hover;
+      let sharp_flat_stroke_color_hover_click;
+      let sharp_flat_stroke_color_selected;
+      let sharp_flat_stroke_color_selected_bg;
+      let greek_not_selected;
+      let greek_seleted;
+      let al_selected;
+      let interval_text_color;
+      let tie_plet_unactivated_color;
+      let tie_plet_unactivated_hover;
+      let tie_plet_activated_color;
+      let tie_plet_elements_unactivated_color;
+      let tie_plet_elements_activated_color;
+      let ionian_c, dorian_c, phrygian_c, lydian_c, mixolydian_c, aeolian_c, locrian_c, alt_c, default_c
+
+    function preload() {
+      img = loadImage('static/resources/trevb.png');
+    }
+    //xpos ypos = Width/14 , Height/8
+        function setup() {
+          difficulty_val_str={{.DpLick.Difficulty}};
+          difficulty_val = int(difficulty_val_str);
+          difficulty_val_tobe = difficulty_val;
+          {{if (eq .User1.Theme "dark")}}
+            bg_color = color(29, 30, 48);
+            btns_color = color(52, 46, 84);
+            btn_elements_arrow=color(0, 255, 255);
+            shape_arrow_color=color(98, 86, 177);
+            btn_elements_color = color(255,255,255);
+            keysetting_bg_color = color(51, 46, 86);
+            apply_btn_color = color(0,245,245);
+            apply_btn_text_color = color(0);
+            sharp_flat_stroke_color = color(98, 86, 177);
+            sharp_flat_stroke_color_hover = color(108, 96, 187,42);
+            sharp_flat_stroke_color_hover_click = color(88, 76, 167);
+            sharp_flat_stroke_color_selected = color(0,245,245);
+            sharp_flat_stroke_color_selected_bg = color(98, 86, 177);
+            greek_not_selected = color(81, 76, 116);
+            greek_seleted = color(255,255,255);
+            al_selected = color(0, 255, 255);
+            interval_text_color = color(0,245,245);
+            tie_plet_unactivated_color = color(58, 70, 96,130);
+            tie_plet_activated_color = color(52, 46, 84);
+            tie_plet_unactivated_hover = color(62, 56, 94);
+            tie_plet_elements_unactivated_color = color(255);
+            tie_plet_elements_activated_color = color(255);
+            ionian_c = color(255, 0, 162);
+            dorian_c = color(206, 0, 0);
+            phrygian_c = color(255, 60, 0);
+            lydian_c = color(255, 153, 0);
+            mixolydian_c = color(245, 179, 66);
+            aeolian_c = color(239, 255, 0);
+            locrian_c = color(136, 255, 0);
+            alt_c = color(255,255,255);
+            default_c = color(255,255,255);
+          {{else if (eq .User1.Theme "simple")}}
+            bg_color = color(248, 249, 251);
+            btns_color = color(234, 236, 241);
+            btn_elements_arrow=color(68, 74, 71);
+            shape_arrow_color=color(156, 156, 167);
+            btn_elements_color = color(68, 74, 71);
+            keysetting_bg_color = color(248, 249, 251);
+            apply_btn_color = color(0, 111, 255);
+            apply_btn_text_color = color(255);
+            sharp_flat_stroke_color = color(68, 74, 71);
+            sharp_flat_stroke_color_hover = color(78, 84, 81,42);
+            sharp_flat_stroke_color_hover_click = color(58, 64, 61);
+            sharp_flat_stroke_color_selected = color(0,111,255);
+            sharp_flat_stroke_color_selected_bg = color(0,111,255,42);
+            greek_not_selected = color(156, 156, 167);
+            greek_seleted = color(68, 74, 71);
+            al_selected = color(0,111,255);
+            interval_text_color = color(68, 74, 71);
+            tie_plet_unactivated_color = color(58, 70, 96,130);
+            tie_plet_unactivated_hover = color(0,111,255,42);
+            tie_plet_activated_color = color(0,111,255);
+            tie_plet_elements_unactivated_color = color(255);
+            tie_plet_elements_activated_color = color(255);
+            ionian_c = color(255, 0, 162);
+            dorian_c = color(206, 0, 0);
+            phrygian_c = color(255, 60, 0);
+            lydian_c = color(255, 153, 0);
+            mixolydian_c = color(245, 179, 66);
+            aeolian_c = color(239, 255, 0);
+            locrian_c = color(136, 255, 0);
+            alt_c = color(255,255,255);
+            default_c = color(255,255,255);
+            {{else if (eq .User1.Theme "pastel")}}
+              bg_color = color(248, 249, 251);
+              btns_color = color(191, 191, 203);
+              btn_elements_arrow=color(68, 74, 71);
+              shape_arrow_color=color(156, 156, 167);
+              btn_elements_color = color(68, 74, 71);
+              keysetting_bg_color = color(234, 234, 238);
+              apply_btn_color = color(73, 183, 216);
+              apply_btn_text_color = color(255);
+              sharp_flat_stroke_color = color(68, 74, 71);
+              sharp_flat_stroke_color_hover = color(152, 152, 152,42);
+              sharp_flat_stroke_color_hover_click = color(132, 132, 132);
+              sharp_flat_stroke_color_selected = color(73, 182, 216);
+              sharp_flat_stroke_color_selected_bg = color(73, 182, 216,42);
+              greek_not_selected = color(156, 156, 164);
+              greek_seleted = color(68, 74, 71);
+              al_selected = color(73, 182, 216);
+              interval_text_color = color(68, 74, 71);
+              tie_plet_unactivated_color = color(191, 191, 203);
+              tie_plet_unactivated_hover = color(255, 172, 144,42);
+              tie_plet_activated_color = color(255, 172, 144);
+              tie_plet_elements_unactivated_color = color(68, 74, 71);
+              tie_plet_elements_activated_color = color(255);
+              ionian_c = color(255, 144, 214);
+              dorian_c = color(255, 124, 124);
+              phrygian_c = color(255, 167, 124);
+              lydian_c = color(255, 207, 136);
+              mixolydian_c = color(255, 255, 148);
+              aeolian_c = color(197, 255, 130);
+              locrian_c = color(132, 210, 140);
+              alt_c = color(94, 219, 219);
+              default_c = color(255,255,255);
+          {{end}}
+
+
+          interval_btn = select('#intervalbtn');
+
+          xpos = Width*0.066;
+          ypos = 0;
+          var canvas;
+          if(window.innerWidth/window.innerHeight > 1.9){
+            mheight = container.clientHeight * .55* .8;
+            mwidth = mheight*4;
+            Width = mheight * 4;
+            // resizeCanvas(container.clientWidth, mheight);
+            canvas = createCanvas(container.clientWidth, mheight);
+          }else{
+            mheight = Width/4.5;
+            mwidth = mheight*4;
+            // resizeCanvas(Width, mheight);
+            canvas = createCanvas(Width, mheight);
+          }
+          Height = mheight;
+
+          canvas.parent('#p5canvas');
+          //default
+            //booleans
+              rest = 'false';
+              accidental_show = false;
+              tie = "false";
+              triplet = false;
+              only_view = false;
+              writing = true;
+              writing_plet = false;
+              editing = false;
+              xpos_moving = false;
+              xinertia = false;
+              err = false;
+              mousePreocupado = false;
+              start = true;
+              reset = false;
+              keySetting = false;
+              key_Changing = false;
+              edit_interval = true;
+              resizing = false;
+              sidebarIsOn = false;
+              scaleSetting=false;
+              tagEditing=false;
+              firstAreYouReady = true;
+            //booleans end
+            //int
+              beat_type = 4;
+                //0 whole note
+                //1 dotted second note
+                //2 second note
+                //3 dotted quarter note
+                //4 quarter note
+                //5 dotted eighth note
+                //6 eighth note
+                //7 dotted sixteenth note
+                //8 sixteenth note
+                //12 second note plet
+                //14 quarter note plet
+                //16 eighth note plet
+                //18 sixteenth note plet
+              plet_count = 0;
+              beat_count = 0;
+              midiVal = 60; //determined later anyway ******************
+              accidental_val = 0;
+              currently_editing_num = 0;
+              consecutive = 0;
+              octave_consecutive = 0;
+              octave_control = 0;
+              y_index = 7;
+
+            //int end
+            //floats
+            keysig_start_point = xpos + Width/11;
+            timesig_start_point = keysig_start_point + Width/100;
+            currently_editingX = timesig_start_point + Width/100;
+              currently_editingX_val = 0;
+              inertia = 0;
+              xpos_moving_val=0;
+              firstSpeed =0;
+            //floats end
+            //map start
+            if_is_Sharp.set("Cb", "C");
+            if_is_Sharp.set("C", "C#");
+            if_is_Sharp.set("C#", "D");
+            if_is_Sharp.set("Db", "D");
+            if_is_Sharp.set("D", "D#");
+            if_is_Sharp.set("D#", "E");
+            if_is_Sharp.set("Eb", "E");
+            if_is_Sharp.set("E", "F");
+            if_is_Sharp.set("E#", "F#");
+            if_is_Sharp.set("Fb", "F");
+            if_is_Sharp.set("F", "F#");
+            if_is_Sharp.set("F#", "G");
+            if_is_Sharp.set("Gb", "G");
+            if_is_Sharp.set("G", "G#");
+            if_is_Sharp.set("G#", "A");
+            if_is_Sharp.set("Ab", "A");
+            if_is_Sharp.set("A", "A#");
+            if_is_Sharp.set("A#", "B");
+            if_is_Sharp.set("Bb", "C");
+            if_is_Sharp.set("B", "C");
+            if_is_Sharp.set("B#", "C#");
+
+            if_is_Flat.set("C#", "C");
+            if_is_Flat.set("C", "B");
+            if_is_Flat.set("Cb", "Bb");
+            if_is_Flat.set("B#", "B");
+            if_is_Flat.set("B", "Bb");
+            if_is_Flat.set("Bb", "A");
+            if_is_Flat.set("A#", "A");
+            if_is_Flat.set("A", "Ab");
+            if_is_Flat.set("Ab", "G");
+            if_is_Flat.set("G#", "G");
+            if_is_Flat.set("G", "Gb");
+            if_is_Flat.set("Gb", "F");
+            if_is_Flat.set("F#", "F");
+            if_is_Flat.set("F", "E");
+            if_is_Flat.set("Fb", "Eb");
+            if_is_Flat.set("E#", "E");
+            if_is_Flat.set("E", "Eb");
+            if_is_Flat.set("Eb", "D");
+            if_is_Flat.set("D#", "D");
+            if_is_Flat.set("D", "Db");
+            if_is_Flat.set("Db", "C");
+            //map end
+          //default end
+
+          is_chocen_sharp = int(is_chocen_sharpstr);
+          var keystr = {{.DpLick.Key}};
+          key = int(keystr);
+          selected_index=int(selected_indexstr);
+          k_all_note_in_Key(key);
+          switch (is_chocen_sharp) {
+            case 0:
+            chord_cen = all_notes_in_key_str[selected_index];
+              break;
+              case 1:
+              chord_cen = if_is_Sharp.get(all_notes_in_key_str[selected_index]);
+                break;
+                case -1:
+                chord_cen = if_is_Flat.get(all_notes_in_key_str[selected_index]);
+                  break;
+          }
+
+          k_interval_change(chord_cen);
+          k_interval_change_int_str(chord_cen);
+
+          pixelDensity(1);
+
+          scaleInput = select("#scale-select-wrap");
+
+          scaleInput.style("text-align", "center");
+
+          $('#custom-option').css('margin-top', $('#editChord').css("height"));
+
+          k_all_note_in_Key(key);
+
+          rearrange();
+          var addition_f_s;
+          switch (is_chocen_sharp) {
+            case 0:
+            addition_f_s = "";
+              break;
+              case 1:
+              addition_f_s = "#";
+                break;
+                case -1:
+                addition_f_s = "b";
+                  break;
+          }
+          $('#lick-intervalChord').html(addition_f_s + all_notes_in_key_greek.get(all_notes_in_key_str[selected_index])+chord_char);
+          $('#lick-key').html(k_keycen(key) + " Key");
+        }
+        function draw() {
+          if(!firstAreYouReady){
+            p5Canvas4OtherUse[0].xval = xpos_moving_val;
+          }
+          background(bg_color);
+          if(currently_editingX > Width* .8){
+            if(xpos_moving){
+              xpos_moving_val += mouseX - pmouseX;
+              if(xpos_moving_val > 0){
+                xpos_moving_val = 0;
+              }else if(xpos_moving_val< -1*currently_editingX*.7){
+                xpos_moving_val = -1*currently_editingX*.7
+              }
+            }else{
+              if(xinertia){
+                xpos_moving_val += inertia;
+                inertia = firstSpeed / xpos_moving_count;
+                xpos_moving_count = xpos_moving_count*1.04;
+                if(xpos_moving_val > 0){
+                  xpos_moving_val = 0;
+                }else if(xpos_moving_val< -1*currently_editingX*.7){
+                  xpos_moving_val = -1*currently_editingX*.7
+                }
+                if(abs(inertia)<0.1){
+                  xinertia = false;
+                  inertia=0;
+                  firstSpeed=0;
+                }
+              }else{
+                xinertia = false;
+                inertia=0;
+                xpos_moving_count =0;
+              }
+            }
+          }else{
+            xinertia = false;
+            inertia=0;
+            xpos_moving_count =0;
+            xpos_moving_val=0;
+          }
+          bigD(Width);
+
+
+          for (let [i,ns] of n.entries()){
+            ns.Draw();
+            ns.selected=false;
+            if(i==currently_editing_num){
+              ns.selected=true;
+            }
+            if(ns.pc ==3){
+              n[i].completePlet = true;
+              n[i-1].completePlet = true;
+              n[i-2].completePlet = true;
+            }
+            if(ns.tie =="true"){
+              drawTie(i);
+            }
+          }
+
+          drawGrouping();
+          fill(bg_color);
+          stroke(bg_color)
+          strokeWeight(Width/350);
+          rect(0,ypos,Width*0.066,mheight);
+          drawOctaveTranspose();
+          if(firstAreYouReady){
+            $('#p5canvas4interval').css('display','block');
+                areYouReady();
+                p5Canvas4OtherUse[0].indowResized();
+            firstAreYouReady = false;
+          }
+        }
+
+        function drawGrouping() {
+          for (let i = 0; i < n.length-1; i++){
+            if(n[i].two_connected){
+              drawtwoconnected(i);
+              i+= 1;
+            }else if(n[i].four_connected){
+              drawFourConnected(i);
+              i+= 3;
+            }else if(n[i].three_compound_connected[0]){
+              drawThreeConnected_0(i);
+              i+= 2;
+            }else if(n[i].three_compound_connected[1]){
+              drawThreeConnected_1(i);
+              i+= 2;
+            }else if(n[i].three_compound_connected[2]){
+              drawThreeConnected_2(i);
+              i+= 2;
+            }else if(n[i].two_compound_connected[0]){//58
+              drawTwoComConnected_0(i);
+              i+= 1;
+            }else if(n[i].two_compound_connected[1]){//85
+              drawTwoComConnected_1(i);
+              i+= 1;
+            }else if(n[i].four_compound_connected[0]){//3336
+              drawFourComConnected_0(i);
+              i+= 3;
+            }else if(n[i].four_compound_connected[1]){//6333
+              drawFourComConnected_1(i);
+              i+= 3;
+            }else if(n[i].five_compound_connected[0]){//33388
+              drawFiveComConnected_0(i);
+              i+= 4;
+            }else if(n[i].five_compound_connected[1]){//88333
+              drawFiveComConnected_1(i);
+              i+= 4;
+            }else if(n[i].completePlet){
+              drawTriplet(i);
+              i+=2;
+            }
+          }
+        }
+
+
+        function beat_count_cal(bt){
+          switch(bt){
+            case 0:
+              return 64;
+            break;
+            case 1:
+              return 48;
+            break;
+            case 2:
+              return 32;
+            break;
+            case 3:
+              return 24;
+            break;
+            case 4:
+              return 16;
+            break;
+            case 5:
+              return 12;
+            break;
+            case 6:
+              return 8;
+            break;
+            case 7:
+              return 6;
+            break;
+            case 8:
+              return 4;
+            break;
+            case 12:
+              return 64;
+            break;
+            case 14:
+              return 32;
+            break;
+            case 16:
+              return 16;
+            break;
+            case 18:
+              return 8;
+            break;
+          }
+
+        }
+      function mouseIsOnDisplay() {
+        if(mouseX>0&&mouseX<Width&&mouseY>ypos&&mouseY<ypos+mheight){
+           return true;
+           }else{
+           return false;
+           }
+        }
+      function return_beat_count(bt){
+          switch(bt){
+            case 0:
+              bc=64;
+            break;
+            case 1:
+              bc=48;
+            break;
+            case 2:
+              bc=32;
+            break;
+            case 3:
+              bc=24;
+            break;
+            case 4:
+              bc=16;
+            break;
+            case 5:
+              bc=12;
+            break;
+            case 6:
+              bc=8;
+            break;
+            case 7:
+              bc=6;
+            break;
+            case 8:
+              bc=4;
+            break;
+          }
+          return bc
+      }
+
+        window.addEventListener('resize',function () {
+          body[0].style.height = window.innerHeight + "px";
+          body[0].style.minHeight = window.innerHeight + "px";
+
+          Width = container.clientWidth;
+          pixelDensity(1);
+          header_logo = $(".contents header").css("height").replace("px","");
+
+         xpos = Width*0.066;
+         ypos = 0;
+
+         if(window.innerWidth/window.innerHeight > 1.9){
+           mheight = container.clientHeight * .55* .8;
+           mwidth = mheight*4;
+           Width = mheight * 4;
+           resizeCanvas(container.clientWidth, mheight);
+         }else{
+           mheight = Width/4.5;
+           mwidth = mheight*4;
+           resizeCanvas(Width, mheight);
+         }
+         Height = mheight;
+         keysig_start_point = xpos + Width/15;
+         timesig_start_point = keysig_start_point + Width/100;
+         currently_editingX = timesig_start_point + Width/100;
+          $('#p5canvas').css('height', mheight + 'px');
+
+         $('#custom-option').css('margin-top', $('#scale-select-wrap').css('height'));
+
+         if(window.innerWidth/window.innerHeight < .71428){
+
+           $('#side_bar').css('right', '-100%');
+           $('.for_transparency').css('z-index', '-99');
+           $('.for_transparency').css('background-color', 'rgba(20,20,20,0)');
+         }
+
+         resizing = true;
+         rearrange();
+         if(p5Canvas4OtherUse[0]){
+           p5Canvas4OtherUse[0].indowResized()
+         }
+        });
+
+        function mouseIsOnTagOpen() {
+          return false;
+        }
+        function mouseIsOnTagSave() {
+          return false;
+        }
+
+
+    </script>
+    <script src="static/js/main.js"></script>
+    <script src="static/js/note.js"></script>
+    <script src="static/js/buttons.js"></script>
+    <script src="static/js/display.js"></script>
+    <script src="static/js/keyCon.js"></script>
+    <script type="text/javascript">
+        function areYouReady() {
+          let p5can_for_interval = document.getElementById('p5canvas4interval');
+          var func = function(sketch){
+             sketch.xData = [];
+             sketch.tData = [];
+             sketch.Width  = p5can_for_interval.clientWidth;
+             sketch.Height = p5can_for_interval.clientHeight;
+             sketch.n = n;
+             sketch.xval = xpos_moving_val;
+             sketch.bg;
+             sketch.ft;
+
+
+              sketch.setup = function() {
+                for (var i = 0; i < sketch.n.length; i++) {
+                  sketch.xData.push(sketch.n[i].x);
+                  sketch.tData.push(sketch.n[i].interval);
+                }
+
+                {{if (eq .User1.Theme "dark")}}
+                sketch.bg = sketch.color(29, 30, 48);
+                sketch.ft = sketch.color(0,255,255);
+                {{else if (eq .User1.Theme "simple")}}
+                sketch.bg = sketch.color(248, 249, 251);
+                sketch.ft = sketch.color(0,111,255);
+                {{else if (eq .User1.Theme "pastel")}}
+                sketch.bg = sketch.color(248, 249, 251);
+                sketch.ft = sketch.color(116, 212, 228);
+                {{end}}
+
+              let canvas_sketch = sketch.createCanvas(sketch.Width,sketch.Height);
+              canvas_sketch.parent("#p5canvas4interval");
+            }
+            sketch.draw = function() {
+              sketch.xData =[];
+              sketch.tData = [];
+              for (var i = 0; i < sketch.n.length; i++) {
+
+                sketch.xData.push(sketch.n[i].x);
+                sketch.tData.push(sketch.n[i].interval);
+              }
+              //for canvas 1
+              sketch.background(sketch.bg);
+              sketch.textSize(sketch.Width/32);
+              sketch.strokeWeight(sketch.Height/360);
+              sketch.stroke(sketch.ft);
+              sketch.fill(sketch.ft);
+              sketch.textAlign(sketch.CENTER,sketch.CENTER);
+              for (var i = 0; i < sketch.tData.length; i++) {
+                sketch.text(sketch.tData[i],
+                  sketch.xData[i]+sketch.xval,
+                  sketch.Height/2);
+              }
+              sketch.fill(sketch.bg);
+              sketch.noStroke();
+              sketch.rect(0,0,sketch.Width*0.066,sketch.Height);
+            }
+            sketch.indowResized= function(){
+              sketch.Width  = p5can_for_interval.clientWidth;
+              sketch.Height = p5can_for_interval.clientHeight;
+              sketch.resizeCanvas(sketch.Width,sketch.Height);
+            }
+          }
+          p5Canvas4OtherUse[0] =new p5(func);
+        }
+
+      var user_img = document.getElementById("user_img");
+      user_img.addEventListener('touchend', function () {
+        if(window.innerWidth/window.innerHeight < .71428){
+          $('#side_bar').css('right', '0');
+          $('.for_transparency').css('z-index', '9998');
+          $('.for_transparency').css('background-color', 'rgba(20,20,20,.5)');
+        }
+      });
+      user_img.addEventListener('click', function () {
+        if(window.innerWidth/window.innerHeight < .71428){
+          $('#side_bar').css('right', '0');
+          $('.for_transparency').css('z-index', '9998');
+          $('.for_transparency').css('background-color', 'rgba(20,20,20,.5)');
+        }
+      });
+      var sidebarImg = document.getElementById('sidebarImg');
+      sidebarImg.addEventListener('click', function () {
+        window.location.href = '/setting';
+      });
+      var contemp = document.getElementById('contemp');
+      contemp.addEventListener('click', function () {
+        window.location.href = '/setting';
+      });
+      var closeDiv = document.getElementById('closeDiv');
+      closeDiv.addEventListener('click', function () {
+        $('#side_bar').css('right', '-100%');
+        $('.for_transparency').css('z-index', '-99');
+        $('.for_transparency').css('background-color', 'rgba(20,20,20,0)');
+      });
+      closeDiv.addEventListener('touchend', function () {
+        $('#side_bar').css('right', '-100%');
+        $('.for_transparency').css('z-index', '-99');
+        $('.for_transparency').css('background-color', 'rgba(20,20,20,0)');
+      });
+
+        function mousePressed() {
+          if(mouseIsOnDisplay()&& !mousePreocupado&& !keySetting&&!sidebarIsOn){
+            mousePreocupado=true;
+            xpos_moving = true;
+            xinertia = false;
+          }
+          xinertia = false;
+          inertia=0;
+          xpos_moving_count =0;
+        }
+
+        function mouseReleased() {
+
+          if(xpos_moving){
+            xinertia = true;
+            inertia = mouseX - pmouseX;
+            firstSpeed = inertia;
+          }
+
+          xpos_moving=false;
+          xpos_moving_count=1;
+          mousePreocupado = false;
+        }
+
+        function saveData() {
+          var json_data={
+            "id": lick_id,
+            "data": [...ndata]
+          };
+          xhr.open('POST', '/updatelick', true);
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.send(JSON.stringify(json_data));
+        }
+        function isAccidentalShow(){
+          let inst_accidentals = [];
+          switch (key) {
+              case 0:
+                inst_accidentals = [...cs_key];
+              break;
+              case 1:
+                inst_accidentals = [...fs_key];
+              break;
+              case 2:
+                inst_accidentals = [...b_key];
+              break;
+              case 3:
+                inst_accidentals = [...e_key];
+              break;
+              case 4:
+                inst_accidentals = [...a_key];
+              break;
+              case 5:
+                inst_accidentals = [...d_key];
+              break;
+              case 6:
+                inst_accidentals = [...g_key];
+              break;
+              case 7:
+                inst_accidentals = [...c_key];
+              break;
+              case 8:
+                inst_accidentals = [...f_key];
+              break;
+              case 9:
+                inst_accidentals = [...bb_key];
+              break;
+              case 10:
+                inst_accidentals = [...eb_key];
+              break;
+              case 11:
+                inst_accidentals = [...ab_key];
+              break;
+              case 12:
+                inst_accidentals = [...db_key];
+              break;
+              case 13:
+                inst_accidentals = [...gb_key];
+              break;
+              case 14:
+                inst_accidentals = [...cb_key];
+              break;
+          }
+          return inst_accidentals;
+        }
+        function rearrange() {
+          var prev_key;
+          var current_key;
+          var difference_in_key;
+          var transpose_up_down;
+
+          var number_of_keysig = abs(key-7);
+          timesig_start_point = keysig_start_point+number_of_keysig*(Width/90)+Width/40;
+          currently_editingX = timesig_start_point + Width/17;
+          beat_count=0;
+          if(start){
+            currently_editing_num =0;
+          }
+
+            prev_key = literal_CtoI.get(ndata[11]);
+            current_key = literal_CtoI.get(chord_cen);
+            difference_in_key = abs(prev_key - current_key);
+
+            var mv_rebalancing_top_down = false;
+            var mv_rebalancing_bottom_up = false;
+            var if_accidental;
+            var string;
+
+
+            for (var i = 0; i < ndata.length; i+= data_per_note) {
+              if(key_Changing){
+                ndata[i+8] = interval_int_str.get(ndata[i+9]); //id
+              }
+               string = ndata[i+8];
+
+              if(string.indexOf('#') !== -1){
+                if_accidental =1;
+                ndata[i+6] = "1";
+              }else if(string.indexOf('b') !== -1){
+                if_accidental =-1;
+                ndata[i+6] = "-1";
+              }else{
+                if_accidental = 0;
+                ndata[i+6] = "0";
+              }
+              if(if_accidental == 1 && int(ndata[i+10]) + difference_in_key>= 109){
+                mv_rebalancing_top_down = true;
+              }else if(int(ndata[i+10]) + difference_in_key> 108){
+                mv_rebalancing_top_down = true;
+              }
+              if(if_accidental == -1 && int(ndata[i+10]) + difference_in_key<= 32){
+                mv_rebalancing_bottom_up = true;
+              }else if(int(ndata[i+10]) + difference_in_key< 33){
+                mv_rebalancing_bottom_up = true;
+              }
+            }
+
+            if(prev_key < current_key){
+              transpose_up_down = true;
+            }else{
+              transpose_up_down = false;
+            }
+
+
+            if(key_Changing){
+              //isAccidentalShow();
+            }
+            var inst_accidentals = this.isAccidentalShow();
+            switch (is_chocen_sharp) {
+              case 0:
+                chord_cen = all_notes_in_key_str[int(selected_index)];
+                break;
+                case 1:
+                  chord_cen = if_is_Sharp.get(all_notes_in_key_str[int(selected_index)]);
+                  break;
+                  case -1:
+                    chord_cen = if_is_Flat.get(all_notes_in_key_str[int(selected_index)]);
+                    break;
+            }
+          for(var i = 0; i<ndata.length; i+=data_per_note){
+              ndata[i+2] = beat_count.toString();
+              ndata[i+11] = chord_cen;
+              if(key_Changing){
+                ndata[i+8] = interval_int_str.get(ndata[i+9]); //id
+              }
+               string = ndata[i+8];
+              if(string.indexOf('#') !== -1){
+                if_accidental =1;
+                ndata[i+6] = "1";
+              }else if(string.indexOf('b') !== -1){
+                if_accidental =-1;
+                ndata[i+6] = "-1";
+              }else{
+                if_accidental = 0;
+                ndata[i+6] = "0";
+              }
+              var prev_note_mv = int(ndata[i+10]);
+
+              if(transpose_up_down){
+                if(mv_rebalancing_top_down){
+                  prev_note_mv += difference_in_key-12;
+                }else{
+                  prev_note_mv += difference_in_key;
+                }
+              }else{
+                if(mv_rebalancing_bottom_up){
+                  prev_note_mv += difference_in_key+12;
+                }else{
+                  prev_note_mv -= difference_in_key;
+                }
+              }
+              ndata[i+10] = prev_note_mv.toString();
+              var pos =k_position_calc(prev_note_mv, if_accidental);
+              ndata[i] = pos.toString();
+
+              if(inst_accidentals[int(ndata[i])] != ndata[i+6]){
+                if(ndata[i+1]=="false"){
+                  ndata[i+5] = "true";
+                  inst_accidentals[int(ndata[i])] = ndata[i+6];
+                }
+              }else{
+                if(ndata[i+1]=="false"){
+                  ndata[i+5] = "false";
+                  inst_accidentals[int(ndata[i])] = ndata[i+6];
+                }
+              }
+              if(ndata[i+1] == "true"){
+                ndata[i] = "7";
+                ndata[i+10] = "72";
+              }
+              currently_editingX+=makeSpace(ndata[i+5]);
+              n[i/data_per_note] = new Note(currently_editingX,
+              int(ndata[i]),
+              ndata[i+1],
+              int(ndata[i+2]),
+              int(ndata[i+3]),
+              int(ndata[i+4]),
+              ndata[i+5],
+              int(ndata[i+6]),
+              ndata[i+7],
+              ndata[i+8],
+              ndata[i+9],
+              int(ndata[i+10]));
+
+              beat_type=int(ndata[i+3]);
+              plet_count = int(ndata[i+4]);
+              accidental_val = int(ndata[i+6]);
+              rest = ndata[i+1];
+              tie= ndata[i+7];
+            switch(beat_type){
+              case 0:
+                currently_editingX_val= Width/5;
+                beat_count+=64;
+              break;
+              case 1:
+                currently_editingX_val= Width/6;
+                beat_count+=48;
+              break;
+              case 2:
+                currently_editingX_val= Width/7;
+                beat_count+=32;
+              break;
+              case 3:
+                currently_editingX_val= Width/8;
+                beat_count+=24;
+              break;
+              case 4:
+                currently_editingX_val= Width/9;
+                beat_count+=16;
+              break;
+              case 5:
+                currently_editingX_val= Width/10;
+                beat_count+=12;
+              break;
+              case 6:
+                currently_editingX_val= Width/13;
+                beat_count+=8;
+              break;
+              case 7:
+                currently_editingX_val= Width/15;
+                beat_count+=6;
+              break;
+              case 8:
+                currently_editingX_val= Width/20;
+                beat_count+=4;
+              break;
+              case 12:
+                currently_editingX_val= Width/7;
+                if(plet_count >= 3){
+                  beat_count += 64;
+                  beat_type -= 10;
+                  plet_count =0;
+                }
+              break;
+              case 14:
+                currently_editingX_val = Width/9;
+                if(plet_count >= 3){
+                  beat_count += 32;
+                  beat_type -= 10;
+                  plet_count =0;
+                }
+              break;
+              case 16:
+                currently_editingX_val = Width/13;
+                if(plet_count >= 3){
+                  beat_count += 16;
+                  beat_type -= 10;
+                  plet_count =0;
+                }
+              break;
+              case 18:
+                currently_editingX_val= Width/17;
+                if(plet_count >= 3){
+                  beat_count += 8;
+                  beat_type -= 10;
+                  plet_count =0;
+                }
+              break;
+            }
+              currently_editingX += currently_editingX_val;
+              if(start){
+                currently_editing_num +=1;
+              }
+            }
+            key_Changing = false;
+            if(plet_count != 0){
+              writing_plet = true;
+            }else{
+              writing_plet = false;
+            }
+            if(currently_editing_num!= n.length){
+              editing = true;
+              writing = false;
+            }else{
+              editing = false;
+              writing = true;
+            }
+            if(editing){
+              beat_type= n[currently_editing_num].bt;
+              plet_count = n[currently_editing_num].pc;
+              accidental_val = n[currently_editing_num].av;
+              rest = n[currently_editing_num].r;
+              tie= n[currently_editing_num].tie;
+              displayNoteType(n[currently_editing_num].bt)
+            }
+
+            start = false;
+            grouping();
+            if(!resizing){
+              //saveData();
+            }
+            resizing = false;
+        }
+        function grouping() {
+            for(let [i, ns] of n.entries()){
+              ns.four_connected=false;
+                ns.two_connected=false;
+                ns.compound_connected=false;
+                ns.three_compound_connected[0]=false;
+                ns.two_compound_connected[1]=false;
+                ns.two_compound_connected[2]=false;
+                ns.two_compound_connected[0]=false;
+                ns.two_compound_connected[1]=false;
+                ns.two_compound_connected[2]=false;
+                ns.four_compound_connected[0]=false;
+                ns.four_compound_connected[1]=false;
+                ns.five_compound_connected[0]=false;
+                ns.five_compound_connected[1]=false;
+              if(i == 0||reset){
+                ns.consecutive = 0;
+                reset = false;
+              }else if(i > 0){
+                if(ns.r == 'false'&&n[i-1].r == 'false' && n[i].bt == n[i-1].bt){
+                  ns.consecutive = n[i-1].consecutive + 1;
+                }else{
+                  ns.consecutive = 0;
+                }
+              }
+              if(ns.consecutive == 4||ns.bt == 3||ns.bt == 5||ns.bt == 7){
+                ns.consecutive = 0;
+              }//consecutive ends
+              if(ns.bt > 10){
+                ns.consecutive=0;
+                reset = true;
+              }
+                /////////////////////////////////////////////////////////////
+              if(ns.bc%16 ==4){
+
+                if(ns.consecutive ==1 && ns.r == 'false' && n[i-1].r == 'false'){
+                  n[i].two_connected = true;
+                  n[i-1].two_connected = true;
+
+                }else if(ns.consecutive==0&& ns.bt == 5 && n[i-1].bt ==8){
+                  n[i].two_compound_connected[1]= true;
+                  n[i-1].two_compound_connected[1]= true;
+                  reset=true;
+                }
+                ///////////////////////////////////////////////////////////////
+              }else if(ns.bc%16 == 12){
+
+                if(ns.consecutive == 1 && ns.r == 'false' && n[i-1].r == 'false'){
+                  n[i].two_connected = true;
+                  n[i-1].two_connected = true;
+
+                }
+                if(ns.consecutive==3){
+                  n[i-2].two_connected = false;
+                  n[i-3].two_connected = false;
+
+                  n[i].four_connected = true;
+                  n[i-1].four_connected = true;
+                  n[i-2].four_connected = true;
+                  n[i-3].four_connected = true;
+                  reset=true;
+                }else if(ns.consecutive ==1 && ns.bt ==8&& ns.two_connected && n[i-2].bt == 6 ){
+                  n[i].two_connected = false;
+                  n[i-1].two_connected = false;
+
+                  n[i].three_compound_connected[1] = true;
+                  n[i-1].three_compound_connected[1] = true;
+                  n[i-2].three_compound_connected[1] = true;
+                  reset=true;
+                }else if(ns.bt ==8 && n.length>1&&i>1&& n[i-2].bt == 8 && n[i-1].bt == 6){
+
+                  n[i].three_compound_connected[2] = true;
+                  n[i-1].three_compound_connected[2] = true;
+                  n[i-2].three_compound_connected[2] = true;
+                  reset=true;
+                }else if(ns.consecutive==0&&ns.bt == 8&&n[i-1].bt == 5){
+                  n[i].two_compound_connected[0]= true;
+                  n[i-1].two_compound_connected[0]= true;
+                  reset=true;
+                }else if(ns.bt == 8 &&ns.two_connected&& i>3&&
+                  n[i].r == 'false'&& n[i-1].r == 'false'&& n[i-2].r == 'false'&&
+                  n[i-3].r == 'false'&& n[i-4].r == 'false'&& n[i-2].bt==18 && n[i-3].bt==18 && n[i-4].bt==18){
+                  n[i].five_compound_connected[0] = true;
+                  n[i-1].five_compound_connected[0] = true;
+                  n[i-2].five_compound_connected[0] = true;
+                  n[i-3].five_compound_connected[0] = true;
+                  n[i-4].five_compound_connected[0] = true;
+                  reset = true;
+                }
+                //////////////////////////////////////////////////////////////////
+              }else if(ns.bc%16 ==8){
+
+                if(ns.consecutive ==1 && ns.r == 'false' && n[i-1].r == 'false'){
+                  n[i].two_connected = true;
+                  n[i-1].two_connected = true;
+                }
+                if(ns.consecutive==3 && n[i-2].two_connected && n[i-2].bt == 6 && ns.r == 'false' && n[i-1].r == 'false'){
+                  n[i-2].two_connected = false;
+                  n[i-3].two_connected = false;
+
+                  n[i].four_connected = true;
+                  n[i-1].four_connected = true;
+                  n[i-2].four_connected = true;
+                  n[i-3].four_connected = true;
+                  reset=true;
+                }else if(ns.consecutive == 0 && ns.bt == 6 && n[i-1].bt==8 && n[i-1].two_connected){ //886
+                  n[i-1].two_connected = false;
+                  n[i-2].two_connected = false;
+
+                  n[i].three_compound_connected[0] = true;
+                  n[i-1].three_compound_connected[0] = true;
+                  n[i-2].three_compound_connected[0] = true;
+                  reset=true;
+
+                }else if(ns.bt == 6 && i>2&&
+                  n[i].r == 'false'&& n[i-1].r == 'false'&& n[i-2].r == 'false'&&
+                  n[i-3].r == 'false'&&
+                  n[i-1].bt ==18 && n[i-2].bt ==18&& n[i-3].bt ==18){//3336
+                  n[i].four_compound_connected[0] =true;
+                  n[i-1].four_compound_connected[0] =true;
+                  n[i-2].four_compound_connected[0] =true;
+                  n[i-3].four_compound_connected[0] =true;
+                  reset=true;
+                }else if(ns.bt ==18 &&i>2&&
+                  n[i].r == 'false'&& n[i-1].r == 'false'&& n[i-2].r == 'false'&&
+                  n[i-3].r == 'false'&&
+                  n[i-1].bt == 18&&n[i-2].bt == 18&& n[i-3].bt ==6&&n[i-3].bc%16 ==0){
+                  n[i].four_compound_connected[1] =true;
+                  n[i-1].four_compound_connected[1] =true;
+                  n[i-2].four_compound_connected[1] =true;
+                  n[i-3].four_compound_connected[1] =true;
+                  reset=true;
+                }else if(ns.bt == 18 && i>3&&
+                  n[i].r == 'false'&& n[i-1].r == 'false'&& n[i-2].r == 'false'&&
+                  n[i-3].r == 'false'&& n[i-4].r == 'false'&&
+                  n[i-1].bt==18 && n[i-2].bt==18&&n[i-3].bt==8 &&n[i-3].two_connected){
+                  n[i-3].two_connected = false;
+                  n[i-4].two_connected = false;
+
+                  n[i].five_compound_connected[1] = true;
+                  n[i-1].five_compound_connected[1] = true;
+                  n[i-2].five_compound_connected[1] = true;
+                  n[i-3].five_compound_connected[1] = true;
+                  n[i-4].five_compound_connected[1] = true;
+                  reset = true;
+                }
+              }
+              /////////////////////////////////////////////////////////////
+            }//loop end
+        }// grouping end
+        function makeSpace(s) {
+            if(s == "true"){
+              return Width/40;
+            }else{
+              return 0;
+            }
+        }
+        $("#nointervalbtn").bind('click touchend', function () {
+          if (confirm("you've already downloaded this lick. Do you want to download again?")) {
+              // Do it!
+              download();
+            } else {
+              // Do nothing!
+            }
+        });
+        $("#intervalbtn").bind("click touchend", function () {
+          download();
+        })
+
+        function download() {
+          if(!downloaded){
+            xhr_dl.open('POST', '/dlsl', true);
+            xhr_dl.setRequestHeader('Content-Type', 'application/xml');
+            xhr_dl.send(JSON.stringify(lick_id));
+          }
+          downloaded = true;
+        }
+
+        xhr_dl.addEventListener('readystatechange', function(){
+          if(xhr_dl.readyState === XMLHttpRequest.DONE){
+            if (xhr_dl.status === 200) {
+              var response = xhr_dl.responseText
+              var result = JSON.parse(response)
+              if(result == "ok"){
+                {{if (eq .User1.Theme "dark")}}
+                $("#intervalbtn").css("background","#3a4660");
+                $("#intervalbtn").css("color","#9EA4B0");
+                {{else if (eq .User1.Theme "simple")}}
+                $("#intervalbtn").css("background","#9C9CA7");
+                {{else if (eq .User1.Theme "pastel")}}
+                $("#intervalbtn").css("background","#9C9CA7");
+                {{end}}
+                alert("Download Complete");
+              }
+
+            }
+          }
+        });
+    </script>
+  </body>
+</html>

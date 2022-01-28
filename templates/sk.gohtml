@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>MY LICKS</title>
+    {{if (eq .Theme "dark")}}
+    <link rel="stylesheet" href="static/css/dark_gopro.css"/>
+    {{else if (eq .Theme "simple")}}
+    <link rel="stylesheet" href="static/css/simple_gopro.css"/>
+    {{else if (eq .Theme "pastel")}}
+    <link rel="stylesheet" href="static/css/pastel_gopro.css"/>
+    {{end}}
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.js"></script>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/resources/treble_clef.png">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#000000"/>
+
+  </head>
+  <body>
+    <div class="side_bar" id="side_bar">
+      <div class="side_bar_contents">
+        <div id="closeDiv" class="closeDiv">
+
+        </div>
+        <div class="logoutDiv">
+          <a href="/logout"><p>Logout</p></a>
+        </div>
+        <div class="userImgSidebar">
+          <div id="contemp" class="contemp">
+            <div class="imgAfter">
+              <p>edit</p>
+            </div>
+          </div>
+          <img id="sidebarImg" src="{{.Picture}}" alt="">
+        </div>
+        <p>{{.Given_name}}</p>
+      </div>
+      <ul>
+        <a href="/mylicks"><div id="licksIcon"></div><li>My Licks</li></a>
+        <a href="/mysheets"><div id="sheetsIcon"></div><li>My Sheets</li></a>
+        <a href="/forum"><div id="downloadIcon"></div><li>Forum</li></a>
+        <a href="/setting"><div id="profileIcon"></div><li>Profile</li></a>
+      </ul>
+    </div>
+    <div class="con-wrap">
+      <div class="contents">
+
+        <header>
+          <div class="headerWrap">
+            <div id="header-logo" class="header-nav">
+
+              {{if (eq .Theme "dark")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{else if (eq .Theme "simple")}}
+              <h2><a href="/"style="color:#1936FE;">MY LICKS</a></h2>
+              {{else if (eq .Theme "pastel")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{end}}
+            </div>
+
+
+            <div id="logout" class="header-nav">
+
+              {{if (eq .Theme "dark")}}
+              <p><a href="/logout" style="color: #757189;">Logout</a></p>
+              {{else if (eq .Theme "simple")}}
+              <p><a href="/logout" style="color: #9C9CA7;">Logout</a></p>
+              {{else if (eq .Theme "pastel")}}
+              <p><a href="/logout" style="color: #B6EBF3;">Logout</a></p>
+              {{end}}
+            </div>
+            <div id="user_info" class="header-nav">
+              <div class="user_img" id="user_img">
+                <img src="{{.Picture}}" alt="No Image">
+              </div>
+              <p>{{.Given_name}}</p>
+              <div class="top-down-menu">
+                <a href="/setting">
+                  <div id="profile-icon2"></div>
+                  <span>Profile</span>
+                </a>
+                <a href="/mylicks">
+                  <div id="licks-icon2"></div>
+                  <span>My Licks</span>
+                </a>
+                <a href="/mysheets">
+                  <div id="sheets-icon2"></div>
+                  <span>My Sheets</span>
+                </a>
+                <a href="/forum">
+                  <div id="download-icon2"></div>
+                  <span>Forum</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+        <main>
+          {{if (eq .Locale "ko")}}
+          <p class="instruction2">모바일 메세지로 전해진 링크를 통해 결제를 하신 후 '결제 확인' 버튼을 눌러서 결과를 확인하세요! <br><br>이 창을 나가셔도 결제 결과는 자동으로 서버에 전해집니다.</p>
+          <p class="check">결제 확인</p>
+          <p class="trouble">문의 사항은 skim@mylicks.org 로 연락 주시기 바랍니다.</p>
+          {{else}}
+          <p class="instruction2">Pay via the link sent to your mobile phone and <br><br>click 'Payment Result' button to see if your payment got accepted successfully. <br><br>Once paid, your purchase information will be automatically sent to our server. You can leave this page</p>
+          <p class="check">Payment Result</p>
+          <p class="trouble">having trouble? Please contact skim@mylicks.org</p>
+          {{end}}
+        </main>
+      </div>
+    </div>
+
+    <footer>
+        <div class="copyright">
+          <div class="logo">
+            <p class="footer-text" id="textlogo">My Licks</p>
+          </div>
+
+          <div class="contactinfos">
+            <p class="footer-text" id="copyright">Copyright (c) 2020 Toby Kim </p>
+            <!-- <p class="footer-text" id="email">seop0504@gmail.com</p> -->
+          </div>
+        </div>
+      </footer>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+      <script type="text/javascript">
+        var mul_num = {{.Mul}}
+        $(".check").on("click touchend", function (e) {
+          xhr.open('POST', '/ckpy', true);
+          xhr.setRequestHeader('Content-Type', 'application/xml');
+          xhr.send(JSON.stringify(mul_num));
+        })
+
+        xhr.addEventListener('readystatechange', function(){
+          if(xhr.readyState === XMLHttpRequest.DONE){
+            if (xhr.status === 200) {
+              var item = xhr.responseText;
+              var payload = JSON.parse(item);
+              if(payload && payload != "ok"){
+                {{if (eq .Locale "ko")}}
+                alert("아직 결제가 확인되지 않았습니다!");
+                {{else}}
+                alert("You're payment has not been accepted yet!");
+                {{end}}
+              }else{
+                {{if (eq .Locale "ko")}}
+                alert("결제가 정상적으로 확인되었습니다!");
+                {{else}}
+                alert("We've got your payment successfully!");
+                $(".check").css("background", "#9c9ca7")
+                {{end}}
+              }
+           }
+          }
+        });
+
+
+        var user_img = document.getElementById("user_img");
+        user_img.addEventListener('touchend', function () {
+          if(window.innerWidth/window.innerHeight < .71428){
+            $('#side_bar').css('right', '0');
+            $('#for_transparency3').css('z-index', '9998');
+            $('#for_transparency3').css('background-color', 'rgba(20,20,20,.5)');
+          }
+        });
+        user_img.addEventListener('click', function () {
+            if(window.innerWidth/window.innerHeight < .71428){
+              $('#side_bar').css('right', '0');
+              $('#for_transparency3').css('z-index', '9998');
+              $('#for_transparency3').css('background-color', 'rgba(20,20,20,.5)');
+            }
+        });
+        var sidebarImg = document.getElementById('sidebarImg');
+        sidebarImg.addEventListener('click', function () {
+          window.location.href = '/setting';
+        });
+        var contemp = document.getElementById('contemp');
+        contemp.addEventListener('click', function () {
+          window.location.href = '/setting';
+        });
+
+        window.addEventListener('resize', function () {
+          if(window.innerWidth/window.innerHeight < .71428){
+            $('#side_bar').css('right', '-100%');
+          }
+        });
+
+        var closeDiv = document.getElementById('closeDiv');
+        closeDiv.addEventListener('click', function () {
+          $('#side_bar').css('right', '-100%');
+        });
+        closeDiv.addEventListener('touchend', function () {
+          $('#side_bar').css('right', '-100%');
+        });
+      </script>
+  </body>
+</html>

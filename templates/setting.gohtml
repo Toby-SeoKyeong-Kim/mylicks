@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>MY LICKS</title>
+    {{if (eq .Theme "dark")}}
+    <link rel="stylesheet" href="static/css/settingdark.css"/>
+    {{else if (eq .Theme "simple")}}
+    <link rel="stylesheet" href="static/css/setting.css"/>
+    {{else if (eq .Theme "pastel")}}
+    <link rel="stylesheet" href="static/css/settingpastel.css"/>
+    {{end}}
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.js"></script>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/resources/treble_clef.png">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#000000"/>
+
+  </head>
+  <body>
+    <div class="side_bar" id="side_bar">
+      <div class="side_bar_contents">
+        <div id="closeDiv" class="closeDiv">
+
+        </div>
+        <div class="logoutDiv">
+          <a href="/logout"><p>Logout</p></a>
+        </div>
+        <div class="userImgSidebar">
+          <div id="contemp" class="contemp">
+            <div class="imgAfter">
+              <p>edit</p>
+            </div>
+          </div>
+          <img id="sidebarImg" src="{{.Picture}}" alt="">
+        </div>
+        <p>{{.Given_name}}</p>
+      </div>
+      <ul>
+        <a href="/mylicks"><div id="licksIcon"></div><li>My Licks</li></a>
+        <a href="/mysheets"><div id="sheetsIcon"></div><li>My Sheets</li></a>
+        <a href="/forum"><div id="downloadIcon"></div><li>Forum</li></a>
+        <a href="/setting"><div id="profileIcon"></div><li>Profile</li></a>
+      </ul>
+    </div>
+    <div class="con-wrap">
+      <div class="contents">
+
+        <header>
+          <div class="headerWrap">
+            <div id="header-logo" class="header-nav">
+
+              {{if (eq .Theme "dark")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{else if (eq .Theme "simple")}}
+              <h2><a href="/"style="color:#1936FE;">MY LICKS</a></h2>
+              {{else if (eq .Theme "pastel")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{end}}
+            </div>
+
+
+            <div id="logout" class="header-nav">
+
+              {{if (eq .Theme "dark")}}
+              <p><a href="/logout" style="color: #757189;">Logout</a></p>
+              {{else if (eq .Theme "simple")}}
+              <p><a href="/logout" style="color: #9C9CA7;">Logout</a></p>
+              {{else if (eq .Theme "pastel")}}
+              <p><a href="/logout" style="color: #B6EBF3;">Logout</a></p>
+              {{end}}
+            </div>
+            <div id="user_info" class="header-nav">
+              <div class="user_img" id="user_img">
+                <img src="{{.Picture}}" alt="No Image">
+              </div>
+              <p>{{.Given_name}}</p>
+              <div class="top-down-menu">
+                <a href="/setting">
+                  <div id="profile-icon2"></div>
+                  <span>Profile</span>
+                </a>
+                <a href="/mylicks">
+                  <div id="licks-icon2"></div>
+                  <span>My Licks</span>
+                </a>
+                <a href="/mysheets">
+                  <div id="sheets-icon2"></div>
+                  <span>My Sheets</span>
+                </a>
+                <a href="/forum">
+                  <div id="download-icon2"></div>
+                  <span>Forum</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+        <main>
+            <div class="form-container" id="form-container">
+              <form id="setting-form" method="post" enctype="multipart/form-data">
+                <input type="file" name="profile_img" id="file-input" onChange="handleFiles()">
+              </form>
+
+              <div class="profile-header">
+                <div class="profile-pic">
+                  <img src="{{.Picture}}" alt="No Image">
+                  <div class="edit-picbtn" onclick="inputClick()">
+
+                  </div>
+                </div>
+                <div class="profile-dpname">
+                  <div class="dpNickname">
+                    <p>{{.Given_name}}</p>
+                  </div>
+                  <div class="dpEmail">
+                    <p>{{.Email}}</p>
+                  </div>
+                </div>
+                <div class="theme">
+                  <div class="theme-blocks" id="dark" onclick="darkMode()">
+                    <div class="theme-dark theme-icons">
+
+                    </div>
+                    <span>Dark</span>
+                  </div>
+                  <div class="theme-blocks" id="simple" onclick="simpleMode()">
+                    <div class="theme-simple theme-icons">
+
+                    </div>
+                    <span>Simple</span>
+                  </div>
+                  <div class="theme-blocks" id="pastel" onclick="pastelMode()">
+                    <div class="theme-pastel theme-icons">
+
+                    </div>
+                    <span>Pastel</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="profile-contents">
+                <div class="nickname">
+                  <label for="nickname">Nickname</label>
+                  <br>
+                  <input type="text" name="Nickname" id="nickname" value="{{.Given_name}}" onchange="nameChange()">
+                </div>
+                <div class="detail">
+                  <label for="detail">About</label>
+                  <br>
+                  {{if .About}}
+                  <textarea name="Detail" id="detail" rows="8" cols="80" placeholder="Tell people about you!" onchange="textChange()">{{.About}}</textarea>
+                  {{else}}
+                  <textarea name="Detail" id="detail" rows="8" cols="80" placeholder="Tell people about you!" onchange="textChange()"></textarea>
+                  {{end}}
+
+                </div>
+              </div>
+              <div class="payment">
+                <p id="goPro" onclick="goPro()">Pro</p>
+                <span>Unlimited licks & sheets and access to forum to share them!</span>
+                {{if (eq .Role "Pro")}}
+                  {{if (eq .Locale "ko")}}
+                    <span id="expire"></span>
+                  {{else}}
+                    <span id="expire"></span>
+                  {{end}}
+                {{end}}
+              </div>
+              <div class="savebtn" onclick="saveClick()">
+                <p>save</p>
+              </div>
+              <p id="response"></p>
+            </div>
+        </main>
+      </div>
+    </div>
+
+    <footer>
+        <div class="copyright">
+          <div class="logo">
+            <p class="footer-text" id="textlogo">My Licks</p>
+          </div>
+
+          <div class="contactinfos">
+            <p class="footer-text" id="copyright">Copyright (c) 2020 Toby Kim </p>
+            <!-- <p class="footer-text" id="email">seop0504@gmail.com</p> -->
+          </div>
+        </div>
+      </footer>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+      <script type="text/javascript">
+      var email = {{.Email}};
+        var color_theme = {{.Theme}};
+        var nickname = {{.Given_name}};
+        var about = {{.About}};
+        var user_pic = {{.Picture}};
+        var xhr = new XMLHttpRequest();
+
+        {{if (eq .Role "Pro")}}
+        var exptime = {{.ProExp}}
+        var time = parseInt((Date.parse(post.date) - Date.now())/(3600000*24));
+        var timestr = time + " days left";
+          {{if (eq .Locale "ko")}}
+            $("#expire").text("이용권 만료일" + time + "일 남음");
+          {{else}}
+            $("#expire").text("Pro expiration" + timestr);
+          {{end}}
+        {{end}}
+
+        function darkMode() {
+          color_theme = "dark"
+          $("body").css("background", "#1D1E30");
+          $(".side_bar").css("background", "#332E56");
+          $(".side_bar_contents p").css("color", "#6256B1");
+          $(".side_bar ul a").css("background", "#332E56");
+          $(".side_bar ul a").css("color", "#ffffff");
+          $(".closeDiv").css("background-image", "url('static/resources/icon/close_simple.png')");
+          $("#licksIcon").css("background-image", "url('static/resources/icon/licks-icon.png')");
+          $("#sheetsIcon").css("background-image", "url('static/resources/icon/sheets-icon.png')");
+          $("#downloadIcon").css("background-image", "url('static/resources/icon/forum-icon.png')");
+          $("#profileIcon").css("background-image", "url('static/resources/icon/profile-icon.png')");
+          $(".side_bar ul a").hover(function() {
+            $(this).css("background-color","#6256B1")
+          },function () {
+            $(this).css("background-color","#332E56")
+          });
+          $('.top-down-menu').css({
+            'background-color':'#332E56',
+            'border':'1px solid #6256B1'
+          });
+          $('.top-down-menu a').css('background-color', '#332E56');
+          $(".top-down-menu span").css("color", "#ffffff");
+          $(".top-down-menu a").hover(function() {
+            $(this).css("background-color","#6256B1")
+          },function () {
+            $(this).css("background-color","#332E56")
+          });
+          $('#licks-icon2').css("background-image", "url('static/resources/icon/licks-icon.png')");
+          $('#sheets-icon2').css("background-image", "url('static/resources/icon/sheets-icon.png')");
+          $('#download-icon2').css("background-image", "url('static/resources/icon/download-icon.png')");
+          $('#profile-icon2').css("background-image", "url('static/resources/icon/profile-icon.png')");
+          $(".contents header").css("background", "#1D1E30");
+          $(".dpNickname").css("color", "#ffffff");
+          $(".dpEmail").css("color", "#757189");
+          $("#header-logo a").css("color", "#ffffff");
+          $("#logout a").css("color", "#757189");
+          $("#user_info").css("color", "#ffffff");
+          $("label").css("color", "#6256B1");
+          $(".profile-pic img").css("filter", "drop-shadow(0 2px 2px #00ffff)");
+          $(".profile-pic div").css('background-image',"url('static/resources/icon4setting/btn_edit_bla.png')");
+          $(".user_img img").css("filter", "drop-shadow(0 2px 6px #00ffff)");
+          $("#nickname").css("background-color", "#332E56");
+          $("#detail").css("background-color", "#332E56");
+          $("#nickname").css("color", "#ffffff");
+          $("#detail").css("color", "#ffffff");
+          $('.theme-dark').css({
+            'background' : 'url("static/resources/icon4setting/그룹 135@2x.png")',
+            'background-repeat' : 'no-repeat',
+            'background-size':'40%',
+            'background-position':'center'
+          });
+          $('.theme-simple').css({
+            'background' : 'url("static/resources/icon4setting/패스 45@2x.png")',
+            'background-repeat' : 'no-repeat',
+            'background-size':'40%',
+            'background-position':'center'
+          });
+          $('.theme-pastel').css({
+            'background' : 'url("static/resources/icon4setting/그룹 147@2x.png")',
+            'background-repeat' : 'no-repeat',
+            'background-size':'40%',
+            'background-position':'center'
+          });
+          $(".theme-blocks").css({
+            "background-color": "#332E56",
+            "color": "#6256B1",
+            "border": "none",
+            "filter":"none"
+          });
+          $("#dark").css({
+            "background-color": "#1d1e30",
+            "border":"3px solid #00ffff",
+            "color":"#00ffff",
+            "filter":"drop-shadow(0 10px 10px #000000)",
+          });
+          $(".savebtn").css({
+            "background":"linear-gradient(191deg, rgba(0,255,255,1) 24%, rgba(0,255,175,1) 100%)",
+            "color":"#1D1E30"
+          });
+          $(".logo").css("color", "#757189");
+          $(".contactinfos").css("color", "#757189");
+        }
+        function simpleMode() {
+          color_theme = "simple"
+          $("body").css("background", "#f8f9fb");
+          $(".side_bar").css("background", "#EAECF1");
+          $(".side_bar_contents p").css("color", "#006fff");
+          $(".side_bar ul a").css("background", "#EAECF1");
+          $(".side_bar ul a").css("color", "#444A47");
+          $(".closeDiv").css("background-image", "url('static/resources/icon/close_simple.png')");
+          $("#licksIcon").css("background-image", "url('static/resources/icon/simlicks.png')");
+          $("#sheetsIcon").css("background-image", "url('static/resources/icon/simsheets.png')");
+          $("#downloadIcon").css("background-image", "url('static/resources/icon/simforum.png')");
+          $("#profileIcon").css("background-image", "url('static/resources/icon/simprofile.png')");
+          $(".side_bar ul a").hover(function() {
+            $(this).css("background-color","#9C9CA7")
+          },function () {
+            $(this).css("background-color","#EAECF1")
+          });
+          $('.top-down-menu').css({
+            'background-color':'#EAECF1',
+            'border':'1px solid #006fff'
+          });
+          $('.top-down-menu a').css('background-color', '#EAECF1');
+          $(".top-down-menu span").css("color", "#444A47");
+          $(".top-down-menu a").hover(function() {
+            $(this).css("background-color","#9C9CA7")
+          },function () {
+            $(this).css("background-color","#EAECF1")
+          });
+          $('#licks-icon2').css('background-image',"url('static/resources/icon/simlicks.png')");
+          $('#sheets-icon2').css('background-image',"url('static/resources/icon/simsheets.png')");
+          $('#download-icon2').css('background-image',"url('static/resources/icon/simforum.png')");
+          $('#profile-icon2').css('background-image',"url('static/resources/icon/simprofile.png')");
+          $(".contents header").css("background", "#ffffff");
+          $(".dpNickname").css("color", "#1936FE");
+          $(".dpEmail").css("color", "#444A47");
+          $("#header-logo a").css("color", "#1936FE");
+          $("#logout a").css("color", "#9C9CA7");
+          $("#user_info").css("color", "#444A47");
+          $("label").css("color", "#006FFF");
+          $(".profile-pic img").css("filter", "drop-shadow(0 2px 2px #000000)");
+          $(".profile-pic div").css('background-image',"url('static/resources/icon4setting/btn_edit_sim.png')");
+          $(".user_img img").css("filter", "drop-shadow(0 2px 2px #000000)");
+          $("#nickname").css("background-color", "#006FFF");
+          $("#detail").css("background-color", "#006FFF");
+          $("#nickname").css("color", "#ffffff");
+          $("#detail").css("color", "#ffffff");
+          $('.theme-dark').css({
+            'background' : 'url("static/resources/icon4setting/simdark.png")',
+            'background-repeat' : 'no-repeat',
+            'background-size':'40%',
+            'background-position':'center'
+          });
+          $('.theme-simple').css({
+            'background' : 'url("static/resources/icon4setting/simsim.png")',
+            'background-repeat' : 'no-repeat',
+            'background-size':'40%',
+            'background-position':'center'
+          });
+          $('.theme-pastel').css({
+            'background' : 'url("static/resources/icon4setting/simpas.png")',
+            'background-repeat' : 'no-repeat',
+            'background-size':'40%',
+            'background-position':'center'
+          });
+          $(".theme-blocks").css({
+            "background-color": "#EAECF1",
+            "color": "#9C9CA7",
+            "border": "none",
+            "filter":"none",
+          });
+          $("#simple").css({
+            "background-color": "#F8F9FB",
+            "border":"3px solid #1936FE",
+            "color":"#1936FE",
+            "filter":"drop-shadow(0 10px 10px #DDDFE1)",
+          });
+          $(".savebtn").css({
+            "background":"#006fff",
+            "color":"#ffffff"
+          });
+          $(".logo").css("color", "#9C9CA7");
+          $(".contactinfos").css("color", "#9C9CA7");
+        }
+        function pastelMode() {
+          color_theme = "pastel"
+          $("body").css("background", "#f8f9fb");
+          $(".side_bar").css("background", "#BFBFCB");
+          $(".side_bar_contents p").css("color", "#F8F9FB");
+          $(".side_bar_contents").css("background", "#FFAC90");
+          $(".side_bar ul a").css("background", "#BFBFCB");
+          $(".side_bar ul a").css("color", "#F8F9FB");
+          $(".closeDiv").css("background-image", "url('static/resources/icon/close_pas.png')");
+          $("#licksIcon").css("background-image", "url('static/resources/icon/paslicks.png')");
+          $("#sheetsIcon").css("background-image", "url('static/resources/icon/passheets.png')");
+          $("#downloadIcon").css("background-image", "url('static/resources/icon/pasforum.png')");
+          $("#profileIcon").css("background-image", "url('static/resources/icon/pasprofile.png')");
+          $(".side_bar ul a").hover(function() {
+            $(this).css("background-color","#74D4E4")
+          },function () {
+            $(this).css("background-color","#BFBFCB")
+          });
+          $('.top-down-menu').css({
+            'background-color':'#BFBFCB',
+            'border':'1px solid #74D4E4'
+          });
+          $(".top-down-menu span").css("color", "#F8F9FB");
+          $('.top-down-menu a').css('background-color', '#BFBFCB');
+          $(".top-down-menu a").hover(function() {
+            $(this).css("background-color","#74D4E4")
+          },function () {
+            $(this).css("background-color","#BFBFCB")
+          });
+          $('#licks-icon2').css('background-image',"url('static/resources/icon/paslicks.png')");
+          $('#sheets-icon2').css('background-image',"url('static/resources/icon/passheets.png')");
+          $('#download-icon2').css('background-image',"url('static/resources/icon/pasforum.png')");
+          $('#profile-icon2').css('background-image',"url('static/resources/icon/pasprofile.png')");
+          $(".contents header").css("background", "#74D4E4");
+          $(".dpNickname").css("color", "#74D4E4");
+          $(".dpEmail").css("color", "#444A47");
+          $("#header-logo a").css("color", "#ffffff");
+          $("#logout a").css("color", "#B6EBF3");
+          $("#user_info").css("color", "#ffffff");
+          $("label").css("color", "#74D4E4");
+          $(".profile-pic img").css("filter", "drop-shadow(0 2px 2px #000000)");
+          $(".profile-pic div").css('background-image',"url('static/resources/icon4setting/btn_edit_pas.png')");
+          $(".user_img img").css("filter", "drop-shadow(0 2px 2px #000000)");
+          $("#nickname").css("background-color", "#74D4E4");
+          $("#detail").css("background-color", "#74D4E4");
+          $("#nickname").css("color", "#444A47");
+          $("#detail").css("color", "#444A47");
+          $('.theme-dark').css({
+            'background' : 'url("static/resources/icon4setting/pasdark.png")',
+            'background-repeat' : 'no-repeat',
+            'background-size':'40%',
+            'background-position':'center'
+          });
+          $('.theme-simple').css({
+            'background' : 'url("static/resources/icon4setting/passim.png")',
+            'background-repeat' : 'no-repeat',
+            'background-size':'40%',
+            'background-position':'center'
+          });
+          $('.theme-pastel').css({
+            'background' : 'url("static/resources/icon4setting/paspas.png")',
+            'background-repeat' : 'no-repeat',
+            'background-size':'40%',
+            'background-position':'center'
+          });
+          $(".theme-blocks").css({
+            "background-color": "#EAEAEE",
+            "color": "#BFBFCB",
+            "border": "none",
+            "filter":"none",
+          });
+          $("#pastel").css({
+            "background-color": "#F8F9FB",
+            "border":"3px solid #74D4E4",
+            "color":"#74D4E4",
+            "filter":"drop-shadow(0 10px 10px #DDDFE1)",
+          });
+          $(".savebtn").css({
+            "background":"#FFAC90",
+            "color":"#ffffff"
+          });
+          $(".logo").css("color", "#9C9CA7");
+          $(".contactinfos").css("color", "#9C9CA7");
+        }
+
+        function saveClick() {
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                window.location.href = '/';
+                }
+          }
+          xhr.open("POST", "/updateSetting", true);
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.send(JSON.stringify({
+              "email": email,
+              "theme": color_theme,
+              "given_name": nickname,
+              "about": about,
+              "picture": user_pic
+          }));
+        }
+        function textChange() {
+          about = $("#detail").val();
+        }
+        function nameChange() {
+          nickname = $("#nickname").val();
+        }
+        function inputClick() {
+          $('#file-input').trigger('click');
+        }
+          function handleFiles() {
+          var form = document.getElementById('setting-form');
+            form.submit();
+        }
+
+        var user_img = document.getElementById("user_img");
+        user_img.addEventListener('touchend', function () {
+          if(window.innerWidth/window.innerHeight < .71428){
+            $('#side_bar').css('right', '0');
+            $('#for_transparency3').css('z-index', '9998');
+            $('#for_transparency3').css('background-color', 'rgba(20,20,20,.5)');
+          }
+        });
+        user_img.addEventListener('click', function () {
+          if(window.innerWidth/window.innerHeight < .71428){
+            $('#side_bar').css('right', '0');
+            $('#for_transparency3').css('z-index', '9998');
+            $('#for_transparency3').css('background-color', 'rgba(20,20,20,.5)');
+          }
+        });
+        var sidebarImg = document.getElementById('sidebarImg');
+        sidebarImg.addEventListener('click', function () {
+          window.location.href = '/setting';
+        });
+        var contemp = document.getElementById('contemp');
+        contemp.addEventListener('click', function () {
+          window.location.href = '/setting';
+        });
+
+        window.addEventListener('resize', function () {
+          if(window.innerWidth/window.innerHeight < .71428){
+            $('#side_bar').css('right', '-100%');
+          }
+        });
+
+        var closeDiv = document.getElementById('closeDiv');
+        closeDiv.addEventListener('click', function () {
+          $('#side_bar').css('right', '-100%');
+        });
+        closeDiv.addEventListener('touchend', function () {
+          $('#side_bar').css('right', '-100%');
+        });
+
+        $("#goPro").on("click touchend",function () {
+          window.location.href = '/goPro';
+        });
+      </script>
+  </body>
+</html>

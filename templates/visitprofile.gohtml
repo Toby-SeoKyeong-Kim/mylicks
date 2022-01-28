@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>MY LICKS</title>
+    {{if (eq .User1.Theme "dark")}}
+    <link rel="stylesheet" href="static/css/settingdark.css"/>
+    {{else if (eq .User1.Theme "simple")}}
+    <link rel="stylesheet" href="static/css/setting.css"/>
+    {{else if (eq .User1.Theme "pastel")}}
+    <link rel="stylesheet" href="static/css/settingpastel.css"/>
+    {{end}}
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.js"></script>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/resources/treble_clef.png">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#000000"/>
+
+  </head>
+  <body>
+    <div class="side_bar" id="side_bar">
+      <div class="side_bar_contents">
+        <div id="closeDiv" class="closeDiv">
+
+        </div>
+        <div class="logoutDiv">
+          <a href="/logout"><p>Logout</p></a>
+        </div>
+        <div class="userImgSidebar">
+          <div id="contemp" class="contemp">
+            <div class="imgAfter">
+              <p>edit</p>
+            </div>
+          </div>
+          <img id="sidebarImg" src="{{.User1.Picture}}" alt="">
+        </div>
+        <p>{{.User1.Given_name}}</p>
+      </div>
+      <ul>
+        <a href="/mylicks"><div id="licksIcon"></div><li>My Licks</li></a>
+        <a href="/mysheets"><div id="sheetsIcon"></div><li>My Sheets</li></a>
+        <a href="/forum"><div id="downloadIcon"></div><li>Forum</li></a>
+        <a href="/setting"><div id="profileIcon"></div><li>Profile</li></a>
+      </ul>
+    </div>
+    <div class="con-wrap">
+      <div class="contents">
+
+        <header>
+          <div class="headerWrap">
+            <div id="header-logo" class="header-nav">
+
+              {{if (eq .User1.Theme "dark")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{else if (eq .User1.Theme "simple")}}
+              <h2><a href="/"style="color:#1936FE;">MY LICKS</a></h2>
+              {{else if (eq .User1.Theme "pastel")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{end}}
+            </div>
+
+
+            <div id="logout" class="header-nav">
+
+              {{if (eq .User1.Theme "dark")}}
+              <p><a href="/logout" style="color: #757189;">Logout</a></p>
+              {{else if (eq .User1.Theme "simple")}}
+              <p><a href="/logout" style="color: #9C9CA7;">Logout</a></p>
+              {{else if (eq .User1.Theme "pastel")}}
+              <p><a href="/logout" style="color: #B6EBF3;">Logout</a></p>
+              {{end}}
+            </div>
+            <div id="user_info" class="header-nav">
+              <div class="user_img" id="user_img">
+                <img src="{{.User1.Picture}}" alt="No Image">
+              </div>
+              <p>{{.User1.Given_name}}</p>
+              <div class="top-down-menu">
+                <a href="/setting">
+                  <div id="profile-icon2"></div>
+                  <span>Profile</span>
+                </a>
+                <a href="/mylicks">
+                  <div id="licks-icon2"></div>
+                  <span>My Licks</span>
+                </a>
+                <a href="/mysheets">
+                  <div id="sheets-icon2"></div>
+                  <span>My Sheets</span>
+                </a>
+                <a href="/forum">
+                  <div id="download-icon2"></div>
+                  <span>Forum</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+        <main>
+            <div class="form-container" id="form-container">
+
+              <div class="profile-header">
+                <div class="profile-pic">
+                  <img src="{{.User2.Picture}}" alt="No Image">
+                </div>
+                <div class="profile-dpname">
+                  <div class="dpNickname">
+                    <p>{{.User2.Given_name}}</p>
+                  </div>
+                  <div class="dpEmail">
+                    <p>{{.User2.Email}}</p>
+                  </div>
+                </div>
+                <div class="follow">
+                  <div class="followings">
+                    <span></span>
+                    <p>Followings</p>
+                  </div>
+                  <div class="followers">
+                    <span></span>
+                    <p>Followers</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="profile-contents">
+                <div class="nickname">
+                  <label for="nickname">Nickname</label>
+                  <br>
+                  <input type="text" name="Nickname" id="nickname" value="{{.User2.Given_name}}" disabled>
+                </div>
+                <div class="detail">
+                  <label for="detail">About</label>
+                  <br>
+                  {{if .User2.About}}
+                  <textarea name="Detail" id="detail" rows="8" cols="80" placeholder="Tell people about you!" disabled>{{.User2.About}}</textarea>
+                  {{else}}
+                  <textarea name="Detail" id="detail" rows="8" cols="80" placeholder="Tell people about you!" disabled>no details</textarea>
+                  {{end}}
+
+                </div>
+              </div>
+              {{if .Same}}
+
+              {{else}}
+                <div class="followbtn" onclick="followClick()">
+                  {{if .Following}}
+                  <p>Unfollow</p>
+                  {{else}}
+                  <p>Follow</p>
+                  {{end}}
+                </div>
+              {{end}}
+
+              <p id="response"></p>
+            </div>
+        </main>
+      </div>
+    </div>
+
+    <footer>
+        <div class="copyright">
+          <div class="logo">
+            <p class="footer-text" id="textlogo">My Licks</p>
+          </div>
+
+          <div class="contactinfos">
+            <p class="footer-text" id="copyright">Copyright (c) 2020 Toby Kim </p>
+            <!-- <p class="footer-text" id="email">seop0504@gmail.com</p> -->
+          </div>
+        </div>
+      </footer>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+      <script type="text/javascript">
+        var followings = {{.Followings}}
+        var followers = {{.Followers}}
+        var user2 = {{.User2.Email}}
+
+        var xhr_follow = new XMLHttpRequest();
+        var xhr_unfollow = new XMLHttpRequest();
+
+
+        $(".followings").find("span").text(followings);
+        $(".followers").find("span").text(followers);
+
+        function followClick() {
+          var str = $(".followbtn").find("p").text();
+          if(str =="Unfollow"){
+            if (confirm('Do you want to unfollow this user?')) {
+                // Do it!
+                xhr_unfollow.open('POST', '/unfollow', true);
+                xhr_unfollow.setRequestHeader('Content-Type', 'application/xml');
+                xhr_unfollow.send(JSON.stringify(user2));
+              } else {
+                // Do nothing!
+
+              }
+          }else{
+            xhr_follow.open('POST', '/follow', true);
+            xhr_follow.setRequestHeader('Content-Type', 'application/xml');
+            xhr_follow.send(JSON.stringify(user2));
+          }
+        }
+        var user_img = document.getElementById("user_img");
+        user_img.addEventListener('touchend', function () {
+          if(window.innerWidth/window.innerHeight < .71428){
+            $('#side_bar').css('right', '0');
+            $('#for_transparency3').css('z-index', '9998');
+            $('#for_transparency3').css('background-color', 'rgba(20,20,20,.5)');
+          }
+        });
+        user_img.addEventListener('click', function () {
+          if(window.innerWidth/window.innerHeight < .71428){
+            $('#side_bar').css('right', '0');
+            $('#for_transparency3').css('z-index', '9998');
+            $('#for_transparency3').css('background-color', 'rgba(20,20,20,.5)');
+          }
+        });
+        var sidebarImg = document.getElementById('sidebarImg');
+        sidebarImg.addEventListener('click', function () {
+          window.location.href = '/setting';
+        });
+        var contemp = document.getElementById('contemp');
+        contemp.addEventListener('click', function () {
+          window.location.href = '/setting';
+        });
+
+        window.addEventListener('resize', function () {
+          if(window.innerWidth/window.innerHeight < .71428){
+            $('#side_bar').css('right', '-100%');
+          }
+        });
+
+        var closeDiv = document.getElementById('closeDiv');
+        closeDiv.addEventListener('click', function () {
+          $('#side_bar').css('right', '-100%');
+        });
+        closeDiv.addEventListener('touchend', function () {
+          $('#side_bar').css('right', '-100%');
+        });
+        {{if not .Same}}
+        xhr_follow.addEventListener('readystatechange', function(){
+          if(xhr_follow.readyState === XMLHttpRequest.DONE){
+            if (xhr_follow.status === 200) {
+              $(".followbtn").find("p").text("Unfollow");
+              var number = parseInt($(".followers").find("span").text());
+              $(".followers").find("span").text(number+1);
+           }
+          }
+        });
+        xhr_unfollow.addEventListener('readystatechange', function(){
+          if(xhr_unfollow.readyState === XMLHttpRequest.DONE){
+            if (xhr_unfollow.status === 200) {
+              $(".followbtn").find("p").text("Follow")
+              var number = parseInt($(".followers").find("span").text());
+              if(number != 0){
+                $(".followers").find("span").text(number-1);
+              }
+           }
+          }
+        });
+        {{end}}
+
+      </script>
+  </body>
+</html>

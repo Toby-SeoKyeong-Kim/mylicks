@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>My Licks</title>
+
+    {{if (eq .Time "morning")}}
+    <link rel="stylesheet" href="static/css/simple_landing.css"/>
+    {{else if (eq .Time "afternoon")}}
+    <link rel="stylesheet" href="static/css/pastel_landing.css"/>
+    {{else if (eq .Time "evening")}}
+    <link rel="stylesheet" href="static/css/dark_landing.css"/>
+    {{end}}
+    <link rel="icon" href="static/resources/treble_clef.png">
+    <meta name="msapplication-TileImage" content="static/resources/treble_clef.png">
+    <meta name="msapplication-TileColor" content="#fffffff">
+    <link rel="canonical" href="localhost:8080/">
+    <script src="https://kit.fontawesome.com/6743146fd8.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000"/>
+    <script src="static/js/main.js"></script>
+    <link rel="apple-touch-icon" href="static/resources/treble_clef.png">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@800&family=Open+Sans:wght@800&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="con-wrap">
+      <div class="contents">
+        <header>
+          <div class="headerWrap">
+            <div id="header-logo" class="header-nav">
+              {{if (eq .Time "evening")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{else if (eq .Time "morning")}}
+              <h2><a href="/"style="color:#1936FE;">MY LICKS</a></h2>
+              {{else if (eq .Time "afternoon")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{end}}
+            </div>
+            <div id="logout" class="header-nav">
+              {{if (eq .Time "evening")}}
+              <p><a href="/googlelogin" style="color: #757189;">Login</a></p>
+              {{else if (eq .Time "morning")}}
+              <p><a href="/googlelogin" style="color: #9C9CA7;">Login</a></p>
+              {{else if (eq .Time "afternoon")}}
+              <p><a href="/googlelogin" style="color: #B6EBF3;">Login</a></p>
+              {{end}}
+            </div>
+          </div>
+        </header>
+        <main>
+          <div class="big4">
+            <div class="wrap4">
+              <span><strong>Super easy</strong> to start playing jazz<br>and <strong>all different</strong> kinds of music!</span>
+              <img src="static/resources/icon/landing_first.png" alt="">
+            </div>
+          </div>
+          <div class="big4">
+            <div class="wrap4">
+              <span><strong>Expand</strong> your musical vocabulary!</span>
+              {{if (eq .Time "evening")}}
+              <img src="static/resources/icon/landing_second_dark.png" alt="">
+              {{else if (eq .Time "morning")}}
+              <img src="static/resources/icon4simple/landing_second_simple.png" alt="">
+              {{else if (eq .Time "afternoon")}}
+              <img src="static/resources/icon4pastel/landing_second_pastel.png" alt="">
+              {{end}}
+            </div>
+          </div>
+          <div class="big4">
+            <div class="wrap4">
+              <span><strong>Sort your licks</strong> <br>and practice them <strong>in 12 keys!</strong></span>
+              {{if (eq .Time "evening")}}
+              <img src="static/resources/icon/landing_third_dark.png" alt="">
+              {{else if (eq .Time "morning")}}
+              <img src="static/resources/icon4simple/landing_third_simple.png" alt="">
+              {{else if (eq .Time "afternoon")}}
+              <img src="static/resources/icon4pastel/landing_third_pastel.png" alt="">
+              {{end}}
+            </div>
+          </div>
+          <div class="big4">
+            <div class="wrap1">
+              <span><strong>Make your own sheets music</strong> and fill it <br>with all the licks you've learned!</span>
+              {{if (eq .Time "evening")}}
+              <img src="static/resources/icon/landing_last_dark.png" alt="">
+              {{else if (eq .Time "morning")}}
+              <img src="static/resources/icon4simple/landing_last_simple.png" alt="">
+              {{else if (eq .Time "afternoon")}}
+              <img src="static/resources/icon4pastel/landing_last_pastel.png" alt="">
+              {{end}}
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <footer>
+        <div class="copyright">
+          <div class="logo">
+            <p class="footer-text" id="textlogo">My Licks</p>
+          </div>
+
+          <div class="contactinfos">
+            <p class="footer-text" id="copyright">Copyright (c) 2020 Toby Kim </p>
+            <p class="contactinfos"><a href="terms">이용약관, 개인정보보호 및 쿠키 이용방침</a></p>
+            <!-- <p class="footer-text" id="email">seop0504@gmail.com</p> -->
+          </div>
+        </div>
+      </footer>
+      <script type="text/javascript">
+        if('serviceWorker' in navigator) {
+           window.addEventListener('load', () => {
+               navigator.serviceWorker.register('./serviceworker.js')
+                   .then((reg) => console.log('Success: ', reg.scope))
+                   .catch((err) => console.log('Failure: ', err));
+           })
+       }
+      </script>
+  </body>
+</html>

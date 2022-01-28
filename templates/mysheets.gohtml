@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Solo Master</title>
+    {{if (eq .Theme "dark")}}
+    <link rel="stylesheet" href="static/css/mysheets.css"/>
+    {{else if (eq .Theme "simple")}}
+    <link rel="stylesheet" href="static/css/simple_mysheets.css"/>
+    {{else if (eq .Theme "pastel")}}
+    <link rel="stylesheet" href="static/css/pastel_mysheets.css"/>
+    {{end}}
+
+    <script src="https://kit.fontawesome.com/6743146fd8.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.js"></script>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/resources/treble_clef.png">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#000000"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@800&family=Open+Sans:wght@800&display=swap" rel="stylesheet">
+    <script src="static/js/main.js"></script>
+
+  </head>
+  <body>
+    <div class="side_bar" id="side_bar">
+      <div class="side_bar_contents">
+        <div id="closeDiv" class="closeDiv">
+
+        </div>
+        <div class="logoutDiv">
+          <a href="/logout"><p>Logout</p></a>
+        </div>
+        <div class="userImgSidebar">
+          <div id="contemp" class="contemp">
+            <div class="imgAfter">
+              <p>edit</p>
+            </div>
+          </div>
+          <img id="sidebarImg" src="{{.Picture}}" alt="">
+        </div>
+        <p>{{.Given_name}}</p>
+      </div>
+      <ul>
+        <a href="/setting"><div id="profileIcon"></div><li>Profile</li></a>
+        <a href="/mylicks"><div id="licksIcon"></div><li>My Licks</li></a>
+        <a href="/mysheets"><div id="sheetsIcon"></div><li>My Sheets</li></a>
+        <a href="/forum"><div id="downloadIcon"></div><li>Forum</li></a>
+      </ul>
+    </div>
+    <div class="con-wrap">
+      <div class="for_transparency">
+
+      </div>
+      <div class="contents">
+        <header>
+          <div class="headerWrap">
+            <div id="header-logo" class="header-nav">
+
+              {{if (eq .Theme "dark")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{else if (eq .Theme "simple")}}
+              <h2><a href="/"style="color:#1936FE;">MY LICKS</a></h2>
+              {{else if (eq .Theme "pastel")}}
+              <h2><a href="/"style="color:#ffffff;">MY LICKS</a></h2>
+              {{end}}
+            </div>
+
+
+            <div id="logout" class="header-nav">
+
+              {{if (eq .Theme "dark")}}
+              <p><a href="/logout" style="color: #757189;">Logout</a></p>
+              {{else if (eq .Theme "simple")}}
+              <p><a href="/logout" style="color: #9C9CA7;">Logout</a></p>
+              {{else if (eq .Theme "pastel")}}
+              <p><a href="/logout" style="color: #B6EBF3;">Logout</a></p>
+              {{end}}
+            </div>
+            <div id="user_info" class="header-nav">
+              <div class="user_img" id="user_img">
+                <img src="{{.Picture}}" alt="No Image">
+              </div>
+              <p>{{.Given_name}}</p>
+              <div class="top-down-menu">
+                <a href="/setting">
+                  <div id="profile-icon2"></div>
+                  <span>Profile</span>
+                </a>
+                <a href="/mylicks">
+                  <div id="licks-icon2"></div>
+                  <span>My Licks</span>
+                </a>
+                <a href="/mysheets">
+                  <div id="sheets-icon2"></div>
+                  <span>My Sheets</span>
+                </a>
+                <a href="/forum">
+                  <div id="download-icon2"></div>
+                  <span>Forum</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+        <main id="main-container">
+          <div class="control-panal">
+            <div class="querydiv">
+              <select class="queryselect" name="querySelector" id="querySelector">
+                <option value="title">Title</option>
+              </select>
+              <p class="partition">|</p>
+              <input type="search" name="query" id="query" value="" placeholder="Search">
+              <p class="partition">|</p>
+              <div class="rangediv">
+                <input type="range" name="ran1" id="ran1" value="0" min="0" max="100">
+                <input type="range" name="ran2" id="ran2" value="100" min="0" max="100">
+                <div class="visualSlider">
+                  <div class="track"></div>
+                  <div class="range"></div>
+                  <div class="thumb left" id="left"></div>
+                  <div class="thumb right" id="right"></div>
+                </div>
+              </div>
+            </div>
+            <input type="submit" name="new" id="new" value="New" >
+            <!-- <button type="button" name="opener" id="opener">Open</button> -->
+          </div>
+          <div class="listContainer" id="listContainer" >
+            {{if .OwnedSheets}}
+
+            {{else}}
+              <p id="noSheets">There are no Sheets</p>
+            {{end}}
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript">
+    function k_keycen(k) {
+      switch (k) {
+        case 0:
+          return "C#";
+        break;
+        case 1:
+          return "F#";
+        break;
+        case 2:
+          return "B";
+        break;
+        case 3:
+          return "E";
+        break;
+        case 4:
+          return "A";
+        break;
+        case 5:
+          return "D";
+        break;
+        case 6:
+          return "G";
+        break;
+        case 7:
+          return "C";
+        break;
+        case 8:
+          return "F";
+        break;
+        case 9:
+          return "Bb"
+        break;
+        case 10:
+          return "Eb";
+        break;
+        case 11:
+          return "Ab";
+        break;
+        case 12:
+          return "Db";
+        break;
+        case 13:
+          return "Gb";
+        break;
+        case 14:
+          return "Cb";
+        break;
+      }
+    }
+
+      var ownedSheets = {{.OwnedSheets}};
+      var selectedSheets =[];
+      var userID = {{.ID}};
+      var arry = [];
+      if(ownedSheets){
+        ownedSheets.forEach(function(sheet, index){
+        var item = '<div class="sheets" id="' + sheet.id +'" onclick="hightlight(this.id)"><div class="sheetHeader"><div class="sheetHeaderTitle"><p class="sheetTitle">'+ sheet.name +'</p><p class="sheetKey"> Key  /  '+ k_keycen(parseInt(sheet.key)) +' key</p></div><div class="sheetDelete" onclick="deleteSheet()"><p>Delete</p></div><div id="'+sheet.id+'-diff'+'" class="dpiculty" value="'+sheet.Difficulty+'"><ul></ul></div></div><div class="sheetContents" id="' + sheet.id +'-canvas"><p>Measures : '+sheet.data.length+'</p></div><div class="sheetOpen" onclick="openSheet()"><p>Open</p></div></div>';
+        arry.push(item);
+      });
+        $('#listContainer').html(arry);
+        var arry2 = [];
+
+        for(var i=0; i<25; i++){
+          var lis = "<li value="+i+"></li>"
+        arry2.push(lis);
+        }
+        $('.dpiculty ul').html(arry2);
+
+      for (var i = 0; i < ownedSheets.length; i++) {
+        var domdiff = document.getElementById(ownedSheets[i].id+"-diff");
+        var numberOfBlocks = parseInt(domdiff.getAttribute("value")/4);
+        for (var ii = 0; ii < numberOfBlocks; ii++) {
+          {{if (eq .Theme "dark")}}
+          domdiff.children[0].children[ii].style.background="linear-gradient(100deg, rgba(0,255,255,1)"+ (25-ii)*3.5+ "% , rgba(0,255,175,1) "+ii*3.5+ "%)";
+          {{else if (eq .Theme "simple")}}
+          domdiff.children[0].children[ii].style.background="#1936FE";
+          {{else if (eq .Theme "pastel")}}
+          domdiff.children[0].children[ii].style.background="#FFAC90";
+          {{end}}
+        }
+      }
+    }
+      // var lis4query = $(".dpiculty ul li");
+      // for (var i = 0; i < lis4query.length; i++) {
+      //   lis4query[i].style.background="linear-gradient(100deg, rgba(0,255,255,1)"+ (lis4query.length-i)*3.5+ "% , rgba(0,255,175,1) "+i*3.5+ "%)";
+      // }
+
+
+      var sheetLists = document.getElementsByClassName('sheets');
+      var lickContainer = document.getElementsByClassName('listContainer');
+      var xhr = new XMLHttpRequest();
+      var xhr4Delete = new XMLHttpRequest();
+      let myMap = new Map()
+      var elementClicked = false;
+      var elementDeleting = false;
+      var selectedsheet;
+      // var btn = document.querySelector('#opener');
+      var nL = document.querySelector('#new');
+
+      for (var i = 0; i < sheetLists.length; ++i) {
+        myMap.set(sheetLists[i].id, false) ;
+      }
+
+      var lc = document.querySelector('.listContainer');
+      lc.addEventListener('click', function (){
+        console.log("1");
+        if(!elementClicked){
+          for (var i = 0; i < sheetLists.length; ++i) {
+            myMap.set(sheetLists[i].id, false);
+            //c[i].selected = false;
+          }
+          for (let [key, value] of myMap) {
+            if (value === true){
+              {{if (eq .Theme "dark")}}
+                document.getElementById(key).style.border = 'none';
+                document.getElementById(key).style.backgroundColor = '#332E56';
+                document.getElementById(key).children[0].children[1].style.backgroundColor='#332E56';
+                document.getElementById(key).children[0].children[1].style.border='1px solid #ffffff';
+                document.getElementById(key).children[0].children[1].style.color='#ffffff';
+                document.getElementById(key).children[2].style.backgroundColor="#6256B1";
+                document.getElementById(key).children[2].style.borer="none";
+                document.getElementById(key).children[2].style.color="#ffffff";
+              {{else if (eq .Theme "simple")}}
+                document.getElementById(key).style.border = '1px solid #1936FE';
+                document.getElementById(key).style.backgroundColor = '#F8F9FB';
+                document.getElementById(key).children[0].children[1].style.backgroundColor='#F8F9FB';
+                document.getElementById(key).children[0].children[1].style.border='1px solid #1936FE';
+                document.getElementById(key).children[0].children[1].style.color='#1936FE';
+                document.getElementById(key).children[1].children[0].style.color='#1936FE';
+                document.getElementById(key).children[0].children[0].children[1].style.color='#1936FE';
+                document.getElementById(key).children[2].style.backgroundColor="#1936FE";
+                document.getElementById(key).children[2].style.borer="none";
+                document.getElementById(key).children[2].style.color="#ffffff";
+              {{else if (eq .Theme "pastel")}}
+                document.getElementById(key).style.border = '1px solid #74D4E4';
+                document.getElementById(key).style.backgroundColor = '#F8F9FB';
+                document.getElementById(key).children[0].children[1].style.backgroundColor='#74D4E4';
+                document.getElementById(key).children[0].children[1].style.border='1px solid #ffffff';
+                document.getElementById(key).children[0].children[1].style.color='#ffffff';
+                document.getElementById(key).children[1].children[0].style.color='#74D4E4';
+                document.getElementById(key).children[0].children[0].children[1].style.color='#74D4E4';
+                document.getElementById(key).children[2].style.backgroundColor="#74D4E4";
+                document.getElementById(key).children[2].style.borer="none";
+                document.getElementById(key).children[2].style.color="#ffffff";
+              {{end}}
+            }else{
+              {{if (eq .Theme "dark")}}
+                document.getElementById(key).style.border = '1px solid #332E56';
+                document.getElementById(key).style.backgroundColor = '#1D1E30';
+                document.getElementById(key).children[0].children[1].style.backgroundColor='#1D1E30';
+                document.getElementById(key).children[0].children[1].style.border='1px solid #6256B1';
+                document.getElementById(key).children[0].children[1].style.color='#6256B1';
+                document.getElementById(key).children[2].style.backgroundColor="#1D1E30";
+                document.getElementById(key).children[2].style.borer="1px solid #6256B1";
+                document.getElementById(key).children[2].style.color="#6256B1";
+              {{else if (eq .Theme "simple")}}
+                document.getElementById(key).style.border = "1px solid #444A47";
+                document.getElementById(key).style.backgroundColor = '#F8F9FB';
+                document.getElementById(key).children[0].children[1].style.backgroundColor='#F8F9FB';
+                document.getElementById(key).children[0].children[1].style.border='1px solid #444A47';
+                document.getElementById(key).children[0].children[1].style.color='#444A47';
+                document.getElementById(key).children[1].children[0].style.color='#444A47';
+                document.getElementById(key).children[0].children[0].children[1].style.color='#444A47';
+                document.getElementById(key).children[2].style.backgroundColor="#F8F9FB";
+                document.getElementById(key).children[2].style.borer="1px solid #444A47";
+                document.getElementById(key).children[2].style.color="#444A47";
+              {{else if (eq .Theme "pastel")}}
+                document.getElementById(key).style.border = "1px solid #BFBFCB";
+                document.getElementById(key).style.backgroundColor = '#F8F9FB';
+                document.getElementById(key).children[0].children[1].style.backgroundColor='#F8F9FB';
+                document.getElementById(key).children[0].children[1].style.border='1px solid #BFBFCB';
+                document.getElementById(key).children[0].children[1].style.color='#BFBFCB';
+                document.getElementById(key).children[1].children[0].style.color='#444A47';
+                document.getElementById(key).children[0].children[0].children[1].style.color='#444A47';
+                document.getElementById(key).children[2].style.backgroundColor="#F8F9FB";
+                document.getElementById(key).children[2].style.borer="1px solid #BFBFCB";
+                document.getElementById(key).children[2].style.color="#BFBFCB";
+              {{end}}
+            }
+          }
+          selectedlick = "";
+        }
+        elementClicked = false;
+      })
+      function getIndexOfSheets(id) {
+        var index = ownedSheets.findIndex(function (element) {
+          if (element.id == selectedsheet) {
+            return true
+          }else{
+            return false;
+          }
+        })
+        return index;
+      }
+      function deleteSheet() {
+        var indexOfSheets = getIndexOfSheets(selectedsheet);
+
+        if(indexOfSheets != -1){
+
+          var json_data={
+            "userId": userID,
+            "lickId": selectedsheet
+          };
+          xhr4Delete.open('POST', '/deleteSheet', true);
+          xhr4Delete.setRequestHeader('Content-Type', 'application/json');
+          xhr4Delete.send(JSON.stringify(json_data));
+
+          elementDeleting = true;
+            ownedSheets.splice(indexOfSheets, 1);
+            myMap.delete(selectedsheet);
+            arry = [];
+            if(ownedSheets){
+              ownedSheets.forEach(function(sheet, index){
+              var item = '<div class="sheets" id="' + sheet.id +'" onclick="hightlight(this.id)"><div class="sheetHeader"><div class="sheetHeaderTitle"><p class="sheetTitle">'+ sheet.name +'</p><p class="sheetKey"> Key  /  '+ k_keycen(parseInt(sheet.key)) +' key</p></div><div class="sheetDelete" onclick="deleteSheet()"><p>Delete</p></div><div id="'+sheet.id+'-diff'+'" class="dpiculty" value="'+sheet.Difficulty+'"><ul></ul></div></div><div class="sheetContents" id="' + sheet.id +'-canvas"><p>Measures : '+sheet.data.length+'</p></div><div class="sheetOpen" onclick="openSheet()"><p>Open</p></div></div>';
+              arry.push(item);
+            });
+            if (arry.length ==0){
+              $('#listContainer').html('<p id="noSheets">There are no Sheets</p>');
+            }else{
+              $('#listContainer').html(arry);
+            }
+              var arry2 = [];
+
+              for(var i=0; i<25; i++){
+                var lis = "<li value="+i+"></li>"
+              arry2.push(lis);
+              }
+              $('.dpiculty ul').html(arry2);
+            }
+            for (var i = 0; i < ownedSheets.length; i++) {
+              var domdiff = document.getElementById(ownedSheets[i].id+"-diff");
+              var numberOfBlocks = parseInt(domdiff.getAttribute("value")/4);
+              for (var ii = 0; ii < numberOfBlocks; ii++) {
+                domdiff.children[0].children[ii].style.background="linear-gradient(100deg, rgba(0,255,255,1)"+ (25-ii)*3.5+ "% , rgba(0,255,175,1) "+ii*3.5+ "%)";
+              }
+            }
+        }
+      }
+      function openSheet() {
+        if(selectedsheet != "" && selectedsheet != null){
+          var uri = '/Sdisplay?q=' + selectedsheet;
+          window.location.href = uri;
+        }
+      }
+      function hightlight(id) {
+        elementClicked=true;
+        for (var i = 0; i < sheetLists.length; ++i) {
+          myMap.set(sheetLists[i].id, false);
+          //c[i].selected = false;
+        }
+        if(!elementDeleting){
+          myMap.set(id, true);
+          selectedsheet = id;
+          var indexOfSheets = getIndexOfSheets(selectedsheet);
+          if(indexOfSheets != -1){
+            //c[indexOfSheets].selected=true;
+          }
+        }else{
+          selectedsheet ="";
+        }
+        for (let [key, value] of myMap) {
+          if (value === true){
+            {{if (eq .Theme "dark")}}
+              document.getElementById(key).style.border = 'none';
+              document.getElementById(key).style.backgroundColor = '#332E56';
+              document.getElementById(key).children[0].children[1].style.backgroundColor='#332E56';
+              document.getElementById(key).children[0].children[1].style.border='1px solid #ffffff';
+              document.getElementById(key).children[0].children[1].style.color='#ffffff';
+              document.getElementById(key).children[2].style.backgroundColor="#6256B1";
+              document.getElementById(key).children[2].style.borer="none";
+              document.getElementById(key).children[2].style.color="#ffffff";
+            {{else if (eq .Theme "simple")}}
+              document.getElementById(key).style.border = '1px solid #1936FE';
+              document.getElementById(key).style.backgroundColor = '#F8F9FB';
+              document.getElementById(key).children[0].children[1].style.backgroundColor='#F8F9FB';
+              document.getElementById(key).children[0].children[1].style.border='1px solid #1936FE';
+              document.getElementById(key).children[0].children[1].style.color='#1936FE';
+              document.getElementById(key).children[1].children[0].style.color='#1936FE';
+              document.getElementById(key).children[0].children[0].children[1].style.color='#1936FE';
+              document.getElementById(key).children[2].style.backgroundColor="#1936FE";
+              document.getElementById(key).children[2].style.borer="none";
+              document.getElementById(key).children[2].style.color="#ffffff";
+            {{else if (eq .Theme "pastel")}}
+              document.getElementById(key).style.border = '1px solid #74D4E4';
+              document.getElementById(key).style.backgroundColor = '#F8F9FB';
+              document.getElementById(key).children[0].children[1].style.backgroundColor='#74D4E4';
+              document.getElementById(key).children[0].children[1].style.border='1px solid #ffffff';
+              document.getElementById(key).children[0].children[1].style.color='#ffffff';
+              document.getElementById(key).children[1].children[0].style.color='#74D4E4';
+              document.getElementById(key).children[0].children[0].children[1].style.color='#74D4E4';
+              document.getElementById(key).children[2].style.backgroundColor="#74D4E4";
+              document.getElementById(key).children[2].style.borer="none";
+              document.getElementById(key).children[2].style.color="#ffffff";
+            {{end}}
+          }else{
+            {{if (eq .Theme "dark")}}
+              document.getElementById(key).style.border = '1px solid #332E56';
+              document.getElementById(key).style.backgroundColor = '#1D1E30';
+              document.getElementById(key).children[0].children[1].style.backgroundColor='#1D1E30';
+              document.getElementById(key).children[0].children[1].style.border='1px solid #6256B1';
+              document.getElementById(key).children[0].children[1].style.color='#6256B1';
+              document.getElementById(key).children[2].style.backgroundColor="#1D1E30";
+              document.getElementById(key).children[2].style.borer="1px solid #6256B1";
+              document.getElementById(key).children[2].style.color="#6256B1";
+            {{else if (eq .Theme "simple")}}
+              document.getElementById(key).style.border = "1px solid #444A47";
+              document.getElementById(key).style.backgroundColor = '#F8F9FB';
+              document.getElementById(key).children[0].children[1].style.backgroundColor='#F8F9FB';
+              document.getElementById(key).children[0].children[1].style.border='1px solid #444A47';
+              document.getElementById(key).children[0].children[1].style.color='#444A47';
+              document.getElementById(key).children[1].children[0].style.color='#444A47';
+              document.getElementById(key).children[0].children[0].children[1].style.color='#444A47';
+              document.getElementById(key).children[2].style.backgroundColor="#F8F9FB";
+              document.getElementById(key).children[2].style.borer="1px solid #444A47";
+              document.getElementById(key).children[2].style.color="#444A47";
+            {{else if (eq .Theme "pastel")}}
+              document.getElementById(key).style.border = "1px solid #BFBFCB";
+              document.getElementById(key).style.backgroundColor = '#F8F9FB';
+              document.getElementById(key).children[0].children[1].style.backgroundColor='#F8F9FB';
+              document.getElementById(key).children[0].children[1].style.border='1px solid #BFBFCB';
+              document.getElementById(key).children[0].children[1].style.color='#BFBFCB';
+              document.getElementById(key).children[1].children[0].style.color='#444A47';
+              document.getElementById(key).children[0].children[0].children[1].style.color='#444A47';
+              document.getElementById(key).children[2].style.backgroundColor="#F8F9FB";
+              document.getElementById(key).children[2].style.borer="1px solid #BFBFCB";
+              document.getElementById(key).children[2].style.color="#BFBFCB";
+            {{end}}
+          }
+        }
+        elementDeleting = false;
+      }
+
+      nL.addEventListener('click', function (){
+
+        xhr.open('POST', '/newsheet', true);
+        xhr.setRequestHeader('Content-Type', 'application/xml');
+        xhr.addEventListener('readystatechange', function(){
+          if(xhr.readyState === XMLHttpRequest.DONE){
+            if (xhr.status === 200) {
+              var resp = xhr.responseText
+              var respstr = JSON.parse(resp);
+              switch (respstr) {
+                case "noPro":
+                    window.location.href = '/goPro';
+                  break;
+                  case "err":
+                      window.location.href = '/';
+                    break;
+                default:
+                var uri = '/Sdisplay?q=' + respstr;
+                window.location.href = uri;
+              }
+           }
+          }
+        });
+        xhr.send();
+      })
+
+
+
+    </script>
+
+    <script type="text/javascript">
+
+    var body = document.getElementsByTagName('body');
+      body[0].style.height = window.innerHeight + "px";
+      body[0].style.minHeight = window.innerHeight + "px";
+      body[0].style.minWidth = 300 + "px";
+      var container = document.getElementById('main-container');
+      var Height = container.clientHeight;
+      var Width = container.clientWidth;
+
+      $('.partition').css('line-height', '50px');
+      $('.thumb').css('width', 50 *.60 +'px');
+      $('.thumb').css('height', 50 *.60 +'px');
+      var querydivheight = 50;
+      $('.left').css('transform', 'translate(' +querydivheight *-0.2725 +"px, " +  querydivheight * -0.251 + "px)");
+      $('.right').css('transform', 'translate(' +querydivheight *0.2725 +"px, " +  querydivheight * -0.251 + "px)");
+      $('.left').css('fontSize', querydivheight*.35+'px');
+      $('.right').css('fontSize', querydivheight*.35+'px');
+      left = document.getElementById("ran1");
+      left.style.setProperty("--thumb-size", 50 *.65 +'px');
+      right = document.getElementById("ran2");
+      right.style.setProperty("--thumb-size", 50 *.65 +'px');
+      var count = 0;
+
+    </script>
+    <script type="text/javascript">
+
+    </script>
+    <script type="text/javascript">
+        var inputLeft = document.getElementById("ran1");
+        var inputRight = document.getElementById("ran2");
+        var selectbox = document.getElementById("querySelector");
+        var searchText = document.getElementById("query");
+
+        var thumbLeft = document.querySelector(".visualSlider > .thumb.left");
+        var thumbRight = document.querySelector(".visualSlider > .thumb.right");
+        var range = document.querySelector(".visualSlider > .range");
+
+        function setLeftValue() {
+        	var _this = inputLeft,
+        		min = parseInt(_this.min),
+        		max = parseInt(_this.max);
+
+        	_this.value = Math.min(parseInt(_this.value), parseInt(inputRight.value) - 10);
+
+        	var percent = ((_this.value - min) / (max - min)) * 100;
+
+        	thumbLeft.style.left = percent + "%";
+        	range.style.left = percent + "%";
+          $('.left').html('<p>'+ parseInt(percent) +'</p>');
+        }
+        setLeftValue();
+
+        function setRightValue() {
+        	var _this = inputRight,
+        		min = parseInt(_this.min),
+        		max = parseInt(_this.max);
+
+        	_this.value = Math.max(parseInt(_this.value), parseInt(inputLeft.value) + 10);
+
+        	var percent = ((_this.value - min) / (max - min)) * 100;
+
+        	thumbRight.style.right = (100 - percent) + "%";
+        	range.style.right = (100 - percent) + "%";
+          $('.right').html('<p>'+ parseInt(percent) +'</p>');
+        }
+        setRightValue();
+
+        inputLeft.addEventListener("input", setLeftValue);
+        inputRight.addEventListener("input", setRightValue);
+        inputLeft.addEventListener("change", sortSheets);
+        inputRight.addEventListener("change", sortSheets);
+        selectbox.addEventListener("input", sortSheets);
+        searchText.addEventListener("input", sortSheets);
+
+
+
+        function sortSheets() {
+              selectedSheets = [];
+              for(var i=0; i < ownedSheets.length; i++){
+                switch (selectbox.value) {
+                  case "title":
+                  if(parseInt(ownedSheets[i].Difficulty)>parseInt(inputLeft.value)&&
+                     parseInt(ownedSheets[i].Difficulty)<parseInt(inputRight.value)){
+                       if(ownedSheets[i].name.toLowerCase().includes(searchText.value.toLowerCase())){
+                         selectedSheets.push(ownedSheets[i]);
+                       }
+                  }
+                    break;
+                }
+
+
+                }
+                arry = [];
+                if(selectedSheets){
+                  selectedSheets.forEach(function(sheet, index){
+                  var item = '<div class="sheets" id="' + sheet.id +'" onclick="hightlight(this.id)"><div class="sheetHeader"><div class="sheetHeaderTitle"><p class="sheetTitle">'+ sheet.name +'</p><p class="sheetKey"> Key  /  '+ k_keycen(parseInt(sheet.key)) +' key</p></div><div class="sheetDelete" onclick="deleteSheet()"><p>Delete</p></div><div id="'+sheet.id+'-diff'+'" class="dpiculty" value="'+sheet.Difficulty+'"><ul></ul></div></div><div class="sheetContents" id="' + sheet.id +'-canvas"><p>Measures : '+sheet.data.length+'</p></div><div class="sheetOpen" onclick="openSheet()"><p>Open</p></div></div>';
+                  arry.push(item);
+                });
+                if (arry.length ==0){
+                  $('#listContainer').html('<p id="noSheets">There are no Sheets</p>');
+                }else{
+                  $('#listContainer').html(arry);
+                }
+                  var arry2 = [];
+
+                  for(var i=0; i<25; i++){
+                    var lis = "<li value="+i+"></li>"
+                  arry2.push(lis);
+                  }
+                  $('.dpiculty ul').html(arry2);
+                }else{
+                  $('#listContainer').html('<p id="noSheets">There are no Sheets</p>');
+                }
+                for (var i = 0; i < selectedSheets.length; i++) {
+                  var domdiff = document.getElementById(selectedSheets[i].id+"-diff");
+                  var numberOfBlocks = parseInt(domdiff.getAttribute("value")/4);
+                  for (var ii = 0; ii < numberOfBlocks; ii++) {
+                    {{if (eq .Theme "dark")}}
+                    domdiff.children[0].children[ii].style.background="linear-gradient(100deg, rgba(0,255,255,1)"+ (25-ii)*3.5+ "% , rgba(0,255,175,1) "+ii*3.5+ "%)";
+                    {{else if (eq .Theme "simple")}}
+                    domdiff.children[0].children[ii].style.background="#1936FE";
+                    {{else if (eq .Theme "pastel")}}
+                    domdiff.children[0].children[ii].style.background="#FFAC90";
+                    {{end}}
+                  }
+                }
+        }
+
+        var user_img = document.getElementById("user_img");
+        user_img.addEventListener('touchend', function () {
+          if(window.innerWidth/window.innerHeight < .71428){
+            $('#side_bar').css('right', '0');
+            $('.for_transparency').css('z-index', '9998');
+            $('.for_transparency').css('background-color', 'rgba(20,20,20,.5)');
+          }
+        });
+        user_img.addEventListener('click', function () {
+          if(window.innerWidth/window.innerHeight < .71428){
+            $('#side_bar').css('right', '0');
+            $('.for_transparency').css('z-index', '9998');
+            $('.for_transparency').css('background-color', 'rgba(20,20,20,.5)');
+          }
+        });
+        var sidebarImg = document.getElementById('sidebarImg');
+        sidebarImg.addEventListener('click', function () {
+          window.location.href = '/setting';
+        });
+        var contemp = document.getElementById('contemp');
+        contemp.addEventListener('click', function () {
+          window.location.href = '/setting';
+        });
+        var closeDiv = document.getElementById('closeDiv');
+        closeDiv.addEventListener('click', function () {
+          $('#side_bar').css('right', '-100%');
+          $('.for_transparency').css('z-index', '-99');
+          $('.for_transparency').css('background-color', 'rgba(20,20,20,0)');
+        });
+        closeDiv.addEventListener('touchend', function () {
+          $('#side_bar').css('right', '-100%');
+          $('.for_transparency').css('z-index', '-99');
+          $('.for_transparency').css('background-color', 'rgba(20,20,20,0)');
+        });
+        window.addEventListener('resize',function () {
+          body[0].style.height = window.innerHeight + "px";
+          body[0].style.minHeight = window.innerHeight + "px";
+          Height = container.clientHeight;
+          Width = container.clientWidth;
+
+           $('.partition').css('line-height', '50px');
+           $('.thumb').css('width', 50 *.60 +'px');
+           $('.thumb').css('height', 50 *.60 +'px');
+           var querydivheight = 50;
+           $('.left').css('transform', 'translate(' +querydivheight *-0.2725 +"px, " +  querydivheight * -0.251 + "px)");
+           $('.right').css('transform', 'translate(' +querydivheight *0.2725 +"px, " +  querydivheight * -0.251 + "px)");
+           $('.left').css('fontSize', querydivheight*.35+'px');
+           $('.right').css('fontSize', querydivheight*.35+'px');
+           left.style.setProperty("--thumb-size", 50 *.65 +'px');
+           right.style.setProperty("--thumb-size", 50 *.65 +'px');
+
+
+             if(window.innerWidth/window.innerHeight < .71428){
+
+               $('#side_bar').css('right', '-100%');
+               $('.for_transparency').css('z-index', '-99');
+               $('.for_transparency').css('background-color', 'rgba(20,20,20,0)');
+             }
+
+        });
+
+
+
+    </script>
+  </body>
+</html>
