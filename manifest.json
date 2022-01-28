@@ -1,0 +1,21 @@
+{
+  "short_name": "Lick Master",
+  "name": "Lick Master",
+  "icons": [
+    {
+      "src":"static/resources/icon.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src":"static/resources/splash.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "orientation":  "landscape",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
