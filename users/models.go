@@ -43,8 +43,8 @@ var (
 func init() {
 	googleOauthConfig = &oauth2.Config{
 		RedirectURL:  "http://localhost:8080/callback",
-		ClientID:     "264389676410-6mpc9fvf9eu927o23dlsg2roicutisu2.apps.googleusercontent.com",
-		ClientSecret: "UGTmDpeotE7md3QQaTUxMi9x",
+		ClientID:     "xxxxx",
+		ClientSecret: "xxxxx",
 		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email","https://www.googleapis.com/auth/userinfo.profile"},
 		Endpoint:     google.Endpoint,
 	}
