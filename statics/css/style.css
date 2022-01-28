@@ -1,0 +1,287 @@
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/***
+reset end
+*/
+
+
+* {
+  list-style: none;
+  text-decoration: none;
+	font-family: cursive;
+}
+body{
+	background: #f7f5f2;
+}
+
+
+.side_bar {
+  position: fixed;
+	left: -60vw;
+	z-index: 999;
+  width: 60vw;
+  height: 100vh;
+  background: #c9af98;
+	transition: .7s;
+}
+
+.side_bar header {
+	font-size: 44px;
+	height: 335px;
+	color: #ed8a63;
+	text-align: center;
+	background: #3a4660;
+	overflow: hidden;
+}
+.side_bar header .user_img , .user_info {
+	line-height: 200px;
+}
+
+.side_bar main div {
+	line-height: 100px;
+  padding-left: 20px;
+}
+.side_bar header .user_img {
+  grid-area: user_img;
+
+}
+.side_bar header .profile {
+  grid-area: profile;
+	color:#c4c4c4;
+	padding-bottom: 40px;
+}
+.side_bar header .user_info {
+  grid-area: user_info;
+
+}
+.side_bar header .logout  {
+  grid-area: logout;
+	color:#c4c4c4;
+}
+.logout p a:link, .profile ul li, #gosignup {
+	display: block;
+	width: 80%;
+	font-size: 35px;
+	color:#c4c4c4;
+}
+
+.side_bar header form{
+	padding-top: 25px;
+}
+.side_bar header form .username {
+	grid-area: username;
+
+}
+.side_bar header form input{
+	width: 60%;
+	height: 40%;
+	font-size: 22px;
+	text-align: center;
+}
+.side_bar header form .password{
+	grid-area: password;
+}
+
+.side_bar header form .submit{
+	grid-area: submit;
+}
+
+.side_bar main ul li a{
+	display: block;
+	height: 100%;
+	width: 100%;
+	line-height: 150px;
+	font-size: 40px;
+	color: #fff;
+	padding-left:90px;
+	box-sizing: border-box;
+	transition: .4s;
+}
+
+.side_bar main ul li:hover a{
+	padding-left: 110px;
+}
+
+
+
+ #btn,  #cancel {
+	position: absolute;
+	cursor: pointer;
+	color: #845007;
+}
+
+ #btn{
+	left: 40px;
+	top: 25px;
+	font-size: 90px;
+	opacity: 1;
+	transition: .7s;
+}
+
+ #cancel{
+	left: 0vw;
+	top: 17px;
+	font-size: 90px;
+	opacity: 0;
+	transition: .7s;
+}
+#userportrait{
+	font-size: 90px;
+	padding-top: 50px;
+}
+
+ .side_bar footer{
+	color: #fff;
+	text-align:	center;
+	font-size: 22px;
+	font-family: cursive;
+	line-height: 50px;
+	padding-top: 40px;
+	background: #c9af98;
+}
+
+
+/* contents */
+
+
+.contents header{
+	position: fixed;
+	top:0;
+	right:0;
+	left:0;
+  background-color: #fff;
+  width: 100%;
+  height: 150px;
+	z-index: 2;
+}
+ .contents header h2 {
+	 font-family: Arial;
+   font-size: 44px;
+   font-weight: 900;
+   color: #111;
+   text-transform: uppercase;
+   display: block;
+   margin: 0 auto;
+   text-align: center;
+   padding: 50px 0;
+ }
+
+	.contents main {
+		padding: 150px 10vw 50px;
+		margin: auto;
+	}
+ .sharewrapper{
+ 	display: block;
+ 	position: relative;
+ 	padding: 160px 0 ;
+
+ }
+  .sharewrapper p{
+		margin: auto;
+		text-align: center;
+	}
+	.sharelinks{
+			color: #fff;
+			font-size: 44px;
+			margin: 60px;
+	}
+ .sharecontents{
+
+ 	margin: 0 auto;
+ }
+
+ #sharelicks{
+	 background:
+     /* top, transparent red, faked with gradient */
+     linear-gradient(
+       rgba(40, 40, 40, 0.45),
+       rgba(40, 40, 40, 0.45)
+     ),
+     /* bottom, image */
+     url("../resources/measure_indiv.jpeg");
+	 background-size: cover;
+ }
+
+ #sharesheets{
+	 background:
+     /* top, transparent red, faked with gradient */
+     linear-gradient(
+       rgba(40, 40, 40, 0.45),
+       rgba(40, 40, 40, 0.45)
+     ),
+     /* bottom, image */
+     url("../resources/dor.png");
+	 background-size: cover;
+ }
+
+
+#shareforum {
+	background:
+		/* top, transparent red, faked with gradient */
+		linear-gradient(
+			rgba(40, 40, 40, 0.45),
+			rgba(40, 40, 40, 0.45)
+		),
+		/* bottom, image */
+		url("../resources/song.png");
+	background-size: cover;
+}
+
+
+/* footer */
+
+body footer {
+	width: 100%;
+	height: 200px;
+	background: #c9af98;
+}
+
+.footer-text {
+	color: white;
+	font-family: cursive;
+	font-size: 22px;
+	text-align: center;
+	line-height: 33px;
+}
