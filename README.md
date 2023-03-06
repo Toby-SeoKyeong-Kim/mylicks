@@ -33,7 +33,7 @@ The user speaks to their loved one, asking for advice and guidance, expressing t
 
 # 2. Tasks
 
-## Wwise
+### Wwise
 
 ```diff
 - Ambient music implementation: Noah
@@ -41,7 +41,7 @@ The user speaks to their loved one, asking for advice and guidance, expressing t
 ! Establish network communication to Oculus App: Toby
 ```
 
-## Unity
+### Unity
 
 ```diff
 - Music interactivity with user's voice input: Noah
@@ -49,7 +49,7 @@ The user speaks to their loved one, asking for advice and guidance, expressing t
 ! prepare systems for voice interactivity: Toby
 ```
 
-## Others
+### Others
 
 ```diff
 - Music composition: Noah
